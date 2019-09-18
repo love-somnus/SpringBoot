@@ -1,0 +1,30 @@
+spring:
+  jta:
+    enabled: true
+    atomikos:
+      datasource:
+        primary: 
+          xa-properties.url: jdbc:mysql://121.43.162.28:3306/primary?useUnicode=true&characterEncoding=utf-8&useSSL=false
+          xa-properties.user: root
+          xa-properties.password: passw0rd
+          xa-data-source-class-name: com.mysql.jdbc.jdbc2.optional.MysqlXADataSource
+          unique-resource-name: primary
+          max-pool-size: 25
+          min-pool-size: 3
+          max-lifetime: 20000
+          borrow-connection-timeout: 10000
+        secondary: 
+          xa-properties.url: jdbc:mysql://121.43.162.28:3306/secondary?useUnicode=true&characterEncoding=utf-8&useSSL=false
+          xa-properties.user: root
+          xa-properties.password: passw0rd
+          xa-data-source-class-name: com.mysql.jdbc.jdbc2.optional.MysqlXADataSource
+          unique-resource-name: secondary
+          max-pool-size: 25
+          min-pool-size: 3
+          max-lifetime: 20000
+          borrow-connection-timeout: 10000
+    log-dir: log
+
+logging:
+  level:
+    com.somnus.springboot.mapper: debug    

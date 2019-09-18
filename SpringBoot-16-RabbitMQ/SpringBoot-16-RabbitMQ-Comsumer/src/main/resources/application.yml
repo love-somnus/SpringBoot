@@ -1,0 +1,19 @@
+spring: 
+  rabbitmq:
+    addresses: 121.43.162.28:5672,47.96.100.166:5672,118.24.136.237:5672
+    username: guest
+    password: guest
+    virtual-host: /
+    listener:
+        type: simple
+        direct:
+          acknowledge-mode: manual # 开启手动ACK
+          prefetch: 200
+          retry:
+            enabled: true
+        simple:
+          acknowledge-mode: manual # 开启手动ACK
+          prefetch: 200
+          retry:
+            enabled: true
+          default-requeue-rejected: false #true表示会重新放回队列，为false表示不会放回队列

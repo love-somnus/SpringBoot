@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Static</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" type="text/css" href="webjars/bootstrap/3.0.3/css/bootstrap.min.css" />
+</head>
+<body>
+	<script type="text/javascript" src="webjars/jquery/2.0.3/jquery.min.js"></script>
+	<script>
+		$(function () {
+			$.ajax({
+				type:"POST",
+				dataType:"json",
+				contentType: "application/json; charset=utf-8",
+				url:"http://api.test.nesh/wt-cmc/official/frontend-by-page/noblesse/zh-cn",
+				data: "{\"columnAlias\" : \"aa\"}",
+				success:function(result){
+					alert(result);
+				}
+			});
+			$("#btn").click(function () {
+				$.ajax({
+					type:"POST",
+					dataType:"json",
+					url:"http://api.test.nesh/wt-cmc/login",
+					/*url:"http://192.168.97.101:10102/login",*/
+					data: {username:"S3996", password:"Miss332512"},
+					//data: "username=S3996&password=Miss332512",
+					success:function(result){
+						alert(result);
+					}
+				});
+			});
+			$("#btn2").click(function () {
+				$.ajax({
+					type:"POST",
+					dataType:"json",
+					url:"http://192.168.97.101:9000/wt-cmc/info/top/3",
+					success:function(result){
+						alert(result);
+					}
+				});
+			});
+		});
+
+	</script>
+
+	<div id="navbar" class="navbar navbar-default" role="navigation">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="https://github.com/spring-projects/spring-boot"> Spring Boot</a>
+		</div>
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+				<span class="icon-bar"></span> 
+				<span class="icon-bar"></span> 
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="https://github.com/spring-projects/spring-boot"> Spring Boot</a>
+		</div>
+		
+		<div class="navbar-collapse collapse">
+			<ul class="nav navbar-nav">
+				<li><a href="./"> Home </a></li>
+			</ul>
+		</div>
+	</div>
+	
+	<div class="jumbotron">
+		<h1>Home</h1>
+		<p>Some static content</p>
+		<p>
+          <a id="btn" class="btn btn-lg btn-primary" href="#navbar" role="button">Go &raquo;</a>
+			<a id="btn2" class="btn btn-lg btn-primary" href="#navbar" role="button">Come on &raquo;</a>
+        </p>
+	</div>
+	
+	<script type="text/javascript" src="webjars/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+</body>
+</html>

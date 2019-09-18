@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.somnus.springboot.mybatis.mapper.TCityMapper">
+  <resultMap id="BaseResultMap" type="com.somnus.springboot.mybatis.model.TCity">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="city_name" jdbcType="VARCHAR" property="cityName" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, city_name, description
+  </sql>
+
+  <select id="selectByCondition" resultMap="BaseResultMap" parameterType="map">
+    select 
+    <include refid="Base_Column_List" />
+    from t_city
+    <where>
+        <trim prefix="(" suffix=")" prefixOverrides="and | AND">
+            <if test="cityName != null">
+                and city_name = #{cityName,jdbcType=VARCHAR}
+            </if>
+            <if test="description != null">
+                and description = #{description,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </where>
+  </select>
+  
+  <select id="selectByCondition2" resultMap="BaseResultMap" parameterType="map">
+    select 
+    <include refid="Base_Column_List" />
+    from t_city
+    <where>
+      <if test="cityName != null">
+        and city_name = #{cityName,jdbcType=VARCHAR}
+      </if>
+      <if test="description != null">
+        and description = #{description,jdbcType=VARCHAR}
+      </if>
+    </where>c
+  </select>
+  
+  <select id="returnMap" resultMap="BaseResultMap" parameterType="string">
+    select 
+    <include refid="Base_Column_List" />
+    from t_city 
+    where city_name = #{cityName,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="returnMap2" resultType="map" parameterType="string">
+    select 
+    <include refid="Base_Column_List" />
+    from t_city 
+    where city_name = #{cityName,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="returnMap3" resultMap="BaseResultMap" parameterType="string">
+    select 
+    <include refid="Base_Column_List" />
+    from t_city 
+    where city_name = #{cityName,jdbcType=VARCHAR}
+  </select>
+</mapper>

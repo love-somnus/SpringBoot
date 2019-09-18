@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>@RequestBody</title>
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <script src="/js/jquery.serialize-object.min.js"></script>
+</head>
+<body>
+<form id="login" action="">
+    <fieldset style="width:600px; border:1px solid #000;border-left:none;border-right:none">
+        <legend style="">用户登录</legend>
+        <p align="center">账号：<input type="text" name="username" /></p>
+        <p align="center">密码：<input type="password" name="password" /></p>
+        <p align="center"><input type="button" id="submit1" value="登录1" /></p>
+        <p align="center"><input type="button" id="submit2" value="登录2" /></p>
+    </fieldset>
+</form>
+
+<script type="text/javascript">
+    $(function() {
+        $("#submit1").click(function() {
+            /*[Object Object] */
+            var json = $("#login").serializeObject();
+            /* json字符串 {"username":"admin","password":"123456"} */
+            var params = JSON.stringify(json);//必须转换成json字符串
+            alert(params);
+            $.ajax({
+                type : 'POST',
+                contentType : 'application/json',
+                /**
+                 *(默认: true) 默认情况下，通过data选项传递进来的数据，如果是一个对象(技术上讲只要不是字符串)，
+                 * 都会处理转化成一个查询字符串，以配合默认内容类型 "application/x-www-form-urlencoded"。
+                 * 如果要发送 DOM 树信息或其它不希望转换的信息，请设置为 false。
+                 */
+                processData : false,
+                url : '/requestbodybind',
+                dataType : 'json',
+                data : params,
+                success : function(data) {
+                    alert('username : '+data.username+'\npassword : '+data.password);
+                },
+                error : function() {
+                    alert('error...');
+                }
+            });
+        });
+
+        //400 Bad Request, application/json数据发送后台接收必须是Model对象，不能是单个属性
+        $("#submit2").click(function() {
+            var json = $("#login").serializeObject();
+            var params = JSON.stringify(json);
+            alert(params);
+            $.ajax({
+                type : 'POST',
+                contentType : 'application/json',
+                processData : false,
+                url : '/requestbodybind2',
+                dataType : 'json',
+                data : params,
+                success : function(data) {
+                    alert('username : '+data.username+'\npassword : '+data.password);
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

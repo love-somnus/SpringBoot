@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>@ResponseBody</title>
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <script src="/js/jquery.serialize-object.min.js"></script>
+</head>
+<body>
+
+<form id="login" action="">
+    <fieldset style="width:600px; border:1px solid #000;border-left:none;border-right:none">
+        <legend style="">用户登录</legend>
+        <p align="center">账号：<input type="text" name="username" /></p>
+        <p align="center">密码：<input type="password" name="password" /></p>
+        <p align="center"><input type="button" id="submit1" value="登录1" /></p>
+        <p align="center"><input type="button" id="submit2" value="登录2" /><input type="button" id="submit2_" value="登录2_" /></p>
+        <p align="center"><input type="button" id="submit3" value="登录3" /></p>
+    </fieldset>
+</form>
+
+<script type="text/javascript">
+    $(function() {
+
+        $("#submit1").click(function(){
+            /*[Object Object] */
+            var params = $("#login").serializeObject();
+            alert(params);
+            $.ajax({
+                type: "POST",
+                /* contentType : 'application/x-www-form-urlencoded',*/
+                url:  '/responsebodybind',
+                dataType: "json",
+                data: params,
+                success: function(data){
+                    alert('username : '+data.username+'\npassword : '+data.password);
+                }
+            });
+        });
+        $("#submit2").click(function(){
+            /*[Object Object] */
+            var params = $("#login").serializeObject();
+            alert(params);
+            $.ajax({
+                type: "POST",
+                /* contentType : 'application/x-www-form-urlencoded',*/
+                url:  '/responsebodybind2',
+                dataType: "json",
+                data: params,
+                success: function(data){
+                    alert('username : '+data.username+'\npassword : '+data.password);
+                }
+            });
+        });
+        $("#submit2_").click(function(){
+            /* 序列化表单的值username=admin&password=123456 */
+            var params = $("#login").serialize();
+            alert(params);
+            $.ajax({
+                type: "POST",
+                /* contentType : 'application/x-www-form-urlencoded',*/
+                url:  '/responsebodybind2',
+                dataType: "json",
+                data: params,
+                success: function(data){
+                    alert('username : '+data.username+'\npassword : '+data.password);
+                }
+            });
+        });
+        $("#submit3").click(function(){
+            $.ajax({
+                type: "get",
+                async: false,
+                url:  '/returnjson',
+                dataType: "jsonp",
+                jsonp: "callback",//传递给请求处理程序或页面的，用以获得jsonp回调函数名的参数名(一般默认为:callback)
+                jsonpCallback:"callback",//自定义的jsonp回调函数名称，默认为jQuery自动生成的随机函数名
+                success: function(data){
+                    alert('username : '+data.username+'\npassword : '+data.password);
+                },
+                error: function(){
+                    alert('fail');
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

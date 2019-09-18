@@ -1,0 +1,26 @@
+@startuml
+interface AopProxy{
+	~Object getProxy()
+	~Object getProxy(ClassLoader classLoader)
+}
+interface AopProxyFactory{
+	~AopProxy createAopProxy(AdvisedSupport config)
+}
+
+AopProxy <|.. JdkDynamicAopProxy
+AopProxy <|.. CglibAopProxy
+
+AopProxyFactory <|.. DefaultAopProxyFactory
+
+DefaultAopProxyFactory ..> JdkDynamicAopProxy : create >
+DefaultAopProxyFactory ..> CglibAopProxy : create >
+
+ProxyCreatorSupport ..> DefaultAopProxyFactory : create > 
+ProxyCreatorSupport --|> AdvisedSupport
+AdvisedSupport --|> ProxyConfig
+
+ProxyFactory --|> ProxyCreatorSupport
+ProxyFactoryBean --|> ProxyCreatorSupport
+ 
+
+@enduml

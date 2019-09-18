@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.somnus</groupId>
+  <artifactId>SpringBoot</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <name>SpringBoot</name>
+  <description>Demo project for Spring Boot</description>
+
+  <modules>
+    <module>SpringBoot-00-J2SE</module>
+    <module>SpringBoot-00-BlockChain</module>
+    <module>SpringBoot-00-Payment</module>
+    <module>SpringBoot-00-Seckill</module>
+    <module>SpringBoot-01-HelloWorld</module>
+    <module>SpringBoot-01-Servlet-Filter</module>
+    <module>SpringBoot-02-Value-Random</module>
+    <module>SpringBoot-03-Thymeleaf</module>
+    <module>SpringBoot-04-Freemarker</module>
+    <module>SpringBoot-05-Static</module>
+    <module>SpringBoot-05-Layui</module>
+    <module>SpringBoot-06-JSP</module>
+    <module>SpringBoot-07-Async</module>
+    <module>SpringBoot-07-Async-Event</module>
+    <module>SpringBoot-08-Scheduled</module>
+    <module>SpringBoot-09-Aop</module>
+    <module>SpringBoot-10-Jdbc</module>
+    <module>SpringBoot-11-Jpa</module>
+    <module>SpringBoot-12-MyBatis</module>
+    <module>SpringBoot-12-MyBatis-Druid</module>
+    <module>SpringBoot-13-Atomikos</module>
+    <module>SpringBoot-14-Redis</module>
+    <module>SpringBoot-15-ActiveMQ</module>
+    <module>SpringBoot-16-RabbitMQ</module>
+    <module>SpringBoot-18-Transaction</module>
+    <module>SpringBoot-20-Dubbo</module>
+    <module>SpringBoot-19-Kafka</module>
+  </modules>
+
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>2.1.0.RELEASE</version>
+    <relativePath /> <!-- lookup parent from repository -->
+  </parent>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <java.version>1.8</java.version>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-devtools</artifactId>
+      <optional>true</optional>
+    </dependency>
+
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>20.0</version>
+    </dependency>
+  </dependencies>
+
+
+  <dependencyManagement>
+    <dependencies>
+      <!-- dubbo begin -->
+      <dependency>
+        <groupId>com.alibaba.boot</groupId>
+        <artifactId>dubbo-spring-boot-starter</artifactId>
+        <version>0.2.0</version>
+      </dependency>
+      <dependency>
+        <groupId>com.alibaba.boot</groupId>
+        <artifactId>dubbo-spring-boot-actuator</artifactId>
+        <version>0.2.0</version>
+      </dependency>
+      <dependency>
+        <groupId>de.javakaffee</groupId>
+        <artifactId>kryo-serializers</artifactId>
+        <version>0.42</version>
+      </dependency>
+      <!-- dubbo end -->
+
+      <!-- mybatis begin-->
+      <dependency>
+        <groupId>tk.mybatis</groupId>
+        <artifactId>mapper-spring-boot-starter</artifactId>
+        <version>2.0.2</version>
+      </dependency>
+      <dependency>
+        <groupId>com.github.pagehelper</groupId>
+        <artifactId>pagehelper-spring-boot-starter</artifactId>
+        <version>1.2.5</version>
+      </dependency>
+      <!-- end -->
+
+      <!-- curator begin -->
+      <dependency>
+        <groupId>org.apache.curator</groupId>
+        <artifactId>curator-recipes</artifactId>
+        <version>2.12.0</version>
+      </dependency>
+      <!-- curator end -->
+
+      <!-- redisson begin -->
+      <dependency>
+        <groupId>org.redisson</groupId>
+        <artifactId>redisson</artifactId>
+        <version>3.7.5</version>
+      </dependency>
+      <!-- redisson end -->
+
+    </dependencies>
+  </dependencyManagement>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>

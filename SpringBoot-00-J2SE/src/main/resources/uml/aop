@@ -1,0 +1,50 @@
+@startuml
+actor actor #red
+autonumber
+activate actor
+actor -> JdkDynamicAopProxy : 执行revoke方法
+activate JdkDynamicAopProxy
+note over actor, JdkDynamicAopProxy #FFAAAA : 如果调用目标方法simpleMethod将会代理到\nJdkDynamicAopProxy执行其invoke方法
+JdkDynamicAopProxy -> JdkDynamicAopProxy : 获取目标方法上的拦截链
+activate JdkDynamicAopProxy
+deactivate JdkDynamicAopProxy
+JdkDynamicAopProxy -> ReflectiveMethodInvocation : 创建目标方法上的拦截链的执行器
+activate ReflectiveMethodInvocation
+ReflectiveMethodInvocation -> intercepter1 : 获取一个拦截器并执行其invoke方法
+activate intercepter1
+intercepter1 -> intercepter1 : 执行前置方法
+activate intercepter1
+deactivate intercepter1
+ReflectiveMethodInvocation <- intercepter1 : 下一个拦截器链
+activate ReflectiveMethodInvocation
+ReflectiveMethodInvocation --> intercepter1
+deactivate ReflectiveMethodInvocation
+intercepter1 -> intercepter2 : 获取一个拦截器并执行其invoke方法
+activate intercepter2
+intercepter2 -> intercepter2 : 执行前置方法
+activate intercepter2
+deactivate intercepter2
+intercepter2 -> ReflectiveMethodInvocation : 拦截链结束
+activate ReflectiveMethodInvocation
+ReflectiveMethodInvocation --> intercepter2
+deactivate ReflectiveMethodInvocation
+intercepter2 -> 目标对象 : 调用目标方法
+activate 目标对象 
+intercepter2 <-- 目标对象 : 
+deactivate 目标对象 
+intercepter2 -> intercepter2 : 执行后置方法
+activate intercepter2
+deactivate intercepter2
+intercepter2 --> intercepter1
+deactivate intercepter2
+intercepter1 -> intercepter1 : 执行后置方法
+activate intercepter1
+deactivate intercepter1
+intercepter1 --> ReflectiveMethodInvocation
+deactivate ReflectiveMethodInvocation
+deactivate intercepter1
+ReflectiveMethodInvocation --> JdkDynamicAopProxy
+deactivate JdkDynamicAopProxy
+JdkDynamicAopProxy --> actor
+deactivate actor
+@enduml

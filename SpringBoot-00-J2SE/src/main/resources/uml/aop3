@@ -1,0 +1,26 @@
+@startuml
+actor actor #red
+autonumber
+activate actor
+actor -> Proxy : 调用Proxy的newProxyInstance方法
+activate Proxy
+Proxy -> Proxy : 调用自己的getProxyClass方法
+activate Proxy
+Proxy -> Proxy : 构造代理类名
+activate Proxy
+deactivate Proxy
+Proxy -> ProxyGenerator : 调用其generatorProxyClass方法
+activate ProxyGenerator
+Proxy <-- ProxyGenerator
+deactivate ProxyGenerator
+Proxy -> Proxy : 调用本地方法defineClass()构造代理类
+activate Proxy
+deactivate Proxy
+deactivate Proxy
+Proxy -> Proxy : 根据代理类创建代理对象
+activate Proxy
+deactivate Proxy
+Proxy --> actor
+deactivate Proxy
+deactivate actor
+@enduml

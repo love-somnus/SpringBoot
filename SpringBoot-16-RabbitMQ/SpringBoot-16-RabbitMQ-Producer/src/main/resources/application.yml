@@ -1,0 +1,12 @@
+spring: 
+  rabbitmq:
+    addresses: 121.43.162.28:5672,47.96.100.166:5672,118.24.136.237:5672
+    username: guest
+    password: guest
+    virtual-host: /
+    template:
+      retry:
+        enabled: true
+      mandatory: true
+    publisher-confirms: true # 开启发送确认
+    publisher-returns: true  # 开启发送失败退回
