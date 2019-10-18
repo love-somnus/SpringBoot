@@ -8,6 +8,9 @@ import java.io.ObjectOutputStream;
 import java.io.OptionalDataException;
 import java.io.Serializable;
 
+import lombok.Builder;
+import lombok.Data;
+import lombok.SneakyThrows;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -19,52 +22,17 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * @date 2015年6月25日 下午1:33:15
  * @version V1.0
  */
+@Data
+@Builder
 public class WeeklyLog3 implements Serializable {
-	private static final long serialVersionUID = 1L;
 	private Attachment3 attachment;
     private String name;
     private String date;
     private String content;
     
-    public WeeklyLog3(Attachment3 attachment) {
-		super();
-		this.attachment = attachment;
-	}
-
-	public void setAttachment(Attachment3 attachment) {
-        this.attachment = attachment;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public Attachment3 getAttachment() {
-        return (this.attachment);
-    }
-
-    public String getName() {
-        return (this.name);
-    }
-
-    public String getDate() {
-        return (this.date);
-    }
-
-    public String getContent() {
-        return (this.content);
-    }
-
     // 使用序列化技术实现深克隆
-    public WeeklyLog3 deepClone() throws IOException, ClassNotFoundException, OptionalDataException {
+    @SneakyThrows
+    public WeeklyLog3 deepClone() {
         // 将对象写入流中
         ByteArrayOutputStream bao = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(bao);
@@ -75,27 +43,11 @@ public class WeeklyLog3 implements Serializable {
         ObjectInputStream ois = new ObjectInputStream(bis);
         return (WeeklyLog3) ois.readObject();
     }
-    
+
+    @Data
+    @Builder
     static class Attachment3 implements Serializable {
-    	private static final long serialVersionUID = 1L;
     	private String name; // 附件名
-    	
-        public Attachment3(String name) {
-			super();
-			this.name = name;
-		}
 
-		public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getName() {
-            return this.name;
-        }
-
-        @Override
-        public String toString() {  
-        	return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);   
-        }
     }
 }

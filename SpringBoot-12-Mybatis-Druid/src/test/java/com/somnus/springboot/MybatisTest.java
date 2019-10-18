@@ -52,14 +52,14 @@ public class MybatisTest {
 
     @Test
     public void selectByCondition() {
-        TCity city = mapper.selectByCondition(ImmutableMap.of("cityName", "鹰潭"));
-        System.out.println(city);
+        List<TCity> citys = mapper.selectByCondition(ImmutableMap.of("cityName", "九江"));
+        System.out.println(citys);
     }
 
     @Test
     public void selectByCondition2() {
-        TCity city = mapper.selectByCondition2(ImmutableMap.of("cityName", "鹰潭"));
-        System.out.println(city);
+        List<TCity> citys = mapper.selectByCondition2(ImmutableMap.of("cityName", "九江"));
+        System.out.println(citys);
     }
 
     @Test

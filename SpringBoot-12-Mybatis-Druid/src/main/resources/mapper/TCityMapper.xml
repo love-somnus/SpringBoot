@@ -38,7 +38,7 @@
       <if test="description != null">
         and description = #{description,jdbcType=VARCHAR}
       </if>
-    </where>c
+    </where>
   </select>
   
   <select id="returnMap" resultMap="BaseResultMap" parameterType="string">

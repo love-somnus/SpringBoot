@@ -11,7 +11,7 @@ import com.somnus.designPatterns.prototype.WeeklyLog3.Attachment3;
 public class Client {
 	
 	@Test
-	public void test() throws CloneNotSupportedException {
+	public void test() {
 	    WeeklyLog log_previous = new WeeklyLog("张无忌", "第12周", "这周工作很忙，每天加班！");  //创建原型对象
        
         System.out.println(log_previous);
@@ -40,8 +40,8 @@ public class Client {
     }
 	
 	@Test
-	public void test3() throws OptionalDataException, ClassNotFoundException, IOException {
-        WeeklyLog3 log_previous = new WeeklyLog3(new Attachment3("study hard hard")); // 创建原型对象
+	public void test3() throws ClassNotFoundException, IOException {
+        WeeklyLog3 log_previous = WeeklyLog3.builder().attachment(new Attachment3("study hard hard")).build(); // 创建原型对象
         
         WeeklyLog3 log_new = log_previous.deepClone(); // 调用深克隆方法创建克隆对象
         log_new.getAttachment().setName("day day up");

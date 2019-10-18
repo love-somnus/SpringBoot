@@ -1,6 +1,3 @@
-DROP DATABASE IF EXISTS `sara`;
-CREATE  DATABASE `sara`;
-USE `sara`;
 
 DROP TABLE IF EXISTS `t_city`;
 

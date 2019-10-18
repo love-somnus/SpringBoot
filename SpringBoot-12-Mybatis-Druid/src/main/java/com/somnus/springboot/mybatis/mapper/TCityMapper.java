@@ -11,9 +11,9 @@ import tk.mybatis.mapper.ParentMapper;
 
 public interface TCityMapper extends ParentMapper<TCity> {
 
-    TCity selectByCondition(Map<String,Object> map);
+    List<TCity> selectByCondition(Map<String,Object> map);
 
-    TCity selectByCondition2(Map<String,Object> map);
+    List<TCity> selectByCondition2(Map<String,Object> map);
 
     @MapKey("id")
     Map<String,Object> returnMap(@Param(value = "cityName") String cityName);
