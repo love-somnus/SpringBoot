@@ -4,17 +4,15 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
+import com.google.common.collect.*;
 import com.google.common.primitives.Ints;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import org.junit.Test;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 
 /**
  * @author Somnus
@@ -63,7 +61,7 @@ public class JDKTest {
      * 4.任务之间最好是状态无关的，因为parallelStream默认是非线程安全的，可能带来结果的不确定性
      */
     @Test
-    public void stream() {
+    public void parallel() {
 
         List<String> list = Lists.newArrayList("a","b","c","d","e");
 
@@ -151,7 +149,7 @@ public class JDKTest {
     }
 
     @Test
-    public void steam(){
+    public void stream(){
         List<String> list = Lists.newArrayList("a","b","c","d","e");
         list.stream().forEach(item -> System.out.print(item));
         System.out.println("-----------------------------------------------------------------");
@@ -171,6 +169,13 @@ public class JDKTest {
         IntStream.range(0, 10).forEach(item -> System.out.println(Thread.currentThread().getName()+ ">>"+ item));
         System.out.println("-----------------------------------------------------------------");
         IntStream.rangeClosed(0, 10).forEach(item -> System.out.println(Thread.currentThread().getName()+ ">>"+ item));
+
+        //随机生成
+        System.out.println("-----------------------------------------------------------------");
+        LongStream.generate(() -> System.nanoTime() % 10000).limit(10).forEach(System.out::println);
+
+        //生成一个等差数列
+        Stream.iterate(0, n -> n + 3).limit(10). forEach(x -> System.out.print(x + " "));
     }
 
     public int compute(int a,Function<Integer,Integer> function){
@@ -217,25 +222,34 @@ public class JDKTest {
         System.out.println(score);
 
         //计算学生总年龄
-        Integer totalScore = slist.stream().mapToInt(Student::getAge).sum();
-        System.out.println("总年龄" + totalScore);
-        Integer totalScore1 = slist.stream().map(Student::getAge).reduce(0,(a,b) -> a + b);
-        System.out.println("总年龄" + totalScore1);
+        System.out.println("总年龄" + slist.stream().mapToInt(Student::getAge).sum());
+        System.out.println("总年龄" + slist.stream().map(Student::getAge).reduce(0,(a,b) -> a + b));
 
         //计算学生年龄，返回Optional类型的数据，改类型是java8中新增的，主要用来避免空指针异常
-        Optional<Integer> totalScore2 = slist.stream().map(Student::getAge).reduce((a,b) -> a + b);
-        System.out.println("总年龄" + totalScore2.orElse(0));
+        System.out.println("总年龄" + slist.stream().map(Student::getAge).reduce((a,b) -> a + b).get());
+        //有起始值
+        System.out.println("总年龄" + slist.stream().map(Student::getAge).reduce(0, Integer::sum));
+        //无起始值
+        System.out.println("总年龄" + slist.stream().map(Student::getAge).reduce(Integer::sum).get());
 
         //计算最高年龄和最低年龄
         Optional<Integer> max = slist.stream().map(Student::getAge).reduce(Integer::max);
         Optional<Integer> min = slist.stream().map(Student::getAge).reduce(Integer::min);
-
         System.out.println(max.orElse(0));
         System.out.println(min.orElse(0));
 
+        //从一组单词中找出最长的单词
+        List<String> list = Lists.newArrayList("apple","banana","cherry","watermelon","orange");
+        System.out.println("最长的单词-->" + list.stream().reduce((s1, s2) -> s1.length()>=s2.length() ? s1 : s2).get());
+        //求出一组单词的长度之和
+        System.out.println("单词的长度之和-->" + list.stream().reduce(0, (sum, str) -> sum + str.length(), (a, b) -> a+b));
+
+        //字符串连接
+        System.out.println(list.stream().reduce("", String::concat));
+
         //查询平均值,求和
         double avg = slist.stream().collect(Collectors.averagingDouble(Student::getAge));
-        double sum = slist.stream().collect(Collectors.summingDouble(Student::getAge));
+        int sum = slist.stream().collect(Collectors.summingInt(Student::getAge));
         System.out.println(avg);
         System.out.println(sum);
 
@@ -287,29 +301,45 @@ public class JDKTest {
         System.out.println("总数: " + stats.getCount());
         System.out.println("总和: " + stats.getSum());
     }
+
+    @Test
+    public void group() {
+        List<Student> slist = ImmutableList.of(new Student("a", 21), new Student("ac", 22), new Student("a", 18));
+        //计数
+        Map<String, Long> map = slist.stream().collect(Collectors.groupingBy(Student::getName, Collectors.counting()));
+        System.out.println(map);
+        //排序
+        map.entrySet().stream().sorted(Map.Entry.<String, Long>comparingByValue().reversed()).forEachOrdered(System.out::println);
+        //累加求和
+        Map<String, Integer> sum = slist.stream().collect(Collectors.groupingBy(Student::getName, Collectors.summingInt(Student::getAge)));
+        System.out.println(sum);
+        //分组
+        Map<String, List<Student>> groupMap = slist.stream().collect(Collectors.groupingBy(Student::getName));
+        System.out.println(groupMap);
+
+        //上述代码根据name将list分组，如果name是唯一的，那么上述代码就会显得啰嗦。我们需要知道，Guava补JDK之不足，现在改Guava一显身手了
+        List<Student> ulist = ImmutableList.of(new Student("a", 21), new Student("ac", 22), new Student("d", 18));
+        Map<String, Student> guava = Maps.uniqueIndex(ulist, Student::getName);
+        System.out.println(guava);
+    }
+
     @Test
     public void map(){
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        String str = params.entrySet().stream().map(p -> p.getKey() + "=" + p.getValue()).reduce((p1, p2) -> p1 + "&" + p2).map(s -> "?" + s).orElse("");
+        Multimap<String, Integer> params = ImmutableMultimap.of("a", 1, "b", 2, "c", 3, "a", 11);
+        String str = params.entries().stream().map(p -> p.getKey() + "=" + p.getValue()).reduce((p1, p2) -> p1 + "&" + p2).map(s -> "?" + s).orElse("");
         System.out.println(str);
     }
+
     @Test
     public void map2(){
-        Map<String, String> params = new HashMap<>();
-        params.put("key", "1");
-        params.put("storeId", "a");
-        params.put("orderId", "b");
-        params.put("orderId", "c");
+        Map<String, Integer> params = ImmutableMap.of("a", 1, "b", 2, "c", 3);
         String str = params.entrySet().stream().map(p -> p.getKey() + "=" + p.getValue()).reduce((p1, p2) -> p1 + "&" + p2).map(s -> "?" + s).orElse("");
         System.out.println(str);
     }
+
     @Test
     public void map2list(){
-        Map<String, String> params = new HashMap<>();
-        params.put("key", "1");
-        params.put("abc", "a");
-        params.put("good", "b");
-        params.put("fuck", "c");
+        Map<String, String> params = ImmutableMap.of("a", "apple", "b", "banana", "c", "cat");
         List<String> list = params.entrySet().stream().sorted(Comparator.comparing(e -> e.getKey())).map(e -> e.getValue()).collect(Collectors.toList());
         System.out.println(list);
         List<String> list2 = params.entrySet().stream().sorted(Comparator.comparing(Map.Entry::getKey)).map(e -> e.getValue()).collect(Collectors.toList());

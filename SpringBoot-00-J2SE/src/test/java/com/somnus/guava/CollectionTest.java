@@ -1,18 +1,3 @@
-/*
- * Copyright 2002-2018 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.somnus.guava;
 
 import java.util.List;
@@ -23,6 +8,8 @@ import org.junit.Test;
 
 import com.google.common.collect.*;
 import com.google.common.primitives.Ints;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 /**
  * @ClassName: IterablesTest
@@ -107,7 +94,8 @@ public class CollectionTest {
         diff.entriesOnlyOnLeft(); // {"a" => 1}
         diff.entriesOnlyOnRight(); // {"d" => 5}
 
-        ImmutableMap<String, String> imap = ImmutableMap.<String, String>builder()
+        //超过5个用这个
+        Map<String, String> im = ImmutableMap.<String, String>builder()
                 .put("a", "1")
                 .put("b", "2")
                 .put("c", "3")
@@ -115,8 +103,34 @@ public class CollectionTest {
                 .put("e", "5")
                 .put("f", "6")
                 .build();
-        imap.forEach((k,v) -> {
+        im.forEach((k,v) -> {
             System.out.println(k);
         });
+
+        //guaava 相同key用这个
+        Multimap<String, Integer> m = ImmutableMultimap.of("a", 1, "b", 2, "c", 3, "a", 11);
+        System.out.println(m.toString());
+        Multimap<String, String> imap = ImmutableMultimap.<String, String>builder()
+                .put("a", "1")
+                .put("b", "2")
+                .put("c", "3")
+                .put("d", "4")
+                .put("e", "5")
+                .put("a", "11")
+                .build();
+        System.out.println(imap.toString());
+        imap.entries().stream().forEach(entry -> System.out.println(entry.getKey() + ":" + entry.getValue()));
+
+        //spring
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("a", "1");
+        params.add("b", "2");
+        params.add("c", "3");
+        params.add("a", "11");
+        params.forEach((k,v) -> {
+            System.out.println(k + ":" + v);
+        });
+        params.entrySet().stream().forEach(entry -> System.out.println(entry.getKey() + ":" + entry.getValue()));
+        params.entrySet().stream().map(entry -> entry.getValue()).flatMap(List::stream).forEach(v -> System.out.println(v));
     }
 }
