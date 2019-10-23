@@ -54,7 +54,7 @@ public class OptionalTest {
     // orElse方法将传入的字符串作为默认值，orElseGet方法可以接受Supplier接口的实现用来生成默认值。
     public void test5(){
         Optional<String> name = Optional.ofNullable("Sanaulla");
-        System.out.println(name.orElseGet(()-> "Sam"));
+        System.out.println(name.orElse("Sam"));
 
         Optional<String> name2 = Optional.ofNullable(null);
         System.out.println(name2.orElseGet(()-> "Sam"));

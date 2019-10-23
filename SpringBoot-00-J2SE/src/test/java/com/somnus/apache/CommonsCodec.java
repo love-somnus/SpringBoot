@@ -20,7 +20,7 @@ public class CommonsCodec {
 
     @Test
     public void Base64() {
-        String encode = Base64.encodeBase64String("Somnus罂粟花".getBytes(/*"UTF-8"*/));
+        String encode = Base64.encodeBase64String("Somnus".getBytes(/*"UTF-8"*/));
         System.out.println("Base64 编码后：" + encode);
 
         byte[] decode = Base64.decodeBase64("U29tbnVz");
@@ -40,7 +40,7 @@ public class CommonsCodec {
 
     @Test
     public void Hex() throws DecoderException {
-        byte[] buff = "Somnus罂粟花".getBytes(/*"utf-8"*/);
+        byte[] buff = "Somnus".getBytes(/*"utf-8"*/);
         System.out.println(Arrays.toString(buff));
 
         String byte2hex = Hex.encodeHexString(buff);

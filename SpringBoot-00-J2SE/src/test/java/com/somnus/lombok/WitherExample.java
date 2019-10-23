@@ -19,9 +19,9 @@ import java.util.Set;
  * @author pc
  * @date 2018年9月21日
  */
-@RequiredArgsConstructor
 @Wither
 @AllArgsConstructor
+@RequiredArgsConstructor
 public class WitherExample {
 
     private long created = System.currentTimeMillis();
@@ -33,7 +33,7 @@ public class WitherExample {
     private int age;
 
     public static void main(String[] args) {
-        System.out.println(new WitherExample("admin", 12).withCreated(1111L));
+        System.out.println(new WitherExample("admin", 12).withCreated(1111L).withAge(22).withName("somnus"));
     }
 
 }

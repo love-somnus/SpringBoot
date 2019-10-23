@@ -2,6 +2,7 @@ package com.somnus.java8;
 
 import java.util.*;
 import java.util.function.Function;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
@@ -12,6 +13,7 @@ import com.google.common.primitives.Ints;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.junit.Test;
 
 /**
@@ -24,7 +26,7 @@ public class JDKTest {
     @Test
     public void foreach() {
 
-        List<String> list = Lists.newArrayList("a","b","c","d","e");
+        List<String> list = Lists.newArrayList("a","b","c","d","e","c","f");
 
         list.forEach(item -> System.out.print(item));
 
@@ -127,6 +129,9 @@ public class JDKTest {
         List<Student> slist = Lists.newArrayList(new Student("apple",21),new Student("eamil",22),new Student("xyz",18));
         Collections.sort(slist, Comparator.comparing(Student::getAge));
         System.out.println(slist);
+        List<Integer> nums = Ints.asList(10, 2, 18, 4, 5, 6, 12, 8, 15, 1, 11, 7, 13, 14, 9, 16, 17, 3, 19, 20);
+        Collections.sort(nums, Comparator.comparing(num -> num));
+        System.out.println(nums);
 
         List<Student> slist2 = Lists.newArrayList(new Student("apple",21),new Student("eamil",22),new Student("xyz",18));
         slist2.sort(Comparator.comparingInt(Student::getAge));
@@ -139,6 +144,10 @@ public class JDKTest {
         List<Student> slist4 = Lists.newArrayList(new Student("apple",21),new Student("eamil",22),new Student("xyz",18));
         slist4.sort(Comparator.comparingInt(Student::getAge).thenComparing(Student::getName));
         System.out.println(slist4);
+
+        List<String> fruits = Lists.newArrayList("apple","banana","cherry","watermelon","orange");
+        System.out.println(fruits.stream().sorted(Comparator.naturalOrder()).collect(Collectors.toList()));
+        System.out.println(fruits.stream().sorted(Comparator.reverseOrder()).collect(Collectors.toList()));
     }
 
     @Test
@@ -176,14 +185,16 @@ public class JDKTest {
 
         //生成一个等差数列
         Stream.iterate(0, n -> n + 3).limit(10). forEach(x -> System.out.print(x + " "));
+
+        Pattern.compile("\\W").splitAsStream("A B C"). forEach(letter -> System.out.print(letter + " "));
     }
 
-    public int compute(int a,Function<Integer,Integer> function){
+    public int compute(int a, Function<Integer,Integer> function){
         int result = function.apply(a);
         return result;
     }
 
-    public String convert(int a,Function<Integer,String> function){
+    public String convert(int a, Function<Integer,String> function){
         String result = function.apply(a);
         return result;
     }
@@ -191,110 +202,94 @@ public class JDKTest {
     @Test
     public void func(){
         JDKTest test = new JDKTest();
-        System.out.println(test.compute(2, value -> {return 2*value;}));
         System.out.println(test.compute(2, value -> 5+value));
 
         System.out.println(test.convert(2, value -> value + "$"));
     }
 
     @Test
-    public void list(){
-        List<Student> slist = ImmutableList.of(new Student("a",21),new Student("ac",22),new Student("a",18));
-
-        List<People> plist = slist.stream().map(student -> {
-            return People.builder().name(student.getName()).age(student.getAge()).build();
-        }).collect(Collectors.toList());
-        plist.forEach(System.out::println);
-
-        List<People> plist2 = slist.stream().map(student -> People.builder().name(student.getName()).age(student.getAge()).build()).collect(Collectors.toList());
-        plist2.forEach(System.out::println);
-
-        //使用map方法获取list数据中的name
-        List<String> names = slist.stream().map(Student::getName).collect(Collectors.toList());
-        System.out.println(names);
-
-        //使用map方法获取list数据中的name的长度
-        List<Integer> length = slist.stream().map(Student::getName).map(String::length).collect(Collectors.toList());
-        System.out.println(length);
-
-        //将每人的年龄-10
-        List<Integer> score = slist.stream().map(Student::getAge).map(i -> i - 10).collect(Collectors.toList());
-        System.out.println(score);
-
-        //计算学生总年龄
-        System.out.println("总年龄" + slist.stream().mapToInt(Student::getAge).sum());
-        System.out.println("总年龄" + slist.stream().map(Student::getAge).reduce(0,(a,b) -> a + b));
-
-        //计算学生年龄，返回Optional类型的数据，改类型是java8中新增的，主要用来避免空指针异常
-        System.out.println("总年龄" + slist.stream().map(Student::getAge).reduce((a,b) -> a + b).get());
-        //有起始值
-        System.out.println("总年龄" + slist.stream().map(Student::getAge).reduce(0, Integer::sum));
-        //无起始值
-        System.out.println("总年龄" + slist.stream().map(Student::getAge).reduce(Integer::sum).get());
-
-        //计算最高年龄和最低年龄
-        Optional<Integer> max = slist.stream().map(Student::getAge).reduce(Integer::max);
-        Optional<Integer> min = slist.stream().map(Student::getAge).reduce(Integer::min);
-        System.out.println(max.orElse(0));
-        System.out.println(min.orElse(0));
-
-        //从一组单词中找出最长的单词
-        List<String> list = Lists.newArrayList("apple","banana","cherry","watermelon","orange");
-        System.out.println("最长的单词-->" + list.stream().reduce((s1, s2) -> s1.length()>=s2.length() ? s1 : s2).get());
-        //求出一组单词的长度之和
-        System.out.println("单词的长度之和-->" + list.stream().reduce(0, (sum, str) -> sum + str.length(), (a, b) -> a+b));
-
-        //字符串连接
-        System.out.println(list.stream().reduce("", String::concat));
-
-        //查询平均值,求和
-        double avg = slist.stream().collect(Collectors.averagingDouble(Student::getAge));
-        int sum = slist.stream().collect(Collectors.summingInt(Student::getAge));
-        System.out.println(avg);
-        System.out.println(sum);
-
-        //全部大于2岁，才会返回true
-        boolean all = slist.stream().allMatch(student -> student.getAge() > 2);
-        //任意一个人小于20岁，就返回true
-        boolean any = slist.stream().anyMatch(student -> student.getAge() < 20);
-        //没有一个人大于2岁，才会返回true
-        boolean none = slist.stream().noneMatch(student -> student.getAge() > 2);
-        System.out.println(all + "|" + any + "|" +  none);
-        boolean any2 = slist.stream().map(student -> student.getAge() < 10).reduce(false, (a, b) -> a || b);
-        System.out.println(any2);
+    public void toList(){
+        List<Student> students = ImmutableList.of(new Student("a",21),new Student("ac",22),new Student("a",18));
+        System.out.println(students.stream().map(student -> People.builder().name(student.getName()).age(student.getAge()).build()).collect(Collectors.toList()));
+        System.out.println(students.stream().map(Student::getName).collect(Collectors.toList()));
+        System.out.println(students.stream().map(student -> student.getName()).map(String::length).collect(Collectors.toList()));
+        System.out.println(students.stream().map(Student::getAge).map(i -> i - 10).collect(Collectors.toList()));
     }
 
     @Test
-    public void list2(){
-        List<String> slist = ImmutableList.of("red", "green","black","white","grey");
-        List<String> collect = slist.stream().map(String::toUpperCase).collect(Collectors.toList());
-        System.out.println(collect);
-        //连接
-        String join = slist.stream().map(String::toUpperCase).collect(Collectors.joining(","));
-        System.out.println(join);
+    public void extremum(){
+        List<Integer> nums = Ints.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20);
+        System.out.println(nums.stream().collect(Collectors.averagingDouble(num -> num)));
+        System.out.println(nums.stream().collect(Collectors.summingInt(num -> num)));
 
-        List<String> collect2 = slist.stream().map(str -> str.concat("$")).collect(Collectors.toList());
-        System.out.println(collect2);
+        List<Student> students = ImmutableList.of(new Student("a",21),new Student("ac",22),new Student("a",18));
+        System.out.println(students.stream().collect(Collectors.averagingDouble(Student::getAge)));
+        System.out.println(students.stream().collect(Collectors.summingInt(Student::getAge)));
 
-        List<Integer> num = Ints.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20);
-        List<Integer> collect3 = num.stream().map(n -> n * 2).collect(Collectors.toList());
-        System.out.println(collect3); //[2, 4, 6, 8, 10]
+        //找出年龄最大、年龄最小的学生(对象)
+        System.out.println(students.stream().max(Comparator.comparing(Student::getAge)).orElseGet(Student :: new));
+        System.out.println(students.stream().max(Comparator.comparing(stu -> stu.getAge())).orElseGet(Student :: new));
+        System.out.println(students.stream().min(Comparator.comparing(stu -> stu.getAge())).orElse(new Student()));
+    }
 
-        List<Integer> collect4 = num.stream().filter(n -> n != 2).collect(Collectors.toList());
-        System.out.println(collect4); //[1, 3, 4, 5]
+    @Test
+    public void joining(){
+        List<String> fruits = Lists.newArrayList("apple","banana","cherry","watermelon","orange");
+        System.out.println(fruits.stream().map(String::toUpperCase).collect(Collectors.joining()));
+        System.out.println(fruits.stream().map(String::toUpperCase).collect(Collectors.joining(",")));
+        System.out.println(fruits.stream().map(String::toUpperCase).collect(Collectors.joining(",", "(", ")")));
+    }
 
+    @Test
+    public void reduce(){
+        List<Integer> nums = Ints.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20);
+        //有起始值
+        System.out.println(nums.stream().reduce(0, (a,b) -> a + b));
+        System.out.println(nums.stream().reduce(0, Integer::sum));
+        System.out.println(nums.stream().reduce(0, Integer::max));
+        System.out.println(nums.stream().reduce(0, Integer::min));
+        //无起始值(返回Optional类型的数据，改类型是java8中新增的，主要用来避免空指针异常)
+        System.out.println(nums.stream().reduce((a,b) -> a + b).get());
+        System.out.println(nums.stream().reduce(Integer::sum).get());
+        System.out.println(nums.stream().reduce(Integer::max).get());
+        System.out.println(nums.stream().reduce(Integer::min).get());
+
+        List<String> fruits = Lists.newArrayList("apple","banana","cherry","watermelon","orange");
+        System.out.println("最长的单词-->" + fruits.stream().reduce((s1, s2) -> s1.length()>=s2.length() ? s1 : s2).get());
+        System.out.println("单词的长度之和-->" + fruits.stream().reduce(0, (sum, str) -> sum + str.length(), (a, b) -> a+b));
+        System.out.println("字符串连接-->" + fruits.stream().reduce("", String::concat));
+    }
+
+    @Test
+    public void match(){
+        List<Integer> nums = Ints.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20);
+        System.out.println("全部大于2，才会返回true --> " + nums.stream().allMatch(num -> num > 2));
+        System.out.println("任意一个小于20，就返回true --> " + nums.stream().anyMatch(num -> num > 2));
+        System.out.println("没有一个大于2，才会返回true --> " + nums.stream().noneMatch(num -> num > 2));
+
+        System.out.println("任意一个大于20，就返回true --> " + nums.stream().map(num -> num > 20).reduce(false, (a, b) -> a || b));
+    }
+
+    @Test
+    public void find(){
+        List<Integer> nums = Ints.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20);
         //findAny返回的是最快处理完的那个线程的数据
-        Integer any = num.parallelStream().filter(n -> n> 0).findAny().orElse(0);
-        System.out.println("any " + any);
+        System.out.println(nums.parallelStream().findAny().orElse(0));
+        System.out.println(nums.parallelStream().findFirst().orElse(0));
+    }
 
-        Integer first = num.parallelStream().filter(n -> n> 0).findFirst().orElse(0);
-        System.out.println("first " + first);
+    @Test
+    public void filter(){
+        List<Integer> nums = Ints.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20);
+        System.out.println(nums.stream().filter(num -> num> 10).collect(Collectors.toList()));
+        System.out.println(nums.stream().count());
+    }
 
-        long count = num.stream().count();
-        System.out.println(count);
-
+    @Test
+    public void statistics(){
+        List<Integer> nums = Ints.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20);
         //统计函数
-        IntSummaryStatistics stats= num.stream().mapToInt(x -> x).summaryStatistics();
+        IntSummaryStatistics stats= nums.stream().mapToInt(x -> x).summaryStatistics();
         System.out.println("最大值: " + stats.getMax());
         System.out.println("最小值: " + stats.getMin());
         System.out.println("平均值: " + stats.getAverage());
@@ -364,7 +359,7 @@ public class JDKTest {
     }
 
     @Test
-    public void array2list(){
+    public void list2array(){
         List<Integer> lists = Ints.asList(1, 3, 5, 7);
         int[] strings = lists.stream().mapToInt(str -> str).toArray();
         System.out.println(strings);
@@ -378,6 +373,7 @@ public class JDKTest {
     }
 }
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 class Student{
     private String name;
