@@ -17,7 +17,7 @@ public class Application {
 
     @Bean
     public ServletRegistrationBean<MyServlet> MyServlet1(){
-        return new ServletRegistrationBean<MyServlet>(new MyServlet(),"/servlet");
+        return new ServletRegistrationBean<>(new MyServlet(),"/servlet");
     }
 
     /**

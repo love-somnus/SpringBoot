@@ -30,4 +30,11 @@ public class Person {
     private List<Object> lists3;
     private Dog dog;
     private List<Map<String,String>> listmap;
+    private List<Flower> flowers;
+}
+@Data
+class Flower{
+    private String name;
+
+    private String color;
 }

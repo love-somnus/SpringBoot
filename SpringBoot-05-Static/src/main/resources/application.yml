@@ -22,3 +22,8 @@ person:
     - host: ly
       port: 11
       active: 8
+  flowers:
+    - color: red
+      name: rose
+    - color: blue
+      name: clove

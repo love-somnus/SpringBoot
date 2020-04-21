@@ -10,6 +10,7 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 @EnableConfigurationProperties({
         Person.class
 })
+/** 如果需要打包war到tomcat部署，才需要继承SpringBootServletInitializer*/
 public class Application extends SpringBootServletInitializer{
 
     @Override
