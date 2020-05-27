@@ -45,28 +45,23 @@ public class RandomTest {
 
         for (int i = 0; i < 100; i++) {
             final int taskID = i;
-            taskPool.submit(new Runnable() {
+            taskPool.submit(() ->{
+                try {
+                    latch.countDown();
+                    latch.await();
 
-                @Override
-                public void run() {
-                    try {
-                        latch.countDown();
-                        latch.await();
+                    StopWatch sw = new StopWatch();
+                    sw.start();
 
-                        StopWatch sw = new StopWatch();
-                        sw.start();
-
-                        for (int j = 0; j < 10000000; j++) {
-                            random.nextInt(10);
-                        }
-                        sw.stop();
-
-                        System.out.println(Thread.currentThread().getName() + " >>>> " + taskID + " >>>> " + sw.getTime());
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+                    for (int j = 0; j < 10000000; j++) {
+                        random.nextInt(10);
                     }
-                }
+                    sw.stop();
 
+                    System.out.println(Thread.currentThread().getName() + " >>>> " + taskID + " >>>> " + sw.getTime());
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             });
         }
 

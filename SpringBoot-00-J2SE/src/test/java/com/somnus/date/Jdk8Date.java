@@ -102,6 +102,8 @@ public class Jdk8Date {
         System.out.println("DayOfYear:" + LocalDateTime.now().getDayOfWeek());
         System.out.println(LocalDateTime.now().plusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
 
+        System.out.println("plusDays:" + LocalDateTime.now().plusDays(1));
+
         System.out.println(LocalDateTime.parse("20080808 17:04:40",
                 DateTimeFormatter.ofPattern("yyyyMMdd HH:mm:ss"))
                 .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
@@ -122,7 +124,7 @@ public class Jdk8Date {
 
     @Test
     public void ChronoUnit() {
-        System.out.println(ChronoUnit.MONTHS.between(LocalDate.now(), LocalDate.of(2019, 8, 8)));
+        System.out.println(ChronoUnit.MINUTES.between(LocalDateTime.now(), LocalDateTime.ofInstant(new Date().toInstant(), ZoneId.systemDefault())));
         System.out.println(ChronoUnit.DAYS.between(LocalDate.now(), LocalDate.of(2019, 8, 8)));
     }
 
@@ -132,20 +134,19 @@ public class Jdk8Date {
         System.out.println("current date: " + date);
 
         // Date -> LocalDateTime
-        LocalDateTime localDateTime = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-        System.out.println("localDateTime by toInstant: " + localDateTime);
+        System.out.println("localDateTime by toInstant: " + date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
 
         //2. Date -> LocalDateTime
-        localDateTime = LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
-        System.out.println("localDateTime by ofInstant: " + localDateTime);
+        System.out.println("localDateTime by ofInstant: " + LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault()));
 
         // Date -> LocalDate
-        LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        System.out.println("localDate by toInstant: " + localDate);
+        System.out.println("localDate by toInstant: " + date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
 
         // Date -> LocalTime
-        LocalTime localTime = date.toInstant().atZone(ZoneId.systemDefault()).toLocalTime();
-        System.out.println("localTime by toInstant: " + localTime);
+        System.out.println("localTime by toInstant: " + date.toInstant().atZone(ZoneId.systemDefault()).toLocalTime());
+
+        // Date -> String
+        System.out.println(LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault()).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
     }
 
     @Test
@@ -154,12 +155,11 @@ public class Jdk8Date {
         System.out.println("localDateTime: " + localDateTime);
 
         // LocalDateTime -> Date
-        Date date = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
-        System.out.println("LocalDateTime -> current date: " + date);
+        System.out.println("LocalDateTime -> current date: " + Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
 
         // LocalDate -> Date，时间默认都是00
-        date = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
-        System.out.println("LocalDate -> current date: " + date);
+        System.out.println("LocalDate -> current date: " + Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+
     }
 
     @Test

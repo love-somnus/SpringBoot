@@ -15,6 +15,7 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.binary.Hex;
 
 /**对称加密算法DES&AES
  * @description: TODO 
@@ -76,7 +77,7 @@ public class AESUtil {
         byte[] buff = cipher.doFinal(data.getBytes());
         System.out.println(Arrays.toString(buff));
         // 执行加密操作。加密后的结果通常都会用Base64编码进行传输 
-        return Base64.encodeBase64String(buff);
+        return Hex.encodeHexString(buff);
     }
 
     /** 
@@ -92,7 +93,7 @@ public class AESUtil {
         //初始化Cipher对象，设置为解密模式
         cipher.init(Cipher.DECRYPT_MODE, deskey);
         // 执行解密操作
-        byte[] buff = cipher.doFinal(Base64.decodeBase64(data));
+        byte[] buff = cipher.doFinal(Hex.decodeHex(data.toCharArray()));
         System.out.println(Arrays.toString(buff));
         return new String(buff);
     }

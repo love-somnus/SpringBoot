@@ -1,5 +1,8 @@
 package com.somnus.annotation;
 
+import org.junit.Test;
+import org.springframework.core.annotation.AnnotationUtils;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
@@ -34,4 +37,11 @@ public class AnnotationParsing {
             }
         }
     }
+
+    @Test
+    public void test1(){
+        System.out.println(AnnotationUtils.getDefaultValue(MethodInfo.class));
+        System.out.println(AnnotationUtils.getDefaultValue(MethodInfo.class, "author"));
+    }
+
 }

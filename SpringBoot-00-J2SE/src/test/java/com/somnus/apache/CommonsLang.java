@@ -4,15 +4,7 @@ import java.io.File;
 import java.math.BigDecimal;
 import java.nio.charset.Charset;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -52,6 +44,18 @@ public class CommonsLang {
         String name = "abcabc";
         String name_ = name.replace("b", "a");
         System.out.println(name + "-->" + name_);
+
+        String[] countryCodes = new String[]{"86", "886", "852", "853", "65"};
+
+        String number = "8860919919560";
+
+        String countryCode = Arrays.stream(countryCodes).filter(item -> StringUtils.startsWith(number, item)).findFirst().orElse("86");
+
+        String newnumber = StringUtils.startsWith(number, countryCode) ? StringUtils.substringAfter(number, countryCode) : number;
+
+        System.out.println(countryCode);
+
+        System.out.println(newnumber);
     }
 
     @Test
@@ -135,6 +139,7 @@ public class CommonsLang {
 
     @Test
     public void StringUtils() {
+        System.out.println(StringUtils.substringAfter("bcgames#mtl", "bcgames#"));
         //缩写省略字符串
         System.out.println(StringUtils.abbreviate("abcdefghijklmno", -1, 10));
         // 截取从from开始字符串

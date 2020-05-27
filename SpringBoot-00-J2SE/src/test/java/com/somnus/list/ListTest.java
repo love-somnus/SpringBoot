@@ -18,17 +18,19 @@ public class ListTest {
 
     @Test
     public void size(){
-        int[] intArray = {1, 2, 3};
-        List list2 = Arrays.asList(intArray);
-        System.out.println(list2.size());
+        String[] array = {"Apple", "Banana", "Orange"};
+        List<String> list2 = Arrays.asList(array);
+        System.out.println(list2);
 
         // Java 8
-        List list3 = Arrays.stream(intArray).boxed().collect(Collectors.toList());
-        System.out.println(list3.size());
+        int[] intarry = {1, 2, 3};
+        List<Integer> list3 = Arrays.stream(intarry).boxed().collect(Collectors.toList());
+        list3.add(5);
+        System.out.println(list3);
 
         //使用包装类数组
         List<Integer> list = Arrays.asList(1, 2, 3);
-        System.out.println(list.size());
+        System.out.println(list);
     }
 
     @Test

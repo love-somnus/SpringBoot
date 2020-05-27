@@ -9,14 +9,7 @@ import org.apache.commons.lang3.time.StopWatch;
 
 public class Random2Test {
 
-    private static ThreadLocal<Random> random = new ThreadLocal<Random>() {
-
-        @Override
-        protected Random initialValue() {
-            return new Random();
-        }
-
-    };
+    private static ThreadLocal<Random> random = ThreadLocal.withInitial(() -> new Random());
 
     public static void main(String[] args) {
         ExecutorService taskPool = Executors.newCachedThreadPool();
@@ -25,30 +18,25 @@ public class Random2Test {
 
         for (int i = 0; i < 100; i++) {
             final int taskID = i;
-            taskPool.submit(new Runnable() {
+            taskPool.submit(() ->{
+                try {
+                    latch.countDown();
+                    latch.await();
 
-                @Override
-                public void run() {
-                    try {
-                        latch.countDown();
-                        latch.await();
+                    StopWatch sw = new StopWatch();
+                    sw.start();
 
-                        StopWatch sw = new StopWatch();
-                        sw.start();
-
-                        for (int j = 0; j < 10000000; j++) {
-                            random.get().nextInt(10);
-                        }
-                        sw.stop();
-
-                        random.remove();
-
-                        System.out.println(Thread.currentThread().getName() + " >>>> " + taskID + " >>>> " + sw.getTime());
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+                    for (int j = 0; j < 10000000; j++) {
+                        random.get().nextInt(10);
                     }
-                }
+                    sw.stop();
 
+                    random.remove();
+
+                    System.out.println(Thread.currentThread().getName() + " >>>> " + taskID + " >>>> " + sw.getTime());
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             });
         }
 

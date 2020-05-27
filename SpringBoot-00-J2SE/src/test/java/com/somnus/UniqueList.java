@@ -55,7 +55,7 @@ public class UniqueList {
                 list.add(arr[i]);
             }
         }
-        String[] s = (String[]) list.toArray(new String[list.size()]);
+        String[] s = list.toArray(new String[list.size()]);
         System.out.println(Arrays.toString(s));
     }
 }

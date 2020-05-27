@@ -40,10 +40,10 @@ public class StringTest {
                 .trimResults()
                 .omitEmptyStrings()
                 .split("foo,bar,,   qux"));
-        System.out.println(Splitter.on(',')
+        System.out.println(Splitter.on("|")
                 .trimResults()
                 .omitEmptyStrings()
-                .splitToList("foo,bar,,   qux"));
+                .splitToList("foo|bar||   qux"));
         System.out.println(Splitter.onPattern("\\s+")
                 .split("四川省  \t   成都市 金牛区").toString());
         System.out.println(Splitter.on(" ")

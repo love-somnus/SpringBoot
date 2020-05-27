@@ -55,6 +55,8 @@ public class CommonsCodec {
     public void DigestUtils() {
         System.out.println(DigestUtils.md5Hex("admin"));
         System.out.println(DigestUtils.sha1Hex("admin"));
+
+        System.out.println( org.springframework.util.DigestUtils.md5DigestAsHex("admin".getBytes()));
     }
 
     @Test

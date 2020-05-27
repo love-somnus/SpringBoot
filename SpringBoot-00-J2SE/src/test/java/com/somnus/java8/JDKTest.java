@@ -1,6 +1,8 @@
 package com.somnus.java8;
 
 import java.util.*;
+import java.util.concurrent.*;
+import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -10,11 +12,11 @@ import java.util.stream.Stream;
 
 import com.google.common.collect.*;
 import com.google.common.primitives.Ints;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
+import org.springframework.util.StopWatch;
 
 /**
  * @author Somnus
@@ -23,6 +25,73 @@ import org.junit.Test;
  * @date 2019/1/10 14:33
  */
 public class JDKTest {
+
+    private StopWatch sw = new StopWatch();
+    ExecutorService executor = Executors.newCachedThreadPool();
+
+    @Before
+    public void before() {
+        sw.start();
+        System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++");
+    }
+    @After
+    public void after() {
+        sw.stop();
+        System.out.println("共消耗：" + sw.getTotalTimeMillis());
+    }
+    @Test//17600 17409 17485
+    public void parallel1(){
+        IntStream.range(0, 10000).forEach(item ->{
+            try{
+                Thread.sleep(1L);
+            }
+            catch (InterruptedException e){
+                e.printStackTrace();
+            }
+        });
+    }
+
+    @Test//150 153 155
+    public void parallel1_(){
+        IntStream.range(0, 10000).forEach(item ->{
+            executor.execute(() -> {
+                try{
+                    Thread.sleep(1L);
+                }
+                catch (InterruptedException e){
+                    e.printStackTrace();
+                }
+            });
+        });
+    }
+
+    @Test//2468 2531 2550
+    public void parallel2(){
+        IntStream.range(0, 10000).parallel().forEach(item ->{
+            try{
+                Thread.sleep(1L);
+            }
+            catch (InterruptedException e){
+                e.printStackTrace();
+            }
+        });
+    }
+
+    @Test//133 124 128
+    public void parallel2_(){
+        IntStream.range(0, 10000).parallel().forEach(item ->{
+            executor.execute(() -> {
+                try{
+                    Thread.sleep(1L);
+                }
+                catch (InterruptedException e){
+                    e.printStackTrace();
+                }
+            });
+        });
+    }
+
+
     @Test
     public void foreach() {
 
@@ -49,10 +118,13 @@ public class JDKTest {
         list.stream().skip(2).map(String :: toUpperCase).forEach(item -> System.out.print(item));
 
         System.out.println("-----------------------------------------------------------------");
+    }
 
+    @Test
+    public void distinct(){
+        List<Student> students = ImmutableList.of(new Student("a",21),new Student("ac",22),new Student("a",21));
         //去重
-        list.stream().distinct().map(String :: toUpperCase).forEach(item -> System.out.print(item));
-
+        students.stream().distinct().forEach(item -> System.out.print(item));
     }
 
     /**
@@ -189,24 +261,6 @@ public class JDKTest {
         Pattern.compile("\\W").splitAsStream("A B C"). forEach(letter -> System.out.print(letter + " "));
     }
 
-    public int compute(int a, Function<Integer,Integer> function){
-        int result = function.apply(a);
-        return result;
-    }
-
-    public String convert(int a, Function<Integer,String> function){
-        String result = function.apply(a);
-        return result;
-    }
-
-    @Test
-    public void func(){
-        JDKTest test = new JDKTest();
-        System.out.println(test.compute(2, value -> 5+value));
-
-        System.out.println(test.convert(2, value -> value + "$"));
-    }
-
     @Test
     public void toList(){
         List<Student> students = ImmutableList.of(new Student("a",21),new Student("ac",22),new Student("a",18));
@@ -276,6 +330,7 @@ public class JDKTest {
         //findAny返回的是最快处理完的那个线程的数据
         System.out.println(nums.parallelStream().findAny().orElse(0));
         System.out.println(nums.parallelStream().findFirst().orElse(0));
+        System.out.println(nums.parallelStream().filter(value -> value == 100).findFirst().get());
     }
 
     @Test
@@ -356,6 +411,19 @@ public class JDKTest {
         List<String> lists = Lists.newArrayList("good", "astonishment", "seize", "preferable");
         Map<String, Integer> map3 = lists.stream().collect(Collectors.toMap(Function.identity(), String::length));
         System.out.println(map3);
+
+        //解决Key冲突
+        List<String> fruits = Lists.newArrayList("apple","banana","apple","watermelon","orange");
+        System.out.println(fruits.stream().collect(Collectors.toMap(Function.identity(), String::length, (existing, replacement) -> existing)));
+
+        System.out.println("******************************************************************************************************************");
+
+        //List 转 ConcurrentMap
+        System.out.println(fruits.stream().distinct().collect(Collectors.toConcurrentMap(Function.identity(), String::length)));
+        System.out.println(fruits.stream().collect(Collectors.toConcurrentMap(Function.identity(), String::length, (existing, replacement) -> existing)));
+        System.out.println(fruits.stream().collect(Collectors.toConcurrentMap(Function.identity(), String::length, BinaryOperator.maxBy(Comparator.naturalOrder()))));
+
+        System.out.println(fruits.stream().collect(Collectors.toMap(Function.identity(), String::length, (existing, replacement) -> existing, LinkedHashMap::new)).toString());
     }
 
     @Test

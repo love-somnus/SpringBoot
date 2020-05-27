@@ -41,7 +41,7 @@ public class CommonsIo {
     }
     
     @Test
-    public void lineIterator() throws MalformedURLException, IOException{
+    public void lineIterator() throws IOException{
         InputStream is = new URL("https://www.baidu.com/").openStream();
         LineIterator it = IOUtils.lineIterator(is, "UTF-8");
         while(it.hasNext()){
@@ -54,7 +54,7 @@ public class CommonsIo {
     }
     
     @Test
-    public void tostring() throws MalformedURLException, IOException{
+    public void tostring() throws IOException{
         InputStream is = new URL("https://www.baidu.com/").openStream();
         try {
             /**读取文件
@@ -113,7 +113,7 @@ public class CommonsIo {
     }
     
     @Test
-    public void toByteArray() throws MalformedURLException, IOException{
+    public void toByteArray() throws IOException{
         InputStream is = new URL("https://www.baidu.com/").openStream();
         try {
             /**转换为字节数组
@@ -130,7 +130,7 @@ public class CommonsIo {
     }
     
     @Test
-    public void toCharArray() throws MalformedURLException, IOException{
+    public void toCharArray() throws IOException{
         InputStream is = new URL("https://www.baidu.com/").openStream();
         try {
             /**转换为字符数组

@@ -6,5 +6,5 @@ package com.somnus.enums;
  * @author somnus
  */
 public enum ColorEnum {
-    red, green, yellow, blue;
+    RED, GREEN, YELLOW, BLUE;
 }

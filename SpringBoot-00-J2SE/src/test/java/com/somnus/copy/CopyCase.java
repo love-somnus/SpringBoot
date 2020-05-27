@@ -1,6 +1,5 @@
 package com.somnus.copy;
 
-import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import org.junit.After;
 import org.junit.Before;

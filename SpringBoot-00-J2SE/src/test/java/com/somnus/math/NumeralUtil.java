@@ -44,9 +44,10 @@ public class NumeralUtil {
     @Test
     public void test3() {
         double pi = 23045.69999999999999751;
-        System.out.println(Double.valueOf("3.6"));
+        System.out.println(new DecimalFormat("0.00").format(7 * 0.3333));
+        System.out.println(new DecimalFormat("0.00").format(7 * 0.6666));
         System.out.println("取所有整数部分:" + new DecimalFormat("#").format(pi));
-        System.out.println("取一位整数和两位小数:" + new DecimalFormat("#.#").format(pi));
+        System.out.println("取一位整数和两位小数:" + new DecimalFormat("0.00").format(pi));
         System.out.println(new DecimalFormat("##.###").format(pi));
 
     }

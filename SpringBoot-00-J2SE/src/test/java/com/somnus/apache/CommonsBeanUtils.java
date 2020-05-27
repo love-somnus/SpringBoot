@@ -56,12 +56,13 @@ public class CommonsBeanUtils {
 
     @Test
     public void populate() throws IllegalAccessException, InvocationTargetException {
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, Object> map = new HashMap<>();
         map.put("username", "tom");
         map.put("password", "tom@");
-        map.put("birthday", "2016-10-01");
+        map.put("birthday", "2019-07-31");
         map.put("high", "12");
         map.put("money", "100.00");
+        map.put("pet", new Pet("aaaaaa"));
         /*将map转化为一个Person对象*/
         Person person = new Person();
         BeanUtils.populate(person, map);
@@ -91,9 +92,9 @@ public class CommonsBeanUtils {
      */
     @Test
     public void copyProperties() throws IllegalAccessException, InvocationTargetException {
-        Person person = new Person("admin", "password", new Date(), null, null);
+        Person person = new Person(null, "password", new Date(), null, null);
         /*拥有相同属性的对象转换-->支持属性类型自动转换的功能*/
-        People people = new People();
+        People people = new People("lucy", "china");
         /*BeanUtils在对Bean赋值时会进行类型转化 */
         BeanUtils.copyProperties(people, person);
         System.out.println("拥有相同属性的对象转换>>" + people);
@@ -103,7 +104,7 @@ public class CommonsBeanUtils {
     public void copyProperties2() throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         Person person = new Person("admin", "password", new Date(), null, null);
         /*拥有相同属性的对象转换-->不支持属性类型自动转换的功能*/
-        People people = new People();
+        People people = new People("lucy", "china");
         /*PropertyUtils不会对类型进行转化，如果类型不同则会抛出异常 */
         PropertyUtils.copyProperties(people, person);
         System.out.println("拥有相同属性的对象转换>>" + people);

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import lombok.SneakyThrows;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.time.StopWatch;
@@ -64,7 +65,7 @@ public class HttpClientUtil {
      * @return
      * @throws Exception
      */
-    public static String doJsonPost(String url, String json) throws Exception {
+    public static String doJsonPost(String url, String json) {
         return doJsonPost(url, json, null, null);
     }
 
@@ -75,7 +76,7 @@ public class HttpClientUtil {
      * @return
      * @throws Exception
      */
-    public static String doGet(String url) throws Exception {
+    public static String doGet(String url) {
         return doGet(url, null, null);
     }
 
@@ -83,11 +84,11 @@ public class HttpClientUtil {
      * Content-type : text/html
      *
      * @param url
-     * @param ks
+     * @param path
      * @return
      * @throws Exception
      */
-    public static String doGet(String url, String path, String password) throws Exception {
+    public static String doGet(String url, String path, String password) {
         return doGet(url, null, path, password);
     }
 
@@ -99,7 +100,7 @@ public class HttpClientUtil {
      * @return
      * @throws Exception
      */
-    public static String doGet(String url, Map<String, String> param) throws Exception {
+    public static String doGet(String url, Map<String, String> param) {
         return doGet(url, param, null, null);
     }
 
@@ -107,11 +108,11 @@ public class HttpClientUtil {
      * Content-type : multipart/form-data
      *
      * @param url
-     * @param param
+     * @param file
      * @return
      * @throws Exception
      */
-    public static String doUploadPost(String url, File file) throws Exception {
+    public static String doUploadPost(String url, File file) {
         return doUploadPost(url, file, null, null);
     }
 
@@ -123,7 +124,7 @@ public class HttpClientUtil {
      * @return
      * @throws Exception
      */
-    public static String doPost(String url, Map<String, String> param) throws Exception {
+    public static String doPost(String url, Map<String, String> param) {
         return doPost(url, param, null, null);
     }
 
@@ -135,7 +136,7 @@ public class HttpClientUtil {
      * @return
      * @throws Exception
      */
-    public static String doXmlPost(String url, String xml) throws Exception {
+    public static String doXmlPost(String url, String xml) {
         return doXmlPost(url, xml, null, null);
     }
 
@@ -144,11 +145,11 @@ public class HttpClientUtil {
      *
      * @param url
      * @param json
-     * @param ks
      * @return
      * @throws Exception
      */
-    public static String doJsonPost(String url, String json, String path, String password) throws Exception {
+    @SneakyThrows
+    public static String doJsonPost(String url, String json, String path, String password){
         Validate.notNull(url, "url must be required.");
         Validate.notNull(json, "json must be required.");
         //创建HttpClient对象
@@ -194,11 +195,11 @@ public class HttpClientUtil {
      *
      * @param url
      * @param param
-     * @param ks
      * @return
      * @throws Exception
      */
-    public static String doGet(String url, Map<String, String> param, String path, String password) throws Exception {
+    @SneakyThrows
+    public static String doGet(String url, Map<String, String> param, String path, String password){
         Validate.notNull(url, "url must be required.");
         //创建HttpClient对象
         CloseableHttpClient httpclient = HttpClientManager.getSSLHttpClient(path, password);
@@ -251,11 +252,11 @@ public class HttpClientUtil {
      * Content-type : multipart/form-data
      *
      * @param url
-     * @param param
      * @return
      * @throws Exception
      */
-    public static String doUploadPost(String url, File file, String path, String password) throws Exception {
+    @SneakyThrows
+    public static String doUploadPost(String url, File file, String path, String password){
         Validate.notNull(url, "url must be required.");
         //创建HttpClient对象
         CloseableHttpClient httpclient = HttpClientManager.getSSLHttpClient(path, password);
@@ -303,7 +304,8 @@ public class HttpClientUtil {
      * @return
      * @throws Exception
      */
-    public static String doPost(String url, Map<String, String> param, String path, String password) throws Exception {
+    @SneakyThrows
+    public static String doPost(String url, Map<String, String> param, String path, String password){
         Validate.notNull(url, "url must be required.");
         //创建HttpClient对象
         CloseableHttpClient httpclient = HttpClientManager.getSSLHttpClient(path, password);
@@ -353,12 +355,11 @@ public class HttpClientUtil {
      * Content-type : application/xml
      *
      * @param url
-     * @param json
-     * @param ks
      * @return
      * @throws Exception
      */
-    public static String doXmlPost(String url, String xml, String path, String password) throws Exception {
+    @SneakyThrows
+    public static String doXmlPost(String url, String xml, String path, String password) {
         Validate.notNull(url, "url must be required.");
         Validate.notNull(xml, "xml must be required.");
         //创建HttpClient对象

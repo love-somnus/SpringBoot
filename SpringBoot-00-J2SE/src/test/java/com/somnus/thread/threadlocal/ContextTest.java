@@ -1,95 +1,57 @@
 package com.somnus.thread.threadlocal;
 
+import lombok.SneakyThrows;
 import org.junit.Test;
+
+import java.util.concurrent.CountDownLatch;
 
 public class ContextTest {
 
+    private int num = 0;
+
     @Test
+    @SneakyThrows
     public void test() {
-        for (int j = 0; j < 10; j++) {
+        CountDownLatch countDownLatch = new CountDownLatch(100);
+
+        for (int j = 0; j < 100; j++) {
             new Thread(() -> {
-                System.out.println(ActionContext.getInstance());
+                ThreadLocalContext.set("num" , 0);
                 // 获取当前线程的本地变量，然后累加1000次
-                Integer index = ActionContext.getInstance().getInteger();
+                Integer index = Integer.valueOf(ThreadLocalContext.get("num").toString());
                 for (int i = 0; i < 1000; i++) {
                     index++;
                 }
                 // 重新设置累加后的本地变量
-                ActionContext.getInstance().setInteger(index);
+                ThreadLocalContext.set("num" , index);
                 System.out.println(Thread.currentThread().getName() + " : " + index);
-                ActionContext.getInstance().remove();
+                ThreadLocalContext.remove();
+                countDownLatch.countDown();
             }, "Thread-" + j).start();
         }
+
+        //让主线程等待所有子线程完成 10000
+        countDownLatch.await();
     }
 
     @Test
+    @SneakyThrows
     public void test2() {
-        for (int j = 0; j < 10; j++) {
+        CountDownLatch countDownLatch = new CountDownLatch(100);
+
+        for (int j = 0; j < 100; j++) {
             new Thread(() -> {
                 // 获取当前线程的本地变量，然后累加1000次
-                Integer index = ActionContext2.getInteger();
                 for (int i = 0; i < 1000; i++) {
-                    index++;
+                    num++;
                 }
-                // 重新设置累加后的本地变量
-                ActionContext2.setInteger(index);
-                System.out.println(Thread.currentThread().getName() + " : " + ActionContext2.getInteger());
-                ActionContext2.remove();
+                System.out.println(Thread.currentThread().getName() + " : " + num);
+                ThreadLocalContext.remove();
+                countDownLatch.countDown();
             }, "Thread-" + j).start();
         }
-    }
-}
-/* Struts2的ActionContext便是采用的此方案 */
 
-/**
- * 以自身对象作为ThreadLocal绑定值，必须保证每个线程都生成一个自己的上下文对象，并且任何时候拿到的都是属于当前线程的，具体参照 getInstance方法
- **/
-class ActionContext {
-    private static ThreadLocal<ActionContext> actionContext = new ThreadLocal<ActionContext>();
-
-    private int integer;
-
-    public int getInteger() {
-        return integer;
-    }
-
-    public void setInteger(int integer) {
-        this.integer = integer;
-    }
-
-    private ActionContext() {
-    }
-
-    public static ActionContext getInstance() {
-        ActionContext context = actionContext.get();
-        if (context == null) {
-            context = new ActionContext();
-            actionContext.set(context);
-        }
-        return context;
-    }
-
-    public void remove() {
-        actionContext.remove();
-    }
-}
-
-/**
- * 以上下文中每个具体的静态属性作为ThreadLocal绑定值，每个线程任何时候拿到上下文类中的属性都是当前线程的
- **/
-class ActionContext2 {
-
-    private static ThreadLocal<Integer> container = ThreadLocal.withInitial(() -> 0);
-
-    public static Integer getInteger() {
-        return container.get();
-    }
-
-    public static void setInteger(Integer num) {
-        container.set(num);
-    }
-
-    public static void remove() {
-        container.remove();
+        //让主线程等待所有子线程完成 10000
+        countDownLatch.await();
     }
 }

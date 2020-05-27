@@ -1,6 +1,7 @@
 package com.somnus.apache;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,8 +16,15 @@ public class People {
     private String username;
     private String password;
 
-    private String birthday;
+    public People(String username, String nation) {
+        this.username = username;
+        this.nation = nation;
+    }
+
+    private Date birthday;
     private BigDecimal money;
+
+    private String nation;
 
     @Override
     public String toString() {

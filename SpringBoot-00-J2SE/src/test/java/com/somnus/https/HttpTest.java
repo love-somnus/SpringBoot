@@ -42,7 +42,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class HttpTest {
 
     @Test
-    public void doJsonPost() throws Exception {
+    public void doJsonPost(){
         String url = "https://httpbin.org/post";
         JSONObject param = new JSONObject();
         param.put("username", "admin");
@@ -51,7 +51,8 @@ public class HttpTest {
     }
 
     @Test
-    public void doJsonPostByFluent() throws IOException {
+    @SneakyThrows
+    public void doJsonPostByFluent() {
         String url = "https://httpbin.org/post";
         JSONObject param = new JSONObject();
         param.put("username", "admin");
@@ -67,15 +68,15 @@ public class HttpTest {
     }
 
     @Test
-    public void doPathParamGet() throws Exception {
+    public void doPathParamGet() {
         String url = "https://httpbin.org/html";
         System.out.println("body:" + HttpClientUtil.doGet(url));
     }
 
     @Test
-    public void doPathParamGetByFluent() throws IOException {
-        String response = Request.Get("http://pv.sohu.com/cityjson?ie=utf-8").execute()
-                .returnContent().asString();
+    @SneakyThrows
+    public void doPathParamGetByFluent() {
+        String response = Request.Get("http://pv.sohu.com/cityjson?ie=utf-8").execute().returnContent().asString();
         System.out.println(response);
         String json = StringUtils.substringBetween(response, "=", ";").trim();
         System.out.println(json);
@@ -84,7 +85,7 @@ public class HttpTest {
     }
 
     @Test
-    public void doQueryParamGet() throws Exception {
+    public void doQueryParamGet() {
         String url = "https://httpbin.org/cookies/set";
         Map<String, String> param = new HashMap<>();
         param.put("username", "admin");
@@ -93,7 +94,8 @@ public class HttpTest {
     }
 
     @Test
-    public void doQueryParamGetByFluent() throws IOException, URISyntaxException {
+    @SneakyThrows
+    public void doQueryParamGetByFluent() {
         String url = "https://httpbin.org/cookies/set";
         String response = Request.Get(new URIBuilder(url)
                 .addParameter("username", "admin")
@@ -103,17 +105,22 @@ public class HttpTest {
                 .execute().returnContent().asString();
         System.out.println(response);
     }
+
     @Test
-    public void doQueryParamGetByFluent2() throws IOException, URISyntaxException {
+    @SneakyThrows
+    public void doQueryParamGetByFluent2() {
         String url = "https://httpbin.org/cookies/set";
         Map<String,String> params = ImmutableMap.of("username", "admin", "password", "123456");
         List<NameValuePair> pairs = params.entrySet().stream().map(entry -> new BasicNameValuePair(entry.getKey(), entry.getValue())).collect(Collectors.toList());
-        String response = Request.Get(new URIBuilder(url).addParameters(pairs).build()).execute().returnContent().asString();
+        String response = Request.Get(new URIBuilder(url).addParameters(pairs).build())
+                .addHeader("","")
+                .execute().returnContent().asString();
         System.out.println(response);
     }
 
     @Test
-    public void doQueryParamGetByFluent3() throws IOException{
+    @SneakyThrows
+    public void doQueryParamGetByFluent3() {
         String url = "https://login.netease.com/connect/authorize";
         MultiValueMap<String, String> params = new LinkedMultiValueMap(
                 ImmutableMap.of("response_type", ImmutableList.of("code"),
@@ -126,7 +133,8 @@ public class HttpTest {
     }
 
     @Test
-    public void doFormParamPost() throws Exception {
+    @SneakyThrows
+    public void doFormParamPost() {
         String url = "https://httpbin.org/post";
         Map<String, String> param = new HashMap<String, String>();
         param.put("custname", "admin");
@@ -135,7 +143,8 @@ public class HttpTest {
     }
 
     @Test
-    public void doFormParamPostByFluent() throws  IOException {
+    @SneakyThrows
+    public void doFormParamPostByFluent() {
         String url = "https://httpbin.org/post";
         String response = Request.Post(url).bodyForm(Form.form()
                 .add("custname", "admin")
@@ -145,8 +154,10 @@ public class HttpTest {
                 .execute().returnContent().asString();
         System.out.println(response);
     }
+
     @Test
-    public void doFormParamPostByFluent2() throws IOException {
+    @SneakyThrows
+    public void doFormParamPostByFluent2() {
         String url = "https://httpbin.org/post";
         Map<String,String> params = ImmutableMap.of("custname", "admin", "custtel", "123456");
         List<NameValuePair> pairs = params.entrySet().stream().map(entry -> new BasicNameValuePair(entry.getKey(), entry.getValue())).collect(Collectors.toList());
@@ -155,14 +166,15 @@ public class HttpTest {
     }
 
     @Test
-    public void doUpload() throws Exception {
+    public void doUpload()  {
         String url = "http://localhost:8080/SpringMVC/databind/doUpload";
         String path = Thread.currentThread().getContextClassLoader().getResource("excel/80034.xls").getPath();
         System.out.println("body:" + HttpClientUtil.doUploadPost(url, new File(path)));
     }
 
     @Test
-    public void doUploadByFluent() throws IOException {
+    @SneakyThrows
+    public void doUploadByFluent() {
         String url = "http://192.168.97.101:30000/upload/cmty/image";
         String path = Thread.currentThread().getContextClassLoader().getResource("luoli.jpg").getPath();
         String response = Request.Post(url).addHeader("Authorization","Bearer eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJzMzk5NiIsImV4cCI6MTU2NTMzNTkwMH0.a5fr1buM7ptovnkEoFiFazBp3mCDiUZWq3XTWgchvMClMzO9bnb2zuamCfbuoxmViAPTzb1YFcJou88KOJpnBzvXsKvEWgE58V3HaAouYMKBlZKB6BSJ84LTlIDIOBHjIn2z9SeajSWOWf65VRiMChdJcVvyLWHFHrZkEV4M6FY")
@@ -173,7 +185,8 @@ public class HttpTest {
     }
 
     @Test
-    public void doDownload() throws IOException, URISyntaxException {
+    @SneakyThrows
+    public void doDownload()  {
         String url = "https://httpbin.org/image/jpeg";
         byte[] buff = Request.Get(new URIBuilder(url).build()).execute().returnContent().asBytes();
         OutputStream os = new FileOutputStream(new File("target/classes/e01.jpg"));

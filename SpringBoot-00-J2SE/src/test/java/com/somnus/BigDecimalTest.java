@@ -27,6 +27,10 @@ public class BigDecimalTest {
         BigDecimal a = new BigDecimal("2.23");
         BigDecimal b = new BigDecimal("1.93");
         System.out.println(a.add(b));
+
+        System.out.println(new BigDecimal(100L).add(new BigDecimal(500L)));
+        System.out.println(new BigDecimal(100L).add(new BigDecimal(2.23)));
+        System.out.println(new BigDecimal(100L).add(new BigDecimal("2.23")));
     }
 
     @Test
@@ -59,6 +63,11 @@ public class BigDecimalTest {
     }
 
     public static void main(String[] args) {
+        System.out.println(BigDecimal.ZERO.equals(new BigDecimal("0")));
+        System.out.println(BigDecimal.ZERO.equals(BigDecimal.ZERO));
+        System.out.println(BigDecimal.ONE.equals(new BigDecimal("0")));
+        System.out.println(BigDecimal.ONE.equals(BigDecimal.ZERO));
+
         BigDecimal p = BigDecimal.ONE;
         passByValue(p);
         System.out.println("1-->" + p);

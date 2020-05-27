@@ -15,7 +15,7 @@ public class Test {
     @org.junit.Test
     public void test0() {
         System.out.println(Animal.class.isAssignableFrom(Animal.class));
-        System.out.println(Animal.class.isAssignableFrom(Dog.class));
+        System.out.println(Dog.class.isAssignableFrom(Animal.class));
         System.out.println(Animal.class.isAssignableFrom(Cat.class));
     }
 

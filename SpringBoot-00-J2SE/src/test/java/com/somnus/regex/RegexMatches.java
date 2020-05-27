@@ -33,6 +33,20 @@ public class RegexMatches {
     }
 
     @Test
+    public void test22() {
+        // 按指定模式在字符串查找
+        String line = "auser1 home1b\n" +
+                "auser2 home2b\n" +
+                "auser3 home3b";
+
+        Matcher m = Pattern.compile("(?m)^.*$").matcher(line);
+
+        while (m.find()) {
+            System.out.println("line = " + m.group());
+        }
+    }
+
+    @Test
     public void test2() {
         String str = "银行业存款类金融机构协助查冻扣账户数量[3041900001#01]<=银行业存款类金融机构协助"
                 + "查询账户数量[3041900001#b1]+银行业存款类金融机构协助冻结账户数量[3041900001#b2]+银行业"

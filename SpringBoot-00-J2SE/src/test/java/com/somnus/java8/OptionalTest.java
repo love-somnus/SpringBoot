@@ -1,8 +1,12 @@
 package com.somnus.java8;
 
+import com.google.common.collect.Lists;
 import org.junit.Test;
 
-import java.util.Optional;
+import java.util.*;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 /**
  * @author Somnus
@@ -54,11 +58,15 @@ public class OptionalTest {
     // orElse方法将传入的字符串作为默认值，orElseGet方法可以接受Supplier接口的实现用来生成默认值。
     public void test5(){
         Optional<String> name = Optional.ofNullable("Sanaulla");
-        System.out.println(name.orElse("Sam"));
+        System.out.println(name.orElse("####"));
 
         Optional<String> name2 = Optional.ofNullable(null);
-        System.out.println(name2.orElseGet(()-> "Sam"));
+        System.out.println(name2.orElseGet(()-> {
+            System.out.println("&&&&&&&&&&&&");
+            return "####";
+        }));
     }
+
 
     @Test//orElseThrow 与 orElse 方法的区别在于，orElseThrow 方法当 Optional 中有值的时候，返回值；
     // 没有值的时候会抛出异常
@@ -93,6 +101,110 @@ public class OptionalTest {
                 .filter(stu -> stu.getAge() < 20)
                 .map(stu -> stu.getName());
         System.out.println(name.orElse("Sam"));
+
+        Optional.ofNullable(null).ifPresent(value -> {
+            System.out.println("&&&&&&&&&&");
+            return;
+        });
+        System.out.println("**************");
+    }
+
+    @Test
+    public void test9(){
+        Optionally.ofNullable(99).existThrow(value -> value<10, ()-> new IllegalStateException());
+        Optionally.ofNullable(Lists.newArrayList()).existThrow(list -> list.isEmpty(), ()-> new NullPointerException());
+    }
+
+    @Test
+    public void test91(){
+        Optionally.ofNullable(99).trueThrow(()-> new IllegalStateException());
+    }
+    @Test
+    public void test92(){
+        Optionally.ofNullable(true).trueThrow(()-> new IllegalStateException());
+    }
+    @Test
+    public void test93(){
+        Optionally.ofNullable(false).trueThrow(()-> new IllegalStateException());
+    }
+    @Test
+    public void test94(){
+        Optionally.ofNullable(true).falseThrow(()-> new IllegalStateException());
+    }
+    @Test
+    public void test95(){
+        Optionally.ofNullable(false).falseThrow(()-> new IllegalStateException());
+    }
+
+    @Test
+    public void test10(){
+        Optionally.ofNullable(99).ifTrue(value -> value > 10, value -> System.out.println(value));
+        //不成立
+        Integer integer = 99;
+        Optionally.ofNullable(integer).ifTrue(value -> value < 10, value -> System.out.println(value));
+        //不成立
+        Integer integer2 = null;
+        Optionally.ofNullable(integer2).ifTrue(value -> value > 10, value -> System.out.println(value));
+    }
+
+    @Test
+    public void test11(){
+        List list = null;
+        Optionally.ofNullable(list).ifNotEmpty(value -> value.forEach(System.out::println));
+
+        List list2 =  new ArrayList();
+        Optionally.ofNullable(list2).ifNotEmpty(value -> value.forEach(System.out::println));
+
+        List<Integer> list3 =  Lists.newArrayList(1, 2 ,3);
+        Optionally.ofNullable(list3).ifNotEmpty(value -> value.forEach(System.out::println));
+    }
+
+    @Test
+    public void test11_(){
+        List list = null;
+        Optionally.ofNullable(list).ifEmpty(value -> {
+            System.out.println("####");
+        });
+
+        List list2 =  new ArrayList();
+        Optionally.ofNullable(list2).ifEmpty(value -> {
+            System.out.println("$$$$");
+        });
+
+        List<Integer> list3 =  Lists.newArrayList(1, 2 ,3);
+        Optionally.ofNullable(list3).ifEmpty(value -> {
+            System.out.println("@@@@");
+        });
+    }
+
+    @Test
+    public void test12(){
+        String s = null;
+        Optionally.ofNullable(s).ifNotEmpty(value -> System.out.println(s));
+
+        String s2 = "";
+        Optionally.ofNullable(s2).ifNotEmpty(value -> System.out.println(s2));
+
+        String s3 = "12";
+        Optionally.ofNullable(s3).ifNotEmpty(value -> System.out.println(s3));
+
+        Integer i = 12;
+        Optionally.ofNullable(i).ifNotEmpty(value -> System.out.println(i));
+    }
+
+    @Test
+    public void test12_(){
+        String s = null;
+        Optionally.ofNullable(s).ifEmpty(value -> System.out.println("####"));
+
+        String s2 = "";
+        Optionally.ofNullable(s2).ifEmpty(value -> System.out.println("$$$$"));
+
+        String s3 = "12";
+        Optionally.ofNullable(s3).ifEmpty(value -> System.out.println("@@@@"));
+
+        Integer i = 12;
+        Optionally.ofNullable(s3).ifEmpty(value -> System.out.println("@@@@"));
     }
 
 }

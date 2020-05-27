@@ -19,6 +19,9 @@ import java.lang.annotation.RetentionPolicy;
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)
 public @interface MethodInfo {
+
+    String value() default "abc";
+
     String author() default "Somnus";
     String date();
     int revision() default 1;

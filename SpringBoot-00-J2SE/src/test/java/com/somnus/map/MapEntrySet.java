@@ -34,6 +34,9 @@ public class MapEntrySet {
     @Test
     public void test1() {
         for (String key : map.keySet()) {
+            if("bb".equals(key)){
+                map.put("bb","3445");
+            }
             System.out.println(key);
         }
         for (String value : map.values()) {
@@ -61,11 +64,11 @@ public class MapEntrySet {
     @Test
     public void test3() {
         for (Iterator<Entry<String, String>> it = map.entrySet().iterator(); it.hasNext(); ) {
-            Entry<String, String> entry = (Entry<String, String>) it.next();
+            Entry<String, String> entry =  it.next();
 
-            String key = (String) entry.getKey();
+            String key = entry.getKey();
 
-            String value = (String) entry.getValue();
+            String value = entry.getValue();
 
             System.out.println(key + ":" + value);
 
