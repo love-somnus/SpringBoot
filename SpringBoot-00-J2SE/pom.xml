@@ -28,7 +28,7 @@
     <apache.commons.configuration.version>2.1</apache.commons.configuration.version>
     <apache.commons.compress.version>1.5</apache.commons.compress.version>
     <apache.httpcomponents.version>4.5.2</apache.httpcomponents.version>
-    <apache.ant.version>1.10.0</apache.ant.version>
+    <apache.ant.version>1.10.8</apache.ant.version>
     <!-- sftp -->
     <jsch.version>0.1.54</jsch.version>
     <!-- time -->
