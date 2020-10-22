@@ -1,8 +1,11 @@
 package com.somnus.java8;
 
+import com.google.common.primitives.Ints;
 import org.junit.Test;
 
+import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 /**
  * @author Kevin
@@ -39,16 +42,29 @@ public class Java8Consumer {
         Java8Consumer cc= new Java8Consumer();
 
         cc.accept(10 ,value -> System.out.println(value));
+
         cc.accept(10 ,value -> {
             System.out.println(value);
             System.out.println(value * value);
         });
-        System.out.println("==================");
     }
 
-    void accept(Integer num, Consumer<Integer> c){
-        c.accept(num);
-        return;
+    void accept(Integer num, Consumer<Integer> consumer){
+        consumer.accept(num);
+    }
+
+    void accept(List<Integer> nums, Consumer<Integer> consumer){
+
+        Integer sum = nums.stream().collect(Collectors.summingInt(num -> num));
+
+        consumer.accept(sum);
+    }
+
+    @Test
+    public void test2(){
+        Java8Consumer cc= new Java8Consumer();
+
+        cc.accept(Ints.asList(1, 2, 3) , value -> System.out.println(value));
     }
 
 }

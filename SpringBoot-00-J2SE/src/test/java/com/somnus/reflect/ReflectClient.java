@@ -121,30 +121,68 @@ public class ReflectClient {
         }
         System.out.println("===============实现的接口或者父类的属性========================");
         // 取得实现的接口或者父类的属性
-        Field[] filed1 = demo.getFields();
-        for (int j = 0; j < filed1.length; j++) {
+        Field[] field1 = demo.getFields();
+        for (int j = 0; j < field1.length; j++) {
             // 权限修饰符
-            int mo = filed1[j].getModifiers();
+            int mo = field1[j].getModifiers();
             String priv = Modifier.toString(mo);
             // 属性类型
-            Class<?> type = filed1[j].getType();
+            Class<?> type = field1[j].getType();
             //属性字段名字
-            String name = filed1[j].getName();
+            String name = field1[j].getName();
             System.out.println(priv + " " + type.getName() + " " + name + ";");
+        }
+        System.out.println("===============本类方法========================");
+        Method[] methods = demo.getDeclaredMethods();
+        for (Method method : methods){
+            System.out.println(method.getName() + "->" + method.getReturnType());
+        }
+        System.out.println("===============实现的接口或者父类的方法========================");
+        Method[] methods1 = demo.getMethods();
+        for (Method method : methods1){
+            System.out.println(method.getName() + "->" + method.getReturnType());
         }
     }
 
     @Test
     public void reflect10() throws Exception {
         Class<?> demo = Class.forName("com.somnus.reflect.People");
-        // 调用Person类中的sayChina方法
+        // getMethod：获取当前类和父类的所有public的方法。
         Method method = demo.getMethod("sayChina");
         method.invoke(demo.newInstance());
-        // 调用Person的sayHello方法
-        method = demo.getMethod("sayHello", new Class[]{String.class, int.class});
-        method.invoke(demo.newInstance(), new Object[]{"Rollen", 20});
-    }
 
+        // getDeclaredMethod：获取当前类的所有声明的方法，包括public、protected和private修饰的方法。
+        method = demo.getDeclaredMethod("sayHello", new Class[]{String.class, int.class});
+        method.invoke(demo.newInstance(), new Object[]{"Rollen", 20});
+
+        /*method = demo.getDeclaredMethod("sout");
+        method.invoke(demo.newInstance());*/
+
+        ///////////////////////////////////////////////////////////////////////////////////////
+        // getField：获取当前类和父类的所有public的属性。
+        Field field = demo.getField("height");
+        System.out.println(field.get(demo.newInstance()));
+        field = demo.getField("age");
+        System.out.println(field.get(demo.newInstance()));
+
+        /*field = demo.getField("name");//name是private属性，不是public属性
+        System.out.println(field.get(demo.newInstance()));
+        field = demo.getField("sex");//sex是private属性，不是public属性
+        System.out.println(field.get(demo.newInstance()));*/
+
+        // getDeclaredField：获取当前类的所有声明的方法，包括public、protected和private修饰的属性。
+        field = demo.getDeclaredField("height");
+        System.out.println(field.get(demo.newInstance()));
+        field = demo.getDeclaredField("sex");
+        field.setAccessible(true);
+        System.out.println(field.get(demo.newInstance()));
+
+        /*field = demo.getDeclaredField("age");//age是父类属性，不是当前类
+        System.out.println(field.get(demo.newInstance()));
+        field = demo.getDeclaredField("name");//name是父类属性，不是当前类
+        System.out.println(field.get(demo.newInstance()));*/
+
+    }
 
     @Test
     public void reflect11() throws Exception {
@@ -166,7 +204,7 @@ public class ReflectClient {
     }
 
     @Test
-    public void reflect12() throws Exception {
+    public void reflect12(){
         int[] temp = {1, 2, 3, 4, 5};
 
         Class<?> demo = temp.getClass().getComponentType();

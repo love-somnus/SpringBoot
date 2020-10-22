@@ -95,61 +95,6 @@ public final class Optionally<T> {
         }
     }
 
-    /**
-     * 传入的值有且仅为布尔值true，则执行lambda表达式语句(如果为非布尔值抛非法参数异常)
-     * @param consumer
-     */
-    public void ifTrue(Consumer<? super T> consumer) {
-        if(! Boolean.class.isInstance(value)){
-            throw new IllegalArgumentException();
-        }
-        if (value instanceof Boolean && ((Boolean) value == true)) {
-            consumer.accept(value);
-        }
-    }
-
-    /**
-     * 传入的值有且仅为布尔值false，则执行lambda表达式语句(如果为非布尔值抛非法参数异常)
-     * @param consumer
-     */
-    public void ifFalse(Consumer<? super T> consumer) {
-        if(! Boolean.class.isInstance(value)){
-            throw new IllegalArgumentException();
-        }
-        if (value instanceof Boolean && ((Boolean) value == false)) {
-            consumer.accept(value);
-        }
-    }
-
-    /**
-     * 传入的值有且仅为布尔值true，则抛传入的异常(如果为非布尔值抛非法参数异常)
-     * @param exceptionSupplier
-     * @param <X>
-     * @throws X
-     */
-    public <X extends Throwable> void trueThrow(Supplier<? extends X> exceptionSupplier) throws X {
-        if(! Boolean.class.isInstance(value)){
-            throw new IllegalArgumentException();
-        }
-        if (value instanceof Boolean && ((Boolean) value == true)) {
-            throw exceptionSupplier.get();
-        }
-    }
-
-    /**
-     * 传入的值有且仅为布尔值false，则抛传入的异常(如果为非布尔值抛非法参数异常)
-     * @param exceptionSupplier
-     * @param <X>
-     * @throws X
-     */
-    public <X extends Throwable> void falseThrow(Supplier<? extends X> exceptionSupplier) throws X {
-        if(! Boolean.class.isInstance(value)){
-            throw new IllegalArgumentException();
-        }
-        if (value instanceof Boolean && ((Boolean) value == false)) {
-            throw exceptionSupplier.get();
-        }
-    }
 
     public <X extends Throwable> void trueThrow(Predicate<? super T> predicate, Supplier<? extends X> exceptionSupplier) throws X {
         Objects.requireNonNull(predicate);
@@ -232,6 +177,33 @@ public final class Optionally<T> {
         }else{
             return this;
         }
+    }
+
+    /**
+     * 传入的值为null，则返回默认值，否则返回一个新值
+     * @param supplier
+     */
+    public <R> R orElse(R r, Supplier<? extends R> supplier) {
+        if (value != null)
+            return supplier.get();
+
+        return r;
+    }
+
+    /**
+     * 传入的值为null，则返回默认值
+     * 传入的值不为null并且为判断为true，返回supplier1
+     * 传入的值不为null并且为判断为false，返回supplier2
+     * @param <R>
+     * @return
+     */
+    public <R> R orElse(Predicate<T> predicate, R r, Supplier<? extends R> supplier1, Supplier<? extends R> supplier2) {
+        if (value != null && predicate.test(value)){
+            return supplier1.get();
+        } else if (value != null && predicate.negate().test(value)){
+            return supplier2.get();
+        }
+        return r;
     }
 
     @Override

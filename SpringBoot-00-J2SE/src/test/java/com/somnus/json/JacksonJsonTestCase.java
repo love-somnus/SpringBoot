@@ -148,10 +148,6 @@ public class JacksonJsonTestCase {
         @JsonInclude(Include.NON_EMPTY)
         private Map<String,List<String>> map;
 
-        public User() {
-            super();
-        }
-
         public User(String username, String password) {
             super();
             this.username = username;

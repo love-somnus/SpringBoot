@@ -12,6 +12,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.junit.Test;
@@ -168,6 +171,8 @@ public class FastJsonTestCase {
         }
     }
 
+    @Data
+    @NoArgsConstructor
     public static class User {
         @JSONField(serialize = false)
         private String username;
@@ -192,10 +197,6 @@ public class FastJsonTestCase {
 
         private Map<String, List<String>> map;
 
-        public User() {
-            super();
-        }
-
         public User(String username, String password, int age, BigDecimal blance, BigDecimal weight) {
             super();
             this.username = username;
@@ -205,103 +206,16 @@ public class FastJsonTestCase {
             this.weight = weight;
         }
 
-        public String getUsername() {
-            return username;
-        }
-
-        public void setUsername(String username) {
-            this.username = username;
-        }
-
-        public String getPassword() {
-            return password;
-        }
-
-        public void setPassword(String password) {
-            this.password = password;
-        }
-
-        public int getAge() {
-            return age;
-        }
-
-        public void setAge(int age) {
-            this.age = age;
-        }
-
-        public List<Plot> getPlots() {
-            return plots;
-        }
-
-        public void setPlots(List<Plot> plots) {
-            this.plots = plots;
-        }
-
-        public Map<String, List<String>> getMap() {
-            return map;
-        }
-
-        public void setMap(Map<String, List<String>> map) {
-            this.map = map;
-        }
-
-        public BigDecimal getBlance() {
-            return blance;
-        }
-
-        public void setBlance(BigDecimal blance) {
-            this.blance = blance;
-        }
-
-        public BigDecimal getWeight() {
-            return weight;
-        }
-
-        public void setWeight(BigDecimal weight) {
-            this.weight = weight;
-        }
-
-        public Date getBirthday() {
-            return birthday;
-        }
-
-        public void setBirthday(Date birthday) {
-            this.birthday = birthday;
-        }
-
-        public boolean isFlag() {
-            return flag;
-        }
-
-        public void setFlag(boolean flag) {
-            this.flag = flag;
-        }
-
         public String toString() {
             return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
         }
     }
 
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class Plot {
-
-        public Plot() {
-            super();
-        }
-
-        public Plot(String name) {
-            this.name = name;
-        }
-
         private String name;
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
     }
 
     public static class BigDecimalSerializer implements ObjectSerializer {

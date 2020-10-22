@@ -1,12 +1,10 @@
 package com.somnus.java8;
 
 import com.google.common.collect.Lists;
+import com.somnus.java8.lambda.Fruit;
 import org.junit.Test;
 
 import java.util.*;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
 
 /**
  * @author Somnus
@@ -63,7 +61,7 @@ public class OptionalTest {
         Optional<String> name2 = Optional.ofNullable(null);
         System.out.println(name2.orElseGet(()-> {
             System.out.println("&&&&&&&&&&&&");
-            return "####";
+            return null;
         }));
     }
 
@@ -89,22 +87,26 @@ public class OptionalTest {
 
     @Test
     public void test7(){
-        Optional<String> name = Optional.ofNullable(new Student("a",21))
+        Optional<String> name = Optional.ofNullable(new Fruit("a",21))
                 .map(stu -> stu.getName())
                 .map(str -> str.toUpperCase());
         System.out.println(name.orElse("Sam"));
+
+        String name2 = Optional.ofNullable(new Fruit()).map(stu -> stu.getName()).orElse("somnus");
+        System.out.println(name2);
+
+        System.out.println(Optional.ofNullable(15).filter(d -> d<10).map(d -> "0"+d).orElse("15"));
     }
 
     @Test
     public void test8(){
-        Optional<String> name = Optional.ofNullable(new Student("a",21))
-                .filter(stu -> stu.getAge() < 20)
+        Optional<String> name = Optional.ofNullable(new Fruit("a",21))
+                .filter(stu -> stu.getNum() < 20)
                 .map(stu -> stu.getName());
         System.out.println(name.orElse("Sam"));
 
         Optional.ofNullable(null).ifPresent(value -> {
             System.out.println("&&&&&&&&&&");
-            return;
         });
         System.out.println("**************");
     }
@@ -113,27 +115,6 @@ public class OptionalTest {
     public void test9(){
         Optionally.ofNullable(99).existThrow(value -> value<10, ()-> new IllegalStateException());
         Optionally.ofNullable(Lists.newArrayList()).existThrow(list -> list.isEmpty(), ()-> new NullPointerException());
-    }
-
-    @Test
-    public void test91(){
-        Optionally.ofNullable(99).trueThrow(()-> new IllegalStateException());
-    }
-    @Test
-    public void test92(){
-        Optionally.ofNullable(true).trueThrow(()-> new IllegalStateException());
-    }
-    @Test
-    public void test93(){
-        Optionally.ofNullable(false).trueThrow(()-> new IllegalStateException());
-    }
-    @Test
-    public void test94(){
-        Optionally.ofNullable(true).falseThrow(()-> new IllegalStateException());
-    }
-    @Test
-    public void test95(){
-        Optionally.ofNullable(false).falseThrow(()-> new IllegalStateException());
     }
 
     @Test

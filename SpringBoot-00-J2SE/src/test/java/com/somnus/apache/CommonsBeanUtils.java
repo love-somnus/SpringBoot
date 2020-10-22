@@ -31,7 +31,8 @@ public class CommonsBeanUtils {
         ConvertUtils.register(bdc, java.math.BigDecimal.class);
 
         DateConverter dc = new DateConverter(null);
-        dc.setPattern("yyyy-MM-dd");
+        String[] patterns = {"yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd", };
+        dc.setPatterns(patterns);
         //Date顺利被转换成String
         ConvertUtils.register(dc, String.class);
         //null可以用来正常转换

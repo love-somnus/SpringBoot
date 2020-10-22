@@ -33,4 +33,5 @@ public class Java8Supplier {
     public <T> T get(Supplier<? extends T> s) {
         return s.get();
     }
+
 }

@@ -3,6 +3,7 @@ package com.somnus.apache;
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 
+import lombok.SneakyThrows;
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.Hex;
@@ -29,13 +30,17 @@ public class CommonsCodec {
     }
 
     @Test
+    @SneakyThrows
     public void Base64JDK8() {
-        String encode = java.util.Base64.getEncoder().encodeToString("0ff62954802f11e98e6d246e965dfd84:d12f8816584f4417a91e5fb2014190cb0ff63b38802f11e98e6d246e965dfd84".getBytes(/*"UTF-8"*/));
+        String encode = java.util.Base64.getEncoder().encodeToString("https://new.qq.com/rain/a/20200817A04IXC00".getBytes(/*"UTF-8"*/));
         System.out.println("Base64 编码后：" + encode);
 
-        byte[] decode = java.util.Base64.getDecoder().decode("U29tbnVz");
+        byte[] decode = java.util.Base64.getDecoder().decode("aHR0cHM6Ly9uZXcucXEuY29tL3JhaW4vYS8yMDIwMDgxN0EwNElYQzAw");
         String decodestr = new String(decode);
         System.out.println("Base64 解码后：" + decodestr);
+
+        String md5 = DigestUtils.md5Hex("style_9.png" + "8d969eef6ecad3c");
+        System.out.println(md5);
     }
 
     @Test

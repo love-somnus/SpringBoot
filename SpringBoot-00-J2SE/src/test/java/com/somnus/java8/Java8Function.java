@@ -1,8 +1,11 @@
 package com.somnus.java8;
 
+import com.google.common.primitives.Ints;
 import org.junit.Test;
 
+import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * @author Somnus
@@ -45,8 +48,26 @@ public class Java8Function {
      * @return
      * @desc 使用JDK8 Function函数
      */
-    private Integer apply(Integer num, Function<Integer, Integer> function) {
+    Integer apply(Integer num, Function<Integer, Integer> function) {
         return function.apply(num);
+    }
+
+
+    String apply(List<Integer> nums, Function<Integer, String> function){
+
+        Integer sum = nums.stream().collect(Collectors.summingInt(num -> num));
+
+        return function.apply(sum);
+    }
+
+    @Test
+    public void applyTest2(){
+
+        Java8Function test = new Java8Function();
+
+        // Function函数的使用
+        System.out.println(test.apply(Ints.asList(1, 2, 3), value -> value.toString()));
+
     }
 
 }

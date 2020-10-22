@@ -37,14 +37,7 @@ public class CommonsCollections {
         System.out.println(Collections.singletonMap("a", "1"));
         System.out.println(Collections.min(Arrays.asList(1, 2, 3)));
 
-        System.out.println(Collections.max(Arrays.asList(4, 8, 3, 9, 5), new Comparator<Integer>() {
-
-            @Override
-            public int compare(Integer i1, Integer i2) {
-                return i1.compareTo(i2);
-            }
-
-        }));
+        System.out.println(Collections.max(Arrays.asList(4, 8, 3, 9, 5), (i1, i2) -> i1.compareTo(i2)));
 
         List<String> emptyList = Collections.emptyList();
         emptyList.subList(0,0);
@@ -74,34 +67,21 @@ public class CommonsCollections {
                 Arrays.asList("2", "3", "5"),
                 Arrays.asList("1", "2", "3")));//list1与list2的差{1}
 
-        System.out.println(CollectionUtils.select(Arrays.asList("2", "3", "5", "5"), new UniquePredicate<String>()));
-        System.out.println(CollectionUtils.select(Arrays.asList("2", "3", "5", ""), new Predicate<String>() {
-            @Override
-            public boolean evaluate(String object) {
-                return StringUtils.isNotEmpty(object);
-            }
-        }));
-        System.out.println(CollectionUtils.select(Arrays.asList(2, 3, 5, 6), new Predicate<Integer>() {
-            @Override
-            public boolean evaluate(Integer object) {
-                return object.intValue() <= 5;
-            }
-        }));
+        System.out.println(CollectionUtils.select(Arrays.asList("2", "3", "5", "5"), new UniquePredicate<>()));
+        System.out.println(CollectionUtils.select(Arrays.asList("2", "3", "5", ""), (object) -> StringUtils.isNotEmpty(object)));
+        System.out.println(CollectionUtils.select(Arrays.asList(2, 3, 5, 6), (object) -> object.intValue() <= 5));
     }
 
     public <E> List<E> unique(List<E> param, final String property) {
         final Set<Object> iSet = new HashSet<Object>();
-        List<E> result = (List<E>) CollectionUtils.select(param, new Predicate<E>() {
-            @Override
-            public boolean evaluate(E object) {
-                Object val = null;
-                try {
-                    val = PropertyUtils.getProperty(object, property);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                return iSet.add(val);
+        List<E> result = (List<E>) CollectionUtils.select(param, (object) -> {
+            Object val = null;
+            try {
+                val = PropertyUtils.getProperty(object, property);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+            return iSet.add(val);
         });
         return result;
     }

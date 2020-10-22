@@ -21,7 +21,7 @@ public class NumeralUtil {
         //默认RoundingMode.HALF_UP 四舍五入。此方法只影响格式化，与解析无关
         nf.setRoundingMode(RoundingMode.HALF_UP);
         System.out.println(nf.format(0.4756));
-        System.out.println(nf.format(a/b));
+        System.out.println(nf.format(8192.0/41863));
         System.out.println(nf.format(c/d));
         System.out.println(nf.format(cc.doubleValue()/dd.doubleValue()));
         System.out.println(nf.format(a/d));

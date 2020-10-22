@@ -21,7 +21,7 @@ public class People {
         this.nation = nation;
     }
 
-    private Date birthday;
+    private String birthday;
     private BigDecimal money;
 
     private String nation;

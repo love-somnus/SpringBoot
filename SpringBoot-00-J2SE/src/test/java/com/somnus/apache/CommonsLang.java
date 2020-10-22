@@ -12,7 +12,6 @@ import org.apache.commons.lang.Validate;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang.SerializationUtils;
 import org.apache.commons.lang3.RandomUtils;
@@ -20,6 +19,7 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.commons.lang3.time.StopWatch;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.message.BasicNameValuePair;
 import org.junit.Test;
@@ -41,6 +41,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class CommonsLang {
 
     public static void main(String[] args) {
+        System.out.println(Integer.toBinaryString(100));;
         String name = "abcabc";
         String name_ = name.replace("b", "a");
         System.out.println(name + "-->" + name_);
@@ -132,7 +133,8 @@ public class CommonsLang {
 
     @Test
     public void StringEscapeUtils() {
-        System.out.println(StringEscapeUtils.escapeHtml3("<html>"));//&lt;html&gt;
+        System.out.println(StringEscapeUtils.escapeHtml4("<html>"));//&lt;html&gt;
+        System.out.println(StringEscapeUtils.unescapeHtml4("https://arena.163.com/fansclub?cnm=%E8%A7%82%E6%B5%B7%E5%90%AC%E6%B6%9B&amp;inm=%E8%A7%82%E6%B5%B7&amp;uid=3450157"));//&lt;html&gt;
         System.out.println(StringEscapeUtils.escapeJava("String你好"));//String\u4F60\u597D
         System.out.println(StringEscapeUtils.unescapeJava("String\u4F60\u597D"));//String你好
     }
@@ -369,6 +371,26 @@ public class CommonsLang {
                 .map(s -> "?" + s)
                 .orElse("");
         System.out.println(str);
+    }
+
+    @Test
+    public void random(){
+        int number;
+        boolean ok;
+        do {
+            ok = true;
+            number = new Random().nextInt(9000) + 1000;
+            int[] digits = { number / 1000 % 10, number / 100 % 10, number / 10 % 10, number % 10 };
+            for (int i = 0; i < 4 && ok; i++) {
+                for (int j = i + 1; j < 4; j++) {
+                    if (digits[i] == digits[j]) {
+                        ok = false;
+                        break;
+                    }
+                }
+            }
+        } while (!ok);
+        System.out.println(number);
     }
 
 }
