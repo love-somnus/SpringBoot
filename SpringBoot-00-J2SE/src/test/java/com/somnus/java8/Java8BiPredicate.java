@@ -1,7 +1,5 @@
 package com.somnus.java8;
 
-import org.junit.Test;
-
 import java.util.function.BiPredicate;
 
 /**
@@ -20,25 +18,22 @@ public class Java8BiPredicate {
         System.out.println(filter.test("cattle", 6));
 
         System.out.println(filter.test("java", 8));
+
+        System.out.println(Java8BiPredicate.test("admin",7, (name, age) -> name.startsWith("a") && age > 5));
+
     }
 
-    @Test
-    public void test(){
-        Java8BiPredicate predicate1test = new Java8BiPredicate();
-        System.out.println(predicate1test.test("admin",7, (name, age) -> name.startsWith("a") && age > 5));
-    }
-
-    public boolean test(String name, Integer age, BiPredicate<String, Integer> p){
+    public static boolean test(String name, Integer age, BiPredicate<String, Integer> p){
         return p.test(name, age);
     }
 
     /** 同时满足两个 才返回true*/
-    public boolean test(String name, Integer age, BiPredicate<String, Integer> p1, BiPredicate<String, Integer> p2){
+    public static boolean test(String name, Integer age, BiPredicate<String, Integer> p1, BiPredicate<String, Integer> p2){
         return p1.and(p2).test(name, age);
     }
 
     /** 满足任意一个 就返回true*/
-    public boolean test2(String name, Integer age, BiPredicate<String, Integer> p1, BiPredicate<String, Integer> p2){
+    public static boolean test2(String name, Integer age, BiPredicate<String, Integer> p1, BiPredicate<String, Integer> p2){
         return p1.or(p2).test(name, age);
     }
 }

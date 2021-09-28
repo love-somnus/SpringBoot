@@ -100,6 +100,8 @@ public class OptionalTest {
 
     @Test
     public void test8(){
+        System.out.println(Optional.ofNullable("apple").filter(f -> "apsple".equals(f)).orElse("0"));
+
         Optional<String> name = Optional.ofNullable(new Fruit("a",21))
                 .filter(stu -> stu.getNum() < 20)
                 .map(stu -> stu.getName());

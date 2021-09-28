@@ -1,7 +1,5 @@
 package com.somnus.java8;
 
-import org.junit.Test;
-
 import java.util.function.BiFunction;
 
 /**
@@ -19,15 +17,8 @@ public class Java8BiFunction {
 
         // 使用andThen场景, 从左向右处理, 这里就是 (10 + 10) * 20 = 400
         System.out.println("Function compose 结果：" +  function.andThen(value -> value * value).apply(10, 10));
-    }
 
-    @Test
-    public void applyTest(){
-
-        Java8BiFunction test = new Java8BiFunction();
-
-        // Function函数的使用
-        System.out.println("加法结果：" + test.apply(10, 10, (value1,value2) -> value1 + value2));
+        System.out.println("加法结果：" + Java8BiFunction.apply(10, 10, (value1,value2) -> value1 + value2));
     }
 
     /**
@@ -36,7 +27,7 @@ public class Java8BiFunction {
      * @return
      * @desc 使用JDK8 Function函数
      */
-    private Integer apply(Integer num, Integer num2, BiFunction<Integer, Integer, Integer> function) {
+    private static Integer apply(Integer num, Integer num2, BiFunction<Integer, Integer, Integer> function) {
         return function.apply(num, num2);
     }
 

@@ -2,19 +2,20 @@ package com.somnus.apache;
 
 import java.io.File;
 import java.math.BigDecimal;
+import java.net.URL;
 import java.nio.charset.Charset;
 import java.text.ParseException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import lombok.SneakyThrows;
 import org.apache.commons.lang.Validate;
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.ClassUtils;
-import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.*;
 import org.apache.commons.lang.SerializationUtils;
-import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.commons.lang3.time.StopWatch;
@@ -57,6 +58,16 @@ public class CommonsLang {
         System.out.println(countryCode);
 
         System.out.println(newnumber);
+
+        String line = "One-inch Punch".replaceAll("['\";:,.?¿\\-!¡]+", "");
+        System.out.println(line);
+        Pattern p = Pattern.compile("\\S+");
+        Matcher ms = p.matcher(line);
+        AtomicInteger atomicInteger = new AtomicInteger();
+        while(ms.find()){
+            atomicInteger.addAndGet(1);
+        }
+        System.out.println(atomicInteger.get());
     }
 
     @Test
@@ -140,12 +151,16 @@ public class CommonsLang {
     }
 
     @Test
+    @SneakyThrows
     public void StringUtils() {
-        System.out.println(StringUtils.substringAfter("bcgames#mtl", "bcgames#"));
+        String url = "https://arena.163.com/download/?game=arena&task=12&mobile=18538855430";
+        System.out.println(StringUtils.substringBefore(url ,"?"));
+
+        System.out.println(StringUtils.substringBeforeLast("copier" ,"#"));
+
+        System.out.println(StringUtils.substringAfter(url, "?"));
         //缩写省略字符串
         System.out.println(StringUtils.abbreviate("abcdefghijklmno", -1, 10));
-        // 截取从from开始字符串
-        System.out.println(StringUtils.substringAfter("SELECT * FROM PERSON ", "FROM"));// PERSON
         // 判断该字符串是不是为数字(0~9)组成，如果是，返回true 但该方法不识别有小数点和请注意
         System.out.println(StringUtils.isNumeric("454534"));// true
         // StringUtils,判断是否是空格字符
@@ -261,6 +276,13 @@ public class CommonsLang {
         System.out.println(StringUtils.defaultIfBlank(map.get("abc"), "abc"));
         System.out.println(StringUtils.defaultIfEmpty(map.get("abc"), "abc"));
 
+        String ss = "aabb";
+
+        /** replaceEach和replaceEachRepeatedly区别可能是：aabb 替换 aa 为 bb， bb 为 cc 的时候，replaceEach 结果是 bbcc, replaceEachRepeatedly 的结果是 cccc **/
+        String a = StringUtils.replaceEach(ss, new String[] {"aa",  "bb"}, new String[] {"bb",  "cc"});
+        String b = StringUtils.replaceEachRepeatedly(ss, new String[] {"aa",  "bb"}, new String[] {"bb",  "cc"});
+
+        System.out.println(a + "," + b);
         System.out.println(StringUtils.replaceEachRepeatedly("123987",
                 new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9"},
                 new String[]{"壹", "贰", "叁", "肆", "伍", "陆", "柒", "捌", "玖"}));
@@ -272,17 +294,12 @@ public class CommonsLang {
     }
 
     @Test
-    public void DateUtils() throws ParseException {
-        System.out.println(DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
-        //字符型日期转化为Date
-        System.out.println(DateUtils.parseDate("2014-11-11 11:11:11", new String[]{"yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd", "yyyy/MM/dd"}));
-        System.out.println(DateUtils.parseDate("2014年11月11日", new String[]{"yyyy年MM月dd日", "yyyy-MM-dd", "yyyy/MM/dd"}));
-        //日期舍入与截整
-        System.out.println(DateUtils.truncate(new Date(), Calendar.DATE));
-        //判断是否是同一天
-        System.out.println(DateUtils.isSameDay(new Date(), new Date()));
-        //加天数
-        System.out.println(DateUtils.addDays(new Date(), 10));
+    public void ObjectUtils() throws ParseException {
+        Person person = new Person("admin", "password", new Date(), BigDecimal.TEN, new Pet("diu diu"));
+
+        String str = ObjectUtils.toString(person, "");
+
+        System.out.println(str);
     }
 
     @Test

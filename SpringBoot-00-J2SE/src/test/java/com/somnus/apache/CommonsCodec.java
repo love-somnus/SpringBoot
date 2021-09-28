@@ -58,7 +58,7 @@ public class CommonsCodec {
 
     @Test
     public void DigestUtils() {
-        System.out.println(DigestUtils.md5Hex("admin"));
+        System.out.println(DigestUtils.md5Hex("{\"productId\":\"com.boltrend.sdk.demo.sku001\",\"price\":\"10000\",\"ip\":\"192.168.97.101\",\"currency\":\"HKD\",\"type\":\"14\",\"userid\":\"1222010\",\"productName\":\"sku001\",\"rstUrl\":\"http://api.test.nesh/wt-cpc/payment/order/notify\"}" + "4031f6027a864c85978df5cdd2a6f39e"));
         System.out.println(DigestUtils.sha1Hex("admin"));
 
         System.out.println( org.springframework.util.DigestUtils.md5DigestAsHex("admin".getBytes()));

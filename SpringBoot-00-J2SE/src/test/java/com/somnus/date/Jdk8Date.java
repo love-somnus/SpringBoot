@@ -6,8 +6,10 @@ import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAdjusters;
+import java.time.temporal.TemporalField;
 import java.time.temporal.WeekFields;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * @author Somnus
@@ -126,6 +128,9 @@ public class Jdk8Date {
         System.out.println("取当年2月最后一天:" + LocalDateTime.now().withMonth(2).with(TemporalAdjusters.lastDayOfMonth()));
         //其它的LocalDate有with的它都有
 
+        System.out.println("取本周第1天:" + LocalDateTime.now().with(WeekFields.of(Locale.FRANCE).dayOfWeek(), 1));
+        System.out.println("取本周后一天:" + LocalDateTime.now().with(WeekFields.of(Locale.FRANCE).dayOfWeek(), 7));
+
         System.out.println("plusDays:" + LocalDateTime.now().plusDays(1));
     }
 
@@ -160,7 +165,7 @@ public class Jdk8Date {
         System.out.println(Duration.between(LocalDateTime.now(), LocalDateTime.now().withDayOfMonth(2)).toDays());
         System.out.println(Duration.between(LocalDateTime.now(), LocalDateTime.now().withDayOfMonth(2)).toHours());
         System.out.println(Duration.between(LocalDateTime.now(), LocalDateTime.now().withDayOfMonth(2)).toMinutes());
-        System.out.println(Duration.between(LocalDateTime.now(), LocalDateTime.now().withDayOfMonth(2)).getSeconds());
+        System.out.println(Duration.between(LocalDateTime.now(), LocalDateTime.now().plusSeconds(20)).getSeconds());
     }
 
     @Test

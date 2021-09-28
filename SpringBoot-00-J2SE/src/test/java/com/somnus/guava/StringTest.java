@@ -43,7 +43,7 @@ public class StringTest {
         System.out.println(Splitter.on("|")
                 .trimResults()
                 .omitEmptyStrings()
-                .splitToList("foo|bar||   qux"));
+                .splitToList("foo"));
         System.out.println(Splitter.onPattern("\\s+")
                 .split("四川省  \t   成都市 金牛区").toString());
         System.out.println(Splitter.on(" ")

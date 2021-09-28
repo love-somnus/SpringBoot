@@ -28,7 +28,7 @@ public class CommonsIo {
     
     @Test
     public void readLinesByIS() throws MalformedURLException, IOException{
-        InputStream is = new URL("https://www.baidu.com/").openStream();
+        InputStream is = new URL("https://hq1.appsflyer.com/aggreports/enc/com.boltrend.cloudia/partners_report/v5?api_token=2a95cf4b-d401-41fa-830e-7150daf35c4e&from=2021-06-24&to=2021-06-24&timezone=Asia%2fTaipei").openStream();
         /**
          * readLines(InputStream input, "UTF-8")
          * readLines(InputStream input, String encoding)

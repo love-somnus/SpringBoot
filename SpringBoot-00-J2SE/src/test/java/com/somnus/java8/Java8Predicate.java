@@ -1,9 +1,7 @@
 package com.somnus.java8;
 
-import org.junit.Test;
 
 import java.util.function.Predicate;
-import java.util.function.Supplier;
 
 /**
  * @author Kevin
@@ -26,25 +24,21 @@ public class Java8Predicate {
 
         /** 或操作 满足任意一个 就返回true*/
         System.out.println(p.or(value -> value < 1).test(5));
+
+        Java8Predicate.test(7, value -> value > 6);
     }
 
-    @Test
-    public void test(){
-        Java8Predicate predicate1test = new Java8Predicate();
-        predicate1test.test(7, value -> value > 6);
-    }
-
-    public boolean test(Integer num, Predicate<Integer> p){
+    public static boolean test(Integer num, Predicate<Integer> p){
         return p.test(num);
     }
 
     /** 同时满足两个 才返回true*/
-    public boolean test(Integer num, Predicate<Integer> p1, Predicate<Integer> p2){
+    public static boolean test(Integer num, Predicate<Integer> p1, Predicate<Integer> p2){
         return p1.and(p2).test(num);
     }
 
     /** 满足任意一个 就返回true*/
-    public boolean test2(Integer num, Predicate<Integer> p1, Predicate<Integer> p2){
+    public static boolean test2(Integer num, Predicate<Integer> p1, Predicate<Integer> p2){
         return p1.or(p2).test(num);
     }
 

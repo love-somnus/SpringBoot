@@ -1,12 +1,7 @@
 package com.somnus.json;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -55,7 +50,7 @@ public class JacksonJsonTestCase {
      */
     @Test
     public void complexTest() throws JsonProcessingException {
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new LinkedHashMap<>();
         map.put("username", "owen");
         map.put("age", 25);
         map.put("sex", "男");

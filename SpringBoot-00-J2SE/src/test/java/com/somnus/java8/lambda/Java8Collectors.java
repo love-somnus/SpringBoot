@@ -35,7 +35,10 @@ public class Java8Collectors {
         List<Integer> nums = Ints.asList(3, 3, 2, 6, 3, 4, 3, 7, 8, 9, 2);
         System.out.println("总和: " + nums.stream().collect(Collectors.summingInt(num -> num)));
         System.out.println("总和: " + nums.stream().collect(Collectors.summingDouble(num -> num)));
-        System.out.println("总和: " + nums.stream().collect(Collectors.summingLong(num -> num)));
+        System.out.println("总和: " + nums.stream().mapToLong(num -> num).sum());
+
+        List<Fruit> fruits = Lists.newArrayList(new Fruit("a", 2),new Fruit("b", 4),new Fruit("a", 1));
+        System.out.println(fruits.stream().map(Fruit::getNum).mapToInt(num -> num).sum());
     }
 
     @Test
@@ -109,6 +112,11 @@ public class Java8Collectors {
         Map<String, List<Fruit>> groupMap = fruits.stream().collect(Collectors.groupingBy(Fruit::getName));
         System.out.println(groupMap);
 
+        List<Fruit> fruits2 = Lists.newArrayList(new Fruit("a", 1),new Fruit("b", 2),new Fruit("a", 3));
+        Map<String, IntSummaryStatistics> newLog =
+                fruits2.stream().collect(Collectors.groupingBy(Fruit::getName, Collectors.summarizingInt(Fruit::getNum)));
+        System.out.println(newLog);
+
         //计数
         Map<String, Long> map = fruits.stream().collect(Collectors.groupingBy(Fruit::getAlias, Collectors.counting()));
         System.out.println(map);
@@ -136,22 +144,28 @@ public class Java8Collectors {
         System.out.println(list3);
         List<String> list4 = fruits.entrySet().stream().sorted(Map.Entry.<String, String>comparingByValue().reversed()).map(e -> e.getValue()).collect(Collectors.toList());
         System.out.println(list4);
+
+        //map排序值里面的对象的属性,再输出map
+        Map<String, Fruit> fruitss = ImmutableMap.of("a", new Fruit("apple", 35), "b", new Fruit("banana", 56), "c", new Fruit("cherry", 2));
+        Map<String, Fruit> fruitMap = fruitss.entrySet().stream().sorted(Comparator.comparing(e -> e.getValue().getNum(), Comparator.reverseOrder())).collect(Collectors.toMap(v ->v.getKey(), v -> v.getValue(), (oldVal, newVal) -> oldVal, LinkedHashMap::new));
+        System.out.println( fruitMap  );
     }
 
     @Test
     public void toMap(){
         List<Fruit> fruits = Lists.newArrayList(new Fruit("a", "apple"),new Fruit("b", "banana"),new Fruit("c", "cherry"));
         Map<String, String> map = fruits.stream().collect(Collectors.toMap(Fruit::getAlias, Fruit::getName));
-        System.out.println("①" + map);
+        System.out.println("①list转map" + map);
 
-        System.out.println(map.entrySet().stream().collect(Collectors.toMap(e->e.getKey()+"@",e->e.getValue())));
+        System.out.println( "①map转map" + map.entrySet().stream().collect(Collectors.toMap(e->e.getKey()+"@", e->e.getValue())) );
+        System.out.println( "①map转map" + map.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)) );
 
         Map<String, Fruit> map2 = fruits.stream().collect(Collectors.toMap(Fruit::getAlias, Function.identity()));
-        System.out.println("②" + map2);
+        System.out.println("②list转map" + map2);
 
         List<String> fruitss = Lists.newArrayList("apple","banana","cherry","watermelon","orange");
         Map<String, Integer> map3 = fruitss.stream().collect(Collectors.toMap(Function.identity(), String::length));
-        System.out.println("③" + map3);
+        System.out.println("③list转map" + map3);
 
         //解决Key冲突
         fruits = Lists.newArrayList(new Fruit("a", "apple"),new Fruit("b", "banana"),new Fruit("a", "apricot"));
@@ -166,6 +180,8 @@ public class Java8Collectors {
         Map<String, Fruit> map8 = fruits.stream().collect(Collectors.toMap(Fruit::getAlias, v -> v, (existing, replacement) -> existing));
         System.out.println("⑧" + map8);
 
+
+        //数组转map
         String[] array = {"apple","banana","cherry","watermelon","orange"};
 
         Stream.iterate(0, i -> i).limit(array.length).collect(Collectors.toMap(Function.identity(),i -> array[i]));

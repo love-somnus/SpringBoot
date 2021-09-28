@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<config>  
-    <image>com.somnus.designPatterns.bridge.JPGImage</image>
-    <os>com.somnus.designPatterns.bridge.WindowsImp</os> 
-</config>

@@ -68,11 +68,17 @@ public class Java8Stream {
 
         Pattern.compile("\\W").splitAsStream("apple banana cherry watermelon orange"). forEach(System.out::println);
 
-        String params = "a=1&b=2&c=3&d=4";
+        String params = "Chinese->English|Chinese->Franch";
 
-        Map<String, String> map = Arrays.stream(params.split("&")).map(str -> str.split("=")).collect(Collectors.toMap(value -> value[0], value -> value[1],(u, v) -> v, LinkedHashMap::new));
+        Map<String, String> map = Arrays.stream(params.split("[|]")).map(str -> str.split("->")).collect(Collectors.toMap(value -> value[1], value -> value[0],(u, v) -> v, LinkedHashMap::new));
 
         System.out.println(map);
+
+        String params2 = "apk=cb&game=disgaea-tw&task=27&mobile=886953181966";
+
+        Map<String, String> map2 = Arrays.stream(params2.split("&")).map(str -> str.split("=")).collect(Collectors.toMap(value -> value[0], value -> value[1],(u, v) -> v, LinkedHashMap::new));
+
+        System.out.println(map2);
     }
 
     @Test

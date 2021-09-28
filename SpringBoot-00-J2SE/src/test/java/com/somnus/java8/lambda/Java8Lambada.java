@@ -153,26 +153,31 @@ public class Java8Lambada {
     public void reduce(){
         List<Integer> nums = Ints.asList(1, 2, 3);
         //有起始值
-        System.out.println("总和: " + nums.stream().reduce(0, (a,b) -> a + b));
-        System.out.println("总和: " + nums.stream().reduce(0, Integer::sum));
-        System.out.println("最大值: " + nums.stream().reduce(0, Integer::max));
-        System.out.println("最小值: " + nums.stream().reduce(0, Integer::min));
+        System.out.println("有起始值总和: " + nums.stream().reduce(0, (a,b) -> a + b));
+        System.out.println("有起始值总和: " + nums.stream().reduce(0, Integer::sum));
+        System.out.println("有起始值最大值: " + nums.stream().reduce(0, Integer::max));
+        System.out.println("有起始值最小值: " + nums.stream().reduce(0, Integer::min));
+
+        //无起始值(返回Optional类型的数据，该类型是java8中新增的，主要用来避免空指针异常)
+        System.out.println("无起始值总和: " + nums.stream().reduce((a,b) -> a + b).get());
+        System.out.println("无起始值总和: " + nums.stream().reduce(Integer::sum).get());
+        System.out.println("无起始值最大值: " + nums.stream().reduce(Integer::max).get());
+        System.out.println("无起始值最小值: " + nums.stream().reduce(Integer::min).get());
 
         List<BigDecimal> nums2 = Lists.newArrayList(BigDecimal.ONE, BigDecimal.ONE, BigDecimal.ONE);
-        System.out.println("总和: " + nums2.stream().reduce(BigDecimal.ZERO, (a,b) -> a.add(b)));
-        System.out.println("总和: " + nums2.stream().reduce(BigDecimal.ZERO, BigDecimal::add));
+        System.out.println("BigDecimal有起始值总和: " + nums2.stream().reduce(BigDecimal.ZERO, (a,b) -> a.add(b)));
+        System.out.println("BigDecimal有起始值总和: " + nums2.stream().reduce(BigDecimal.ZERO, BigDecimal::add));
 
-        //无起始值(返回Optional类型的数据，改类型是java8中新增的，主要用来避免空指针异常)
-        System.out.println("总和: " + nums.stream().reduce((a,b) -> a + b).get());
-        System.out.println("总和: " + nums.stream().reduce(Integer::sum).get());
-        System.out.println("最大值: " + nums.stream().reduce(Integer::max).get());
-        System.out.println("最小值: " + nums.stream().reduce(Integer::min).get());
+        System.out.println("BigDecimal无起始值总和: " + nums2.stream().reduce((a,b) -> a.add(b)).get());
+        System.out.println("BigDecimal无起始值总和: " + nums2.stream().reduce(BigDecimal::add).get());
 
         //字符串处理
         List<String> fruits = Lists.newArrayList("apple","banana","cherry","watermelon","orange");
         System.out.println("最长的单词-->" + fruits.stream().reduce((s1, s2) -> s1.length()>=s2.length() ? s1 : s2).get());
         System.out.println("单词的长度之和-->" + fruits.stream().reduce(0, (sum, str) -> sum + str.length(), (a, b) -> a+b));
         System.out.println("字符串连接-->" + fruits.stream().reduce("", String::concat));
+        System.out.println("最先一个水果-->" + fruits.stream().reduce((first, second) -> first).get());
+        System.out.println("最后一个水果-->" + fruits.stream().reduce((first, second) -> second).get());
     }
 
     @Test

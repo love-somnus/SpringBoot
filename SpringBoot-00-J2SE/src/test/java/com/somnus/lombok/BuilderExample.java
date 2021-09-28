@@ -51,7 +51,7 @@ public class BuilderExample {
         /*new BuilderExample();*/
         System.out.println(new BuilderExample(2019L, "admin", 30, Ints.asList(), Sets.newHashSet()));
 
-        System.out.println(BuilderExample.builder().created);
+        System.out.println(BuilderExample.builder());
         System.out.println(BuilderExample.builder().build().created);
 
         //要获得此行为，需要使用注释字段/参数@Singular

@@ -148,7 +148,6 @@ public class HttpTest {
         String url = "https://httpbin.org/post";
         String response = Request.Post(url).bodyForm(Form.form()
                 .add("custname", "admin")
-                .add("custtel", "123456")
                 .build()
         )
                 .execute().returnContent().asString();
@@ -158,10 +157,10 @@ public class HttpTest {
     @Test
     @SneakyThrows
     public void doFormParamPostByFluent2() {
-        String url = "https://httpbin.org/post";
-        Map<String,String> params = ImmutableMap.of("custname", "admin", "custtel", "123456");
+        String url = "http://api.test.nesh/wt-oauth/oauth/identify";
+        Map<String,String> params = ImmutableMap.of("system", "wt-cmc", "requestUrl", "game/all");
         List<NameValuePair> pairs = params.entrySet().stream().map(entry -> new BasicNameValuePair(entry.getKey(), entry.getValue())).collect(Collectors.toList());
-        String response = Request.Post(url).bodyForm(pairs).execute().returnContent().asString();
+        String response = Request.Post(url).bodyForm(pairs).addHeader("Authorization","xxxxx").execute().returnContent().asString();
         System.out.println(response);
     }
 

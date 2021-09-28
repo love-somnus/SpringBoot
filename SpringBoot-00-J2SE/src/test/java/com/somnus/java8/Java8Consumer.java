@@ -1,11 +1,6 @@
 package com.somnus.java8;
 
-import com.google.common.primitives.Ints;
-import org.junit.Test;
-
-import java.util.List;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 /**
  * @author Kevin
@@ -17,54 +12,22 @@ import java.util.stream.Collectors;
 public class Java8Consumer {
 
     public static void main(String[] args) {
-        Consumer<String> c = value -> System.out.println(value);
-        c.accept("ddd");
+        Consumer<Integer> times2 = value -> System.out.println(value * 2);
+        times2.accept(10);
 
-        Consumer<Integer> c2 = value -> {
-            System.out.println(value);
-            System.out.println(value * value);
-        };
-        c2.accept(10);
+        Consumer<Integer> squared = value -> System.out.println(value * value);
+        squared.accept(10);
 
-        Consumer<Integer> c3 = value -> {
-            System.out.println("-----------");
-            System.out.println(value * value);
-        };
-        Consumer<Integer> c4 = value -> {
-            System.out.println("***********");
-            System.out.println(value * value);
-        };
-        c3.andThen(c4).accept(10);
+        //先执行调用者times2，再执行参数squared
+        times2.andThen(squared).accept(10);
+
+        Java8Consumer.accept(10 , System.out::println);
+
+        Java8Consumer.accept(10 ,value -> System.out.println(value * value));
     }
 
-    @Test
-    public void test(){
-        Java8Consumer cc= new Java8Consumer();
-
-        cc.accept(10 ,value -> System.out.println(value));
-
-        cc.accept(10 ,value -> {
-            System.out.println(value);
-            System.out.println(value * value);
-        });
-    }
-
-    void accept(Integer num, Consumer<Integer> consumer){
+    static void accept(Integer num, Consumer<Integer> consumer){
         consumer.accept(num);
-    }
-
-    void accept(List<Integer> nums, Consumer<Integer> consumer){
-
-        Integer sum = nums.stream().collect(Collectors.summingInt(num -> num));
-
-        consumer.accept(sum);
-    }
-
-    @Test
-    public void test2(){
-        Java8Consumer cc= new Java8Consumer();
-
-        cc.accept(Ints.asList(1, 2, 3) , value -> System.out.println(value));
     }
 
 }
