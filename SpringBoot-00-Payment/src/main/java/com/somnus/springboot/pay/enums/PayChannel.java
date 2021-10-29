@@ -89,7 +89,7 @@ public enum PayChannel {
         return payType;
     }
 
-    public static PayChannel valueOf(Integer value) {
+    /*public static PayChannel valueOf(Integer value) {
         if (value != null) {
             for (PayChannel payType : PayChannel.values()) {
                 if (payType.getValue().equals(value))
@@ -97,6 +97,18 @@ public enum PayChannel {
             }
         }
         return null;
+    }*/
+
+    public static PayChannel valueOf(Integer value){
+        PayChannel channel = null;
+        if (value != null){
+            for (PayChannel t : PayChannel.values()) {
+                if (t.getValue().equals(value)){
+                    channel = t;
+                }
+            }
+        }
+        return channel;
     }
 
     /**

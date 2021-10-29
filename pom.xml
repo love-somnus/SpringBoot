@@ -13,16 +13,16 @@
 
   <modules>
     <module>SpringBoot-00-J2SE</module>
-    <module>SpringBoot-00-BlockChain</module>
+    <module>SpringBoot-00-Reactor</module>
     <module>SpringBoot-00-Payment</module>
     <module>SpringBoot-00-Seckill</module>
+    <module>SpringBoot-00-Webflux</module>
     <module>SpringBoot-01-HelloWorld</module>
     <module>SpringBoot-01-Servlet-Filter</module>
     <module>SpringBoot-02-Value-Random</module>
     <module>SpringBoot-03-Thymeleaf</module>
     <module>SpringBoot-04-Freemarker</module>
     <module>SpringBoot-05-Static</module>
-    <module>SpringBoot-05-Layui</module>
     <module>SpringBoot-06-JSP</module>
     <module>SpringBoot-07-Async</module>
     <module>SpringBoot-07-Async-Event</module>
@@ -37,14 +37,16 @@
     <module>SpringBoot-15-ActiveMQ</module>
     <module>SpringBoot-16-RabbitMQ</module>
     <module>SpringBoot-18-Transaction</module>
-    <module>SpringBoot-20-Dubbo</module>
     <module>SpringBoot-19-Kafka</module>
+    <module>SpringBoot-20-Dubbo</module>
+    <module>SpringBoot-21-Redisson</module>
+    <module>SpringBoot-22-Lettuce</module>
   </modules>
 
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.1.0.RELEASE</version>
+    <version>2.3.12.RELEASE</version>
     <relativePath /> <!-- lookup parent from repository -->
   </parent>
 
@@ -119,14 +121,6 @@
         <version>2.12.0</version>
       </dependency>
       <!-- curator end -->
-
-      <!-- redisson begin -->
-      <dependency>
-        <groupId>org.redisson</groupId>
-        <artifactId>redisson</artifactId>
-        <version>3.7.5</version>
-      </dependency>
-      <!-- redisson end -->
 
     </dependencies>
   </dependencyManagement>

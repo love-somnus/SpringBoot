@@ -81,6 +81,13 @@ public class Java8Collectors {
         Map<String, Optional<Fruit>> map = fruits.stream().collect(Collectors.groupingBy(Fruit::getAlias, Collectors.reducing((f,s) -> s)));
         System.out.println(map);
 
+        //合并list
+        List<List<Integer>> numss = Lists.newArrayList(Ints.asList(3, 2), Ints.asList(4, 5));
+        List<Integer> result = numss.stream()
+                .filter(Objects::nonNull)
+                .reduce(new ArrayList<>(), (all, item ) -> {all.addAll(item); return all;});
+        System.out.println(result);
+
     }
 
     @Test//该收集器将输入元素累积到给定的收集器中，然后执行其他完成功能

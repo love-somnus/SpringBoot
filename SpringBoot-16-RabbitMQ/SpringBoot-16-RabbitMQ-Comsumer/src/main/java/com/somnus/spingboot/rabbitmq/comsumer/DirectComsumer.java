@@ -13,7 +13,7 @@ import com.somnus.spingboot.rabbitmq.domain.Order;
 @Component
 public class DirectComsumer {
 
-    @RabbitListener(queues = "hello")
+    @RabbitListener(queues = "broadcast")
     public void hello(Order order, Channel channel, Message message) throws Exception{
         log.info("order：{},{}", order, message.getBody());
         try {

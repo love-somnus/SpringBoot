@@ -1,10 +1,15 @@
 package com.somnus.springboot;
 
+import lombok.SneakyThrows;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +32,14 @@ public class YamlController {
     @GetMapping("yaml")
     public Person yaml(){
         return person;
+    }
+
+
+    @RequestMapping("test")
+    @SneakyThrows
+    public String test(HttpServletRequest request){
+        System.out.println(IOUtils.toString(request.getInputStream(), "UTF-8"));
+        return "ok";
     }
 
     @GetMapping("name")

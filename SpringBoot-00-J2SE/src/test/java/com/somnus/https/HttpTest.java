@@ -2,7 +2,6 @@ package com.somnus.https;
 
 import java.io.*;
 import java.net.HttpURLConnection;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
@@ -17,7 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.fluent.Form;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.client.utils.URIBuilder;
@@ -136,7 +134,7 @@ public class HttpTest {
     @SneakyThrows
     public void doFormParamPost() {
         String url = "https://httpbin.org/post";
-        Map<String, String> param = new HashMap<String, String>();
+        Map<String, String> param = new HashMap<>();
         param.put("custname", "admin");
         param.put("custtel", "123456");
         System.out.println("body:" + HttpClientUtil.doPost(url, param));
@@ -157,7 +155,7 @@ public class HttpTest {
     @Test
     @SneakyThrows
     public void doFormParamPostByFluent2() {
-        String url = "http://api.test.nesh/wt-oauth/oauth/identify";
+        String url = "https://httpbin.org/post";
         Map<String,String> params = ImmutableMap.of("system", "wt-cmc", "requestUrl", "game/all");
         List<NameValuePair> pairs = params.entrySet().stream().map(entry -> new BasicNameValuePair(entry.getKey(), entry.getValue())).collect(Collectors.toList());
         String response = Request.Post(url).bodyForm(pairs).addHeader("Authorization","xxxxx").execute().returnContent().asString();

@@ -55,22 +55,22 @@ public class PaymentChannelServiceImpl implements PaymentChannelService {
 
     @Override
     public String handleReturn(PayChannel channel, Map<String, Object> parameter) {
-        return handleCallback(new RequestParameter<Map<String, Object>, String>(channel, RequestType.RETURN, parameter));
+        return handleCallback(new RequestParameter<>(channel, RequestType.RETURN, parameter));
     }
 
     @Override
     public String handleReturn(PayChannel channel, String parameter) {
-        return handleCallback(new RequestParameter<String, String>(channel, RequestType.RETURN, parameter));
+        return handleCallback(new RequestParameter<>(channel, RequestType.RETURN, parameter));
     }
 
     @Override
     public String handleNotify(PayChannel channel, Map<String, Object> parameter) {
-        return handleCallback(new RequestParameter<Map<String, Object>, String>(channel, RequestType.NOTIFY, parameter));
+        return handleCallback(new RequestParameter<>(channel, RequestType.NOTIFY, parameter));
     }
 
     @Override
     public String handleNotify(PayChannel channel, String parameter) {
-        return handleCallback(new RequestParameter<String, String>(channel, RequestType.NOTIFY, parameter));
+        return handleCallback(new RequestParameter<>(channel, RequestType.NOTIFY, parameter));
     }
 
     @Override

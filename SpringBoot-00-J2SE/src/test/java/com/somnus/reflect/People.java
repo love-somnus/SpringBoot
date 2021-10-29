@@ -1,6 +1,10 @@
 package com.somnus.reflect;
 
-public class People extends China{
+import java.io.Serializable;
+
+public class People extends China implements Serializable {
+
+	private static final long serialVersionUID = 2995357427329388686L;
 	private String sex = "male";
 
 	public double height = 10.0;

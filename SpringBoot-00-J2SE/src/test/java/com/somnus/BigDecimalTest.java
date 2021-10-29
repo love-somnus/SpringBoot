@@ -45,7 +45,7 @@ public class BigDecimalTest {
         BigDecimal a = new BigDecimal("2.23");
         BigDecimal b = new BigDecimal("100");
         System.out.println(a.multiply(b).setScale(0, RoundingMode.HALF_UP));
-        System.out.println(a.multiply(b).setScale(2, RoundingMode.HALF_UP));
+        System.out.println(b .setScale(2, RoundingMode.HALF_UP));
     }
 
     @Test

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hello WebSocket</title>
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <script type="text/javascript" src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
+    <script type="text/javascript" src="https://cdn.bootcdn.net/ajax/libs/sockjs-client/1.5.0/sockjs.min.js"></script>
+    <script type="text/javascript" src="https://cdn.bootcdn.net/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/underscore@1.12.0/underscore-min.js"></script>
+    <script type="text/javascript" src="exchange.js"></script>
+</head>
+<body>
+<div id="main-content" class="container" style="margin-top: 10px;">
+    <div class="row">
+        <form class="navbar-form" style="margin-left:0px">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>WebSocket 连接：</label>
+                    <label>userId：</label>
+                    <div class="form-group">
+                        <input type="text" id="userId" class="form-control" placeholder="userId">
+                    </div>
+                    <button class="btn btn-success" type="button" value="connect" onclick="connect();">进行连接</button>
+                    <button class="btn btn-danger disabled" type="button" value="disconnect" onclick="disconnect();">断开连接</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    </br>
+    <div class="row">
+        <div class="form-group">
+            <label>接收人(userId)：</label>
+            <input type="text" id="receiver" class="form-control" placeholder="userId" value="2">
+            <label for="content">发送的消息内容：</label>
+            <input type="text" id="content" class="form-control" placeholder="消息的内容">
+        </div>
+        <button class="btn btn-info" onclick="sendMessageNoParameter();" type="button">发送</button>
+    </div>
+    </br>
+    <div class="row">
+        <div class="col-md-12">
+            <h5 class="page-header" style="font-weight:bold">聊天内容：</h5>
+            <table class="table table-striped">
+                <tbody id="information"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

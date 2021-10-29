@@ -10,6 +10,7 @@ import org.junit.Test;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -75,8 +76,6 @@ public class Java8Lambada {
 
         List<String> fruits = Lists.newArrayList("apple","banana","apple","watermelon","orange");
 
-        fruits.stream().map(item -> item.toUpperCase()).forEach(System.out::println);
-
         fruits.stream().map(String :: toUpperCase).forEach(System.out::println);
 
         fruits.stream().map(String :: length).forEach(System.out::println);
@@ -111,8 +110,13 @@ public class Java8Lambada {
         List<String> fruits = Lists.newArrayList("apple","banana","apple","watermelon","orange");
         fruits.stream().distinct().forEach(System.out::println);
 
-        List<Fruit> fruitss = Lists.newArrayList(new Fruit("a", "apple"),new Fruit("a", "apple"),new Fruit("c", "cherry"));
+        List<Fruit> fruitss = Lists.newArrayList(new Fruit("a", "apple"),new Fruit("b", "banana"),new Fruit("a", "apple"),new Fruit("a", "almond"));
         fruitss.stream().distinct().forEach(System.out::println);
+
+        ArrayList<Fruit> collect1 = fruitss.stream().collect(Collectors.collectingAndThen(
+                Collectors.toCollection(() -> new TreeSet<>(
+                        Comparator.comparing(p -> p.getAlias() + ";" + p.getName()))), ArrayList::new));
+        System.out.println(collect1);
     }
 
     @Test
@@ -143,7 +147,6 @@ public class Java8Lambada {
     public void filter(){
         List<String> fruits = Lists.newArrayList("apple","banana","cherry","watermelon","orange");
         System.out.println(fruits.stream().filter(fruit -> fruit.startsWith("a")).collect(Collectors.toList()));
-        System.out.println(fruits.stream().count());
 
         List<Fruit> fruitss = Lists.newArrayList(new Fruit(), new Fruit("b", "banana"));
         System.out.println(fruitss.stream().map(Fruit::getName).filter(Objects::nonNull).collect(Collectors.toList()));
@@ -207,6 +210,40 @@ public class Java8Lambada {
         List<String> fruits = Lists.newArrayList("apple","banana","cherry","watermelon","orange");
         System.out.println(fruits.stream().map(fruit -> fruit.split("")).flatMap(Arrays::stream).collect(Collectors.toList()));
         System.out.println(fruits.stream().flatMap(fruit -> Stream.of(fruit.split(""))).collect(Collectors.toList()));
+
+
+        List<Map<String,Integer>> list = Lists.newArrayList(ImmutableMap.of("a", 1, "b", 2), ImmutableMap.of("c", 1, "d", 2), ImmutableMap.of("a", 3, "d", 4));
+        // 覆盖key相同的值，
+        Map<String,Object> map = list.stream().map(Map::entrySet).flatMap(Set::stream)
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (existing, replacement) -> replacement));
+        System.out.println(map);
+
+        // 覆盖key相同的值，
+        Map<String,Object> map2 = list.stream().flatMap(m -> m.entrySet().stream())
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (existing, replacement) -> replacement));
+        System.out.println(map2);
+
+        // 覆盖key相同的值，
+        Map<String,Object> map3 = list.stream().map(Map::entrySet).flatMap(Collection::stream)
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (existing, replacement) -> replacement));
+        System.out.println(map3);
+
+        List<List<Integer>> numss = Lists.newArrayList(Ints.asList(3, 2), Ints.asList(2, 5));
+        System.out.println(numss.stream().filter(Objects::nonNull).flatMap(Collection::stream)/*.distinct()*/
+                .collect(Collectors.toList()));
+        System.out.println(Arrays.toString(
+                numss.stream().filter(Objects::nonNull).flatMap(Collection::stream)/*.distinct()*/
+                        .toArray(Integer[]::new)
+        ));
+
+        List<String[]> arrayList = Lists.newArrayList(new String[]{"10111011001", "10119910001"},  new String[]{"11111017501", "10119910001"});
+        System.out.println(arrayList.stream().filter(Objects::nonNull).flatMap(Arrays::stream)/*.distinct()*/
+                .collect(Collectors.toList()));
+        System.out.println(Arrays.toString(
+                arrayList.stream().filter(Objects::nonNull).flatMap(Arrays::stream)/*.distinct()*/
+                        .toArray(String[]::new)
+        ));
+
     }
 
 }

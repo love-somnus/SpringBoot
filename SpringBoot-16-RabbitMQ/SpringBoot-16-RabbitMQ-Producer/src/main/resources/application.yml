@@ -1,8 +1,8 @@
 spring: 
   rabbitmq:
-    addresses: 121.43.162.28:5672,47.96.100.166:5672,118.24.136.237:5672
-    username: guest
-    password: guest
+    addresses: 192.168.95.28:5672
+    username: admin
+    password: passw0rd
     virtual-host: /
     template:
       retry:
