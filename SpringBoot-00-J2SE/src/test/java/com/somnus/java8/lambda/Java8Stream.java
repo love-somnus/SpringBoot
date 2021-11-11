@@ -97,9 +97,9 @@ public class Java8Stream {
     public void list2array(){
         List<Integer> nums = Ints.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20);
 
-        System.out.println(nums.stream().mapToInt(str -> str).toArray());
-        System.out.println(nums.stream().mapToLong(str -> str).toArray());
-        System.out.println(nums.stream().mapToDouble(str -> str).toArray());
+        System.out.println(Arrays.toString(nums.stream().mapToInt(str -> str).toArray()));
+        System.out.println(Arrays.toString(nums.stream().mapToLong(str -> str).toArray()));
+        System.out.println(Arrays.toString(nums.stream().mapToDouble(str -> str).toArray()));
     }
 
     @Test

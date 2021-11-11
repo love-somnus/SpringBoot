@@ -10,5 +10,6 @@
   </parent>
 
   <artifactId>SpringBoot-20-Dubbo-Api</artifactId>
+  <packaging>pom</packaging>
 
 </project>

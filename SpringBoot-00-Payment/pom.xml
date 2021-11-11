@@ -46,10 +46,6 @@
       <artifactId>fastjson</artifactId>
       <version>1.2.16</version>
     </dependency>
-    <dependency>
-      <groupId>dom4j</groupId>
-      <artifactId>dom4j</artifactId>
-    </dependency>
     <!-- commons -->
     <dependency>
       <groupId>org.apache.commons</groupId>

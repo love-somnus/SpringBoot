@@ -10,6 +10,7 @@
   </parent>
 
   <artifactId>SpringBoot-20-Dubbo</artifactId>
+  <packaging>pom</packaging>
 
   <modules>
     <module>SpringBoot-20-Dubbo-Api</module>
@@ -22,24 +23,31 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-actuator</artifactId>
-    </dependency>
-
+    <!-- nacos -->
     <dependency>
       <groupId>com.alibaba.boot</groupId>
+      <artifactId>nacos-discovery-spring-boot-starter</artifactId>
+    </dependency>
+    <!-- dubbo -->
+    <dependency>
+      <groupId>org.apache.dubbo</groupId>
       <artifactId>dubbo-spring-boot-starter</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.alibaba.boot</groupId>
-      <artifactId>dubbo-spring-boot-actuator</artifactId>
+      <groupId>org.apache.dubbo</groupId>
+      <artifactId>dubbo-registry-nacos</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.dubbo</groupId>
+      <artifactId>dubbo-serialization-kryo</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>log4j</groupId>
+          <artifactId>log4j</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
-    <dependency>
-      <groupId>de.javakaffee</groupId>
-      <artifactId>kryo-serializers</artifactId>
-    </dependency>
   </dependencies>
 
 </project>

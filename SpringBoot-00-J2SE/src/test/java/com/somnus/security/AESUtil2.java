@@ -10,7 +10,6 @@ import javax.crypto.spec.SecretKeySpec;
 
 /**
  * @author Kevin
- * @packageName com.netease.wt.microservice.commons.core.utils
  * @title: AESUtil
  * @description: http://tool.chacuo.net/cryptaes
  * @date 2020/2/26 17:26

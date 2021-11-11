@@ -10,6 +10,7 @@
   </parent>
 
   <artifactId>SpringBoot-20-Dubbo-Provider</artifactId>
+  <packaging>pom</packaging>
 
   <dependencies>
     <dependency>

@@ -6,7 +6,6 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
 /**
- * @packageName com.netease.wt.microservice.provider.uac.listener
  * @title: SpringApplicationListener
  * @description: TODO
  * @date 2020/4/20 16:12

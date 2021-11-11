@@ -120,7 +120,7 @@ public class HttpTest {
     @SneakyThrows
     public void doQueryParamGetByFluent3() {
         String url = "https://login.netease.com/connect/authorize";
-        MultiValueMap<String, String> params = new LinkedMultiValueMap(
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>(
                 ImmutableMap.of("response_type", ImmutableList.of("code"),
                         "client_id", ImmutableList.of("0ff62954802f11e98e6d246e965dfd84"),
                         "redirect_uri", ImmutableList.of("https://cms.nesh.netease.com"),

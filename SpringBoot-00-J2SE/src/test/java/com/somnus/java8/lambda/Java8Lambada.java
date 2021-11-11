@@ -10,7 +10,6 @@ import org.junit.Test;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -145,11 +144,13 @@ public class Java8Lambada {
 
     @Test
     public void filter(){
-        List<String> fruits = Lists.newArrayList("apple","banana","cherry","watermelon","orange");
+        List<String> fruits = Lists.newArrayList("apple","banana","cherry","watermelon","orange", "app");
         System.out.println(fruits.stream().filter(fruit -> fruit.startsWith("a")).collect(Collectors.toList()));
 
         List<Fruit> fruitss = Lists.newArrayList(new Fruit(), new Fruit("b", "banana"));
         System.out.println(fruitss.stream().map(Fruit::getName).filter(Objects::nonNull).collect(Collectors.toList()));
+
+        System.out.println(fruits.stream().filter(s -> s.startsWith("a")).mapToInt(String::length).max().orElse(0));;
     }
 
     @Test
