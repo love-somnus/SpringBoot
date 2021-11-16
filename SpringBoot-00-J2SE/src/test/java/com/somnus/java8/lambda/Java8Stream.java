@@ -103,6 +103,22 @@ public class Java8Stream {
     }
 
     @Test
+    public void array2list(){
+
+        /* 一个或多个 元素优雅的转换成一个集合 */
+        List<String> fruits = Stream.of("apple", "banana").collect(Collectors.toList());
+        System.out.println(fruits);
+
+        List<String> flowers = Stream.of(new String[]{"rose", "tulip"}).collect(Collectors.toList());
+        System.out.println(flowers);
+
+        /* Arrays.asList(strArray)返回值是仍然是一个可变的集合，但是返回值是其内部类，不具有add方法，可以通过set方法进行增加值，默认长度是10 */
+        System.out.println(Arrays.asList("apple", "banana"));
+        /* 返回的是不可变的集合，但是这个长度的集合只有1，可以减少内存空间。但是返回的值依然是Collections的内部实现类，同样没有add的方法，调用add，set方法会报错*/
+        System.out.println(Collections.singletonList("rose"));
+    }
+
+    @Test
     public void match(){
         List<Fruit> fruits = Lists.newArrayList(new Fruit("a", "apple"),new Fruit("b", "banana"),new Fruit("c", "cherry"));
         List<String> letters = Lists.newArrayList("a","w","d","f","c");
