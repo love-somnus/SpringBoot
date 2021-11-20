@@ -21,10 +21,10 @@ public class CommonsCodec {
 
     @Test
     public void Base64() {
-        String encode = Base64.encodeBase64String("Somnus".getBytes(/*"UTF-8"*/));
+        String encode = Base64.encodeBase64String("micro-client:micro-secret".getBytes(/*"UTF-8"*/));
         System.out.println("Base64 编码后：" + encode);
 
-        byte[] decode = Base64.decodeBase64("U29tbnVz");
+        byte[] decode = Base64.decodeBase64("bWljcm8tY2xpZW50Om1pY3JvLXNlY3JldA==");
         String decodestr = new String(decode);
         System.out.println("Base64 解码后：" + decodestr);
     }

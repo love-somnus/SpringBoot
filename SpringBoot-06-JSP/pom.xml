@@ -10,6 +10,7 @@
   </parent>
 
   <artifactId>SpringBoot-06-JSP</artifactId>
+  <packaging>pom</packaging>
 
   <modules>
     <module>SpringBoot-06-JSP-Properties</module>
