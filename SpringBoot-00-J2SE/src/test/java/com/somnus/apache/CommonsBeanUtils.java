@@ -35,7 +35,7 @@ public class CommonsBeanUtils {
         dc.setPatterns(patterns);
         //Date顺利被转换成String
         ConvertUtils.register(dc, String.class);
-        //null可以用来正常转换
+        //String顺利被转换成Date(null值也支持)
         ConvertUtils.register(dc, java.util.Date.class);
     }
 

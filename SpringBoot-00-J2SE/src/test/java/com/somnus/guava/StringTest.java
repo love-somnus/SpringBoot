@@ -30,7 +30,7 @@ public class StringTest {
 
     @Test
     public void Joiner() {
-        System.out.println(Joiner.on("; ").skipNulls().join(Arrays.asList(1)));
+        System.out.println(Joiner.on("; ").skipNulls().join(Collections.singletonList(1)));
         System.out.println(Joiner.on("-").skipNulls().join("a","b","c","d"));
     }
 

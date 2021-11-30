@@ -35,7 +35,7 @@ public class BloomTest {
             }
         }
 
-        // 故意取10000个不在过滤器里的值，看看有多少个会被认为在过滤器里
+        // 存入过过滤器的值，一定能判定出存在或者不存在；未存入过过滤器的值，可能会被误判存入过
         int count = 0;
         for (int i = total; i < total + 10000; i++) {
             if (filter.mightContain(i)) {

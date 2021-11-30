@@ -24,7 +24,7 @@ public class CollectionTest {
         Iterable<Integer> concatenated = Iterables.concat(
                 Ints.asList(1, 2, 3),
                 Ints.asList(4, 5, 6));
-        concatenated.forEach(item -> System.out.println(item));
+        concatenated.forEach(System.out::println);
 
         System.out.println(Iterables.getLast(concatenated));
         System.out.println(Iterables.getFirst(concatenated,99));
@@ -119,7 +119,7 @@ public class CollectionTest {
                 .put("a", "11")
                 .build();
         System.out.println(imap.toString());
-        imap.entries().stream().forEach(entry -> System.out.println(entry.getKey() + ":" + entry.getValue()));
+        imap.entries().forEach(entry -> System.out.println(entry.getKey() + ":" + entry.getValue()));
 
         //spring
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
@@ -130,7 +130,7 @@ public class CollectionTest {
         params.forEach((k,v) -> {
             System.out.println(k + ":" + v);
         });
-        params.entrySet().stream().forEach(entry -> System.out.println(entry.getKey() + ":" + entry.getValue()));
-        params.entrySet().stream().map(entry -> entry.getValue()).flatMap(List::stream).forEach(v -> System.out.println(v));
+        params.forEach((key, value) -> System.out.println(key + ":" + value));
+        params.values().stream().flatMap(List::stream).forEach(System.out::println);
     }
 }
