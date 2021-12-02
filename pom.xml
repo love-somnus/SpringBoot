@@ -15,7 +15,6 @@
     <module>SpringBoot-00-J2SE</module>
     <module>SpringBoot-00-Reactor</module>
     <module>SpringBoot-00-Payment</module>
-    <module>SpringBoot-00-Seckill</module>
     <module>SpringBoot-00-Webflux</module>
     <module>SpringBoot-01-HelloWorld</module>
     <module>SpringBoot-01-Servlet-Filter</module>

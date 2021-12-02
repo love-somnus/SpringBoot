@@ -2,7 +2,6 @@ package com.somnus.springboot.pay.web.controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -101,7 +100,7 @@ public abstract class PaymentController{
     protected abstract String doPay(PaymentOrder paymentOrder, HttpServletRequest request, HttpServletResponse response, Model model);
 
     @RequestMapping("order")
-    public String order(@Valid PaymentOrder paymentOrder, BindingResult result, HttpServletRequest request, Model model) {
+    public String order(PaymentOrder paymentOrder, BindingResult result, HttpServletRequest request, Model model) {
         if (logger.isInfoEnabled()) {
             logger.info("处理来自[{}]支付请求:[{}]", SystemUtil.getRemoteIP(request), paymentOrder.toString());
         }

@@ -4,7 +4,6 @@ import java.net.URLEncoder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -109,7 +108,7 @@ public class WapPayController extends PaymentController {
     }
 
     @RequestMapping(value = "wx/code")
-    public @ResponseBody String wxCode(@Valid PaymentOrder paymentOrder,HttpServletRequest request, HttpServletResponse response) {
+    public @ResponseBody String wxCode(PaymentOrder paymentOrder,HttpServletRequest request, HttpServletResponse response) {
         if(logger.isInfoEnabled()){
             logger.info("Process wxCode method: paymentOrder=" + paymentOrder);
         }

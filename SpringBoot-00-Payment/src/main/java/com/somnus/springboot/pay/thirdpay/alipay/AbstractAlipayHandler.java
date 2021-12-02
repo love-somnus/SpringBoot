@@ -8,10 +8,6 @@ import java.util.TreeMap;
 
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.client.fluent.Request;
-import org.apache.http.client.utils.URIBuilder;
-import org.dom4j.Document;
-import org.dom4j.DocumentHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
@@ -127,41 +123,6 @@ public abstract class AbstractAlipayHandler extends PaymentChannelHandler {
 
     public Map<String,String> queryPaymentOrder(Map<String, String> requestParamsMap, boolean isMD5SignType) {
         Map<String,String> result = null;
-        try {
-            //请求参数
-            TreeMap<String,String> requestParams = new TreeMap<String,String> ();
-            requestParams.put("service", AlipayConfig.CROSS_PAY_SERVICE_NAME);
-            requestParams.put("partner", partner);
-            requestParams.put("_input_charset", AlipayConfig.INPUT_CHARSET);
-            requestParams.put("out_trade_no", requestParamsMap.get(Constants.PAY_ID_KEY));
-            String resTxt = Request.Get(new URIBuilder(AlipayConfig.CROSS_PAY_REQUEST_WAP)
-                                                .addParameter("service", AlipayConfig.CROSS_PAY_SERVICE_NAME)
-                                                .addParameter("partner", partner)
-                                                .addParameter("_input_charset", AlipayConfig.INPUT_CHARSET)
-                                                .addParameter("out_trade_no", requestParamsMap.get(Constants.PAY_ID_KEY))
-                                                .addParameter("sign", isMD5SignType ? getSign(requestParams) : getSign(requestParams,false))
-                                                .addParameter("sign_type", isMD5SignType ? AlipayConfig.SIGN_TYPE : AlipayConfig.SIGN_TYPE_RSA)
-                                                .build()
-                                        ).execute().returnContent().asString();
-            Document document = DocumentHelper.parseText(resTxt);
-            String orderId = document.selectSingleNode("//*[@name='out_trade_no']").getText();
-            String tradeStatus = document.selectSingleNode("//alipay/response/trade/trade_status").getText();
-            String thirdTradeNo = document.selectSingleNode("//alipay/response/trade/trade_no").getText();
-            Double price = Double.valueOf(document.selectSingleNode("//alipay/response/trade/price").getText());
-            String buyerId = document.selectSingleNode("//alipay/response/trade/seller_email").getText();
-            //如果退款功能支付成功为“TRADE_SUCCESS”，如果没有退款功能成功为“TRADE_FINISHED”
-            if(AlipayConfig.TRADE_SUCCESS.equals(tradeStatus) || AlipayConfig.TRADE_FINISHED.equals(tradeStatus)){
-                result = new HashMap<String,String>();
-                result.put("orderId",orderId);
-                result.put("tradeStatus",tradeStatus);
-                result.put("thirdTradeNo",thirdTradeNo);
-                result.put("price",price+"");
-                result.put("buyerId",buyerId);
-            }
-        } catch (Exception e) {
-            LOGGER.warn("支付宝国际支付订单详情查询失败", e);
-            throw new PayException(ResultEnum.ERROR_300001);
-        }
         return result;
     }
 
