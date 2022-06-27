@@ -1,13 +1,18 @@
 package com.somnus.springboot;
 
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.redisson.api.RBloomFilter;
-import org.redisson.api.RedissonClient;
+import org.redisson.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+@Slf4j
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = Application.class)
 public class RedisTemplateTest {
@@ -17,6 +22,8 @@ public class RedisTemplateTest {
 
     @Test
     public void bloom(){
+        Long serialnumber = redissonClient.getAtomicLong("serial-number").addAndGet(1);
+        System.out.println(serialnumber);
         long star = System.currentTimeMillis();
 
         int total = 10000;
@@ -54,4 +61,30 @@ public class RedisTemplateTest {
         System.out.println("执行时间："+(end-star));
     }
 
+    @Test
+    @SneakyThrows
+    public void limiter(){
+        /* 设置访问速率，rate为访问数，rateInterval为单位时间 */
+        RRateLimiter rateLimiter = redissonClient.getRateLimiter("limiter");
+        /* 最大流速 = 每10秒钟产生1个令牌*/
+        rateLimiter.trySetRate(RateType.OVERALL, 1, 10, RateIntervalUnit.SECONDS);
+
+        ExecutorService executorService= Executors.newFixedThreadPool(10);
+        for (int i=0;i<10;i++){
+            executorService.submit(()->{
+                System.out.println(rateLimiter.availablePermits());
+                log.info("{}-{}", Thread.currentThread().getName(), rateLimiter.tryAcquire());
+            });
+        }
+
+
+        /** 主线程执行完毕后，如果子线程还没执行完成，就不会管的，测试的时候谨慎使用，main则不会*/
+        try {
+            Thread.sleep(5000000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("$$$$$$$$$$$$$$$$$$");
+
+    }
 }

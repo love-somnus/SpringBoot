@@ -40,12 +40,13 @@
     <module>SpringBoot-20-Dubbo</module>
     <module>SpringBoot-21-Redisson</module>
     <module>SpringBoot-22-Lettuce</module>
+    <module>SpringBoot-23-Zookeeper</module>
   </modules>
 
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.5.6</version>
+    <version>2.7.0</version>
     <relativePath /> <!-- lookup parent from repository -->
   </parent>
 
@@ -73,7 +74,7 @@
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
-      <version>20.0</version>
+      <version>31.1-jre</version>
     </dependency>
   </dependencies>
 

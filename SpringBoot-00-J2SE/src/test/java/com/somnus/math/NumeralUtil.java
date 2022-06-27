@@ -35,7 +35,7 @@ public class NumeralUtil {
     public void test2() {
         double pi = Math.PI;
         System.out.println(pi);
-        System.out.println("取一位整数:" + new DecimalFormat("0").format(pi));
+        System.out.println("取一位整数:" + new DecimalFormat("00").format(pi));
         System.out.println("取一位整数和两位小数:" + new DecimalFormat("0.00").format(pi));
         System.out.println("取两位整数和三位小数，整数不足部分以0填补:" + new DecimalFormat("00.000").format(pi));
 

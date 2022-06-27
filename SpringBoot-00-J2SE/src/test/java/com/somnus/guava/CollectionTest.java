@@ -1,5 +1,6 @@
 package com.somnus.guava;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -50,6 +51,7 @@ public class CollectionTest {
         countDown.forEach(System.out::println);
 
         List<List<Integer>> parts = Lists.partition(countUp, 2); // {{1, 2}, {3, 4}, {5}}
+        Lists.partition(countUp, 2).forEach(System.out::println);
         parts.forEach(System.out::println);
     }
 
@@ -68,14 +70,16 @@ public class CollectionTest {
         primes2.forEach(System.out::println);
 
         //集合操作
-        Set<Integer> set1=Sets.newHashSet(1,2,3,4,5,6);
-        Set<Integer> set2=Sets.newHashSet(4,5,6,7,8,9);
-        Set<Integer> intersectionSet=Sets.intersection(set1, set2);
-        Set<Integer> differenceSet=Sets.difference(set1, set2);
-        Set<Integer> unionSet=Sets.union(set1, set2);
-        intersectionSet.forEach(System.out::println);
-        differenceSet.forEach(System.out::println);
-        unionSet.forEach(System.out::println);
+        Set<Integer> set1 = Sets.newHashSet(1,2,3,4,5,6);
+        Set<Integer> set2 = Sets.newHashSet(4,5,6,7,8,9);
+        Set<Integer> intersectionSet = Sets.intersection(set1, set2);
+        Set<Integer> differenceSet = Sets.difference(set1, set2);
+        Set<Integer> differenceSet2 = Sets.difference(set2, set1);
+        Set<Integer> unionSet = Sets.union(set1, set2);
+        System.out.println(intersectionSet);
+        System.out.println(differenceSet);
+        System.out.println(differenceSet2);
+        System.out.println(unionSet);
     }
 
     @Test
@@ -132,5 +136,30 @@ public class CollectionTest {
         });
         params.forEach((key, value) -> System.out.println(key + ":" + value));
         params.values().stream().flatMap(List::stream).forEach(System.out::println);
+    }
+
+    @Test
+    public void Table(){
+        Table<String,String,Integer> table= HashBasedTable.create();
+        //存放元素
+        table.put("Hydra", "Jan", 20);
+        table.put("Hydra", "Feb", 28);
+
+        table.put("Trunks", "Jan", 28);
+        table.put("Trunks", "Feb", 16);
+
+        //取出元素
+        Integer dayCount = table.get("Hydra", "Feb");
+        System.out.println(dayCount);
+
+        //rowKey或columnKey的集合
+        Set<String> rowKeys = table.rowKeySet();
+        Set<String> columnKeys = table.columnKeySet();
+        System.out.println(rowKeys);
+        System.out.println(columnKeys);
+
+        //value集合
+        Collection<Integer> values = table.values();
+        System.out.println(values);
     }
 }

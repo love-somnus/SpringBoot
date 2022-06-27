@@ -1,6 +1,7 @@
 package com.somnus.java8.lambda;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.google.common.primitives.Ints;
 import org.junit.Test;
 
@@ -36,7 +37,8 @@ public class Java8Stream {
 
         IntStream.range(0, 10).boxed().collect(Collectors.toList());
 
-        List<Fruit> fruits = IntStream.range(0, 10).mapToObj(i -> new Fruit(i)).collect(Collectors.toList());
+        List<Fruit> fruits = IntStream.range(0, 10).mapToObj(Fruit::new).collect(Collectors.toList());
+        System.out.println(fruits);
     }
 
     @Test
@@ -68,17 +70,23 @@ public class Java8Stream {
 
         Pattern.compile("\\W").splitAsStream("apple banana cherry watermelon orange"). forEach(System.out::println);
 
-        String params = "Chinese->English|Chinese->Franch";
-
-        Map<String, String> map = Arrays.stream(params.split("[|]")).map(str -> str.split("->")).collect(Collectors.toMap(value -> value[1], value -> value[0],(u, v) -> v, LinkedHashMap::new));
-
+        String params = "apple=1111&banana=2222&pear=3333&grape=44444";
+        Map<String, String> map = Arrays.stream(params.split("&")).map(str -> str.split("=")).collect(Collectors.toMap(value -> value[0], value -> value[1], (u, v) -> v, LinkedHashMap::new));
         System.out.println(map);
 
-        String params2 = "apk=cb&game=disgaea-tw&task=27&mobile=886953181966";
+        String str = map.entrySet().stream().map(p -> p.getKey() + "=" + p.getValue()).reduce((p1, p2) -> p1 + "&" + p2).map(s -> "?" + s).orElse("");
+        System.out.println(str);
+        String str2 = map.entrySet().stream().map(p -> p.getKey() + "=" + p.getValue()).collect(Collectors.joining("&"));
+        System.out.println(str2);
 
-        Map<String, String> map2 = Arrays.stream(params2.split("&")).map(str -> str.split("=")).collect(Collectors.toMap(value -> value[0], value -> value[1],(u, v) -> v, LinkedHashMap::new));
+        String params2 = "rose=1111&tulip =2222&tulip =3333&sunflower =44444";
+        List<Fruit> list = Arrays.stream(params2.split("&")).map(value -> value.split("=")).map(value -> new Fruit(value[0], value[1])).collect(Collectors.toList());
+        System.out.println(list);
 
-        System.out.println(map2);
+        String fruits = list.stream().map(p -> p.getAlias() + "=" + p.getName()).reduce((p1, p2) -> p1 + "&" + p2).map(s -> "?" + s).orElse("");
+        System.out.println(fruits);
+        String fruits2 = list.stream().map(p -> p.getAlias() + "=" + p.getName()).collect(Collectors.joining("&"));
+        System.out.println(fruits2);
     }
 
     @Test
@@ -95,27 +103,75 @@ public class Java8Stream {
 
     @Test
     public void list2array(){
-        List<Integer> nums = Ints.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20);
-
-        System.out.println(Arrays.toString(nums.stream().mapToInt(str -> str).toArray()));
-        System.out.println(Arrays.toString(nums.stream().mapToLong(str -> str).toArray()));
-        System.out.println(Arrays.toString(nums.stream().mapToDouble(str -> str).toArray()));
+        List<String> nums = Lists.newArrayList("1", "2", "3", "4");
+        //List<String> 转 Integer[ ]
+        System.out.println(Arrays.toString(nums.stream().map(Integer::parseInt).toArray()));
+        System.out.println(Arrays.toString(nums.stream().map(Long::parseLong).toArray()));
+        System.out.println(Arrays.toString(nums.stream().map(Double::parseDouble).toArray()));
+        System.out.println(Arrays.toString(nums.stream().map(Integer::parseInt).toArray(Integer[]::new)));
     }
 
     @Test
     public void array2list(){
 
-        /* 一个或多个 元素优雅的转换成一个集合 */
+        /* String[ ] 转 List<String> */
         List<String> fruits = Stream.of("apple", "banana").collect(Collectors.toList());
         System.out.println(fruits);
-
         List<String> flowers = Stream.of(new String[]{"rose", "tulip"}).collect(Collectors.toList());
         System.out.println(flowers);
+
+        //String[ ] 转 Integer [ ]
+        String[] strArry = new String[]{"5", "6", "1", "4", "9"};
+        Integer[] integerArry = Arrays.stream(strArry).map(Integer::parseInt).toArray(Integer[]::new);
+        System.out.println(integerArry);
+
+        //int [ ] 转 List<Integer>
+        int[] intArry = new int[]{5,6,1,4,9};
+        List<Integer> integerList = Arrays.stream(intArry).boxed().collect(Collectors.toList());
+        System.out.println(integerList);
+
+        //int [ ] 转 Integer [ ]
+        Integer[] integerArry2 = Arrays.stream(intArry).boxed().toArray(Integer[]::new);
+        System.out.println(integerArry2);
 
         /* Arrays.asList(strArray)返回值是仍然是一个可变的集合，但是返回值是其内部类，不具有add方法，可以通过set方法进行增加值，默认长度是10 */
         System.out.println(Arrays.asList("apple", "banana"));
         /* 返回的是不可变的集合，但是这个长度的集合只有1，可以减少内存空间。但是返回的值依然是Collections的内部实现类，同样没有add的方法，调用add，set方法会报错*/
         System.out.println(Collections.singletonList("rose"));
+    }
+
+    @Test
+    public void set2array(){
+        Set<String> set = Sets.newHashSet("1", "2", "3", "4");
+        String[] array = set.toArray(new String[0]);
+        System.out.println(array);
+        String[] array2 = set.stream().toArray(String[]::new);
+        System.out.println(array2);
+    }
+    @Test
+    public void array2set(){
+        String[] array = new String[]{"5", "6", "1", "4", "9"};
+        Set<String> set = new HashSet<>(Arrays.asList(array));
+        System.out.println(set);
+        Set<String> set2 = Stream.of(array).collect(Collectors.toSet());
+        System.out.println(set2);
+    }
+
+    @Test
+    public void set2list(){
+        Set<String> set = Sets.newHashSet("1", "2", "3", "4");
+        List<String> list = new ArrayList<>(set);
+        System.out.println(list);
+        List<String> list2 = Stream.of(set.toArray(new String[0])).collect(Collectors.toList());
+        System.out.println(list2);
+    }
+    @Test
+    public void list2set(){
+        List<String> list = Lists.newArrayList("1", "2", "3", "4");
+        Set<String> set = new HashSet<>(list);
+        System.out.println(set);
+        Set<String> set2 = list.stream().collect(Collectors.toSet());
+        System.out.println(set2);
     }
 
     @Test

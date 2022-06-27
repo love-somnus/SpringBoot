@@ -21,12 +21,10 @@ public class CommonsCodec {
 
     @Test
     public void Base64() {
-        String encode = Base64.encodeBase64String("micro-client:micro-secret".getBytes(/*"UTF-8"*/));
-        System.out.println("Base64 编码后：" + encode);
+        byte[] key = java.util.Base64.getDecoder().decode("DEsSyV+rxMOqtsgdm80xf99QD0AWf/1zokLd9ne5kJQS5xAb5v3gGD4/qMKgmy7gnGJ2LgrEZhWpX4Jl5EpfeeeiTrjUTfMBLG28ire8VgYqN/s5/JthUoPnd/BrB9sT2KxRK8j4i+LMKiN56x00GyBQeVnkjw4X73cok3o6OF4=");
 
-        byte[] decode = Base64.decodeBase64("bWljcm8tY2xpZW50Om1pY3JvLXNlY3JldA==");
-        String decodestr = new String(decode);
-        System.out.println("Base64 解码后：" + decodestr);
+        System.out.println(Arrays.toString(key));
+        System.out.println(key.length);
     }
 
     @Test

@@ -4,6 +4,7 @@ import java.io.File;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -156,9 +157,13 @@ public class CommonsLang {
         String url = "https://arena.163.com/download/?game=arena&task=12&mobile=18538855430";
         System.out.println(StringUtils.substringBefore(url ,"?"));
 
-        System.out.println(StringUtils.substringBeforeLast("copier" ,"#"));
-
         System.out.println(StringUtils.substringAfter(url, "?"));
+
+        System.out.println(StringUtils.substringBefore("copier@163@com","@"));
+        System.out.println(StringUtils.substringAfter("copier@163@com", "@"));
+        System.out.println(StringUtils.substringBeforeLast("copier@163@com","@"));
+        System.out.println(StringUtils.substringAfterLast("copier@163@com","@"));
+
         //缩写省略字符串
         System.out.println(StringUtils.abbreviate("abcdefghijklmno", -1, 10));
         // 判断该字符串是不是为数字(0~9)组成，如果是，返回true 但该方法不识别有小数点和请注意
@@ -196,6 +201,8 @@ public class CommonsLang {
         System.out.println(StringUtils.contains("abc", "ba"));//false
         System.out.println(StringUtils.containsAny("abc", 'a', 'd'));//true
         System.out.println(StringUtils.containsAny("abc", "ab", "bd"));//true
+
+        System.out.println(StringUtils.containsOnly("abc", "ba"));//false
         // 表示左边两个字符 
         System.out.println(StringUtils.left("abc", 2));//ab
         // 表示左边两个字符 
@@ -373,7 +380,7 @@ public class CommonsLang {
         List<BasicNameValuePair> nameValuePairs = params.entrySet().stream()
                 .map(entry -> new BasicNameValuePair(entry.getKey(), entry.getValue()))
                 .collect(Collectors.toList());
-        System.out.println(URLEncodedUtils.format(nameValuePairs, Charset.forName("UTF-8")));
+        System.out.println(URLEncodedUtils.format(nameValuePairs, StandardCharsets.UTF_8));
     }
 
     @Test

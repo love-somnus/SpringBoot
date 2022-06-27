@@ -36,6 +36,31 @@ public final class Optionally<T> {
      */
     private final T value;
 
+    /**
+     * 初始化为 true  true &&其它布尔值时由其它布尔值决定真假
+     */
+    private Predicate<T> predicate = t -> true;
+
+    /**
+     * 添加一个校验策略，可以无限续杯😀
+     *
+     * @param predicate the predicate
+     * @return the validator
+     */
+    public Optionally<T> with(Predicate<T> predicate) {
+        this.predicate = this.predicate.and(predicate);
+        return this;
+    }
+
+    /**
+     * 执行校验
+     *
+     * @return the boolean
+     */
+    public boolean validate() {
+        return predicate.test(value);
+    }
+
     private Optionally() {
         this.value = null;
     }

@@ -35,7 +35,7 @@ public class Java8Lambada {
 
         List<String> fruits = Lists.newArrayList("apple","banana","apple","watermelon","orange");
 
-        fruits.stream().forEach(item -> System.out.println(Thread.currentThread().getName()+ ">>"+ item));
+        fruits.forEach(item -> System.out.println(Thread.currentThread().getName()+ ">>"+ item));
 
         System.out.println("-----------------------------------------------------------------");
 
@@ -208,6 +208,25 @@ public class Java8Lambada {
 
     @Test
     public void flatMap(){
+
+        String[] a = {"a", "b", "c"};
+        String[] b = {"1", "2", "3"};
+        //两个字符串数组合并为一个新的数组
+        String[] c = Stream.of(a, b).flatMap(Stream::of).toArray(String[]::new);
+        System.out.println(c);
+        //两个String数组转List<String>
+        List<String> strList = Stream.of(a, b).flatMap(Stream::of).collect(Collectors.toList());
+        System.out.println(strList);
+
+        int[] ai = new int[]{1,3};
+        int[] bi = new int[]{2,4};
+        //两个 int 型数组合并为一个新的 int 型数组
+        int[] ci =  IntStream.concat(Arrays.stream(ai), Arrays.stream(bi)).toArray();
+        System.out.println(ci);
+        //两个int数组转List<Integer>
+        List<Integer> integerList = Stream.of(IntStream.of(ai).boxed(), IntStream.of(bi).boxed()).flatMap(s -> s).collect(Collectors.toList());
+        System.out.println(integerList);
+
         List<String> fruits = Lists.newArrayList("apple","banana","cherry","watermelon","orange");
         System.out.println(fruits.stream().map(fruit -> fruit.split("")).flatMap(Arrays::stream).collect(Collectors.toList()));
         System.out.println(fruits.stream().flatMap(fruit -> Stream.of(fruit.split(""))).collect(Collectors.toList()));
@@ -229,13 +248,29 @@ public class Java8Lambada {
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (existing, replacement) -> replacement));
         System.out.println(map3);
 
-        List<List<Integer>> numss = Lists.newArrayList(Ints.asList(3, 2), Ints.asList(2, 5));
-        System.out.println(numss.stream().filter(Objects::nonNull).flatMap(Collection::stream)/*.distinct()*/
-                .collect(Collectors.toList()));
-        System.out.println(Arrays.toString(
-                numss.stream().filter(Objects::nonNull).flatMap(Collection::stream)/*.distinct()*/
-                        .toArray(Integer[]::new)
-        ));
+        List<Integer> l1 = Ints.asList(3, 2);
+        List<Integer> l2 = Ints.asList(4, 5, 3);
+        //两个List合并为一个新的List
+        List<Integer> result2 = Stream.of(l1, l2).flatMap(Collection::stream).collect(Collectors.toList());
+        System.out.println(result2);
+        //交集
+        List<Integer> beMixed = l1.stream().filter(l2::contains).collect(Collectors.toList());
+        System.out.println("交集:" + beMixed);//[3]
+        //差集
+        List<Integer> subtraction = l1.stream().filter(v -> !l2.contains(v)).collect(Collectors.toList());
+        System.out.println("差集:" + subtraction);//[2]
+
+        List<List<Integer>> numss = Arrays.asList(l1, l2);
+        List<Integer> result = numss.stream().filter(Objects::nonNull).reduce(new ArrayList<>(), (all, item ) -> {all.addAll(item); return all;});
+        System.out.println(result);
+
+        List<Integer> result3 = numss.stream().filter(Objects::nonNull).flatMap(Collection::stream)/*.distinct()*/
+                .collect(Collectors.toList());
+        System.out.println(result3);
+
+        Integer[] result4 = numss.stream().filter(Objects::nonNull).flatMap(Collection::stream)/*.distinct()*/
+                .toArray(Integer[]::new);
+        System.out.println(Arrays.toString(result4));
 
         List<String[]> arrayList = Lists.newArrayList(new String[]{"10111011001", "10119910001"},  new String[]{"11111017501", "10119910001"});
         System.out.println(arrayList.stream().filter(Objects::nonNull).flatMap(Arrays::stream)/*.distinct()*/
@@ -245,6 +280,27 @@ public class Java8Lambada {
                         .toArray(String[]::new)
         ));
 
+        List<String> arrayList2 = Lists.newArrayList("aa|111", "bb|222", "cc|333");
+        System.out.println(arrayList2.stream()
+                .filter(Objects::nonNull)
+                .flatMap(v -> Arrays.stream(v.split("[|]")))
+                .distinct()
+                .collect(Collectors.toList()));
+
+        //"-分割后获取字母，转为新数组
+        String[] strArray = arrayList2.stream().map(v -> v.split("")[0]).toArray(String[]::new);
+        //"-分割后获取字母，转List
+        List<String> lists = arrayList2.stream().map(v -> v.split("")[0]).collect(Collectors.toList());
+        //"-分割后获取字母，用逗号拼接为字符串
+        String str = arrayList2.stream().map(v -> v.split("")[0]).collect(Collectors.joining(","));
+
+        System.out.println(Arrays.toString(strArray));//[a, b, c]
+        System.out.println(lists);//[a, b, c]
+        System.out.println(str);//a,b,c
+
+        String params = "apple=1111&banana=2222&pear=3333&grape=44444";
+        List<String> list2 = Arrays.stream(params.split("&")).map(v -> v.split("=")).flatMap(Stream::of).collect(Collectors.toList());
+        System.out.println(list2);
     }
 
 }

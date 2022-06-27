@@ -33,8 +33,8 @@ public class Java8Collectors {
     @Test
     public void summing(){
         List<Integer> nums = Ints.asList(3, 3, 2, 6, 3, 4, 3, 7, 8, 9, 2);
-        System.out.println("总和: " + nums.stream().collect(Collectors.summingInt(num -> num)));
-        System.out.println("总和: " + nums.stream().collect(Collectors.summingDouble(num -> num)));
+        System.out.println("总和: " + nums.stream().mapToInt(num -> num).sum());
+        System.out.println("总和: " + nums.stream().mapToDouble(num -> num).sum());
         System.out.println("总和: " + nums.stream().mapToLong(num -> num).sum());
 
         List<Fruit> fruits = Lists.newArrayList(new Fruit("a", 2),new Fruit("b", 4),new Fruit("a", 1));
@@ -64,30 +64,22 @@ public class Java8Collectors {
     @Test
     public void maxBy(){
         List<Integer> nums = Ints.asList(3, 3, 2, 6, 3, 4, 3, 7, 8, 9, 2);
-        System.out.println("最大值: " + nums.stream().collect(Collectors.maxBy(Comparator.naturalOrder())).get());
-        System.out.println("最小值: " + nums.stream().collect(Collectors.minBy(Comparator.naturalOrder())).get());
+        System.out.println("最大值: " + nums.stream().max(Comparator.naturalOrder()).get());
+        System.out.println("最小值: " + nums.stream().min(Comparator.naturalOrder()).get());
     }
 
     @Test
     public void reducing(){
         List<Integer> nums = Ints.asList(3, 3, 2, 6, 3, 4, 3, 7, 8, 9, 2);
-        System.out.println("总和: " + nums.stream().collect(Collectors.reducing(0, (a,b) -> a + b)));
-        System.out.println("总和: " + nums.stream().collect(Collectors.reducing(0, Integer::sum)));
-        System.out.println("最大值: " + nums.stream().collect(Collectors.reducing(0, Integer::max)));
-        System.out.println("最小值: " + nums.stream().collect(Collectors.reducing(0, Integer::min)));
+        System.out.println("总和: " + nums.stream().reduce(0, (a, b) -> a + b));
+        System.out.println("总和: " + nums.stream().reduce(0, Integer::sum));
+        System.out.println("最大值: " + nums.stream().reduce(0, Integer::max));
+        System.out.println("最小值: " + nums.stream().reduce(0, Integer::min));
 
         List<Fruit> fruits = Lists.newArrayList(new Fruit("a", "apple"),new Fruit("b", "banana"),new Fruit("a", "almond"));
         //分组，保留组内key相同的最后一个
         Map<String, Optional<Fruit>> map = fruits.stream().collect(Collectors.groupingBy(Fruit::getAlias, Collectors.reducing((f,s) -> s)));
         System.out.println(map);
-
-        //合并list
-        List<List<Integer>> numss = Lists.newArrayList(Ints.asList(3, 2), Ints.asList(4, 5));
-        List<Integer> result = numss.stream()
-                .filter(Objects::nonNull)
-                .reduce(new ArrayList<>(), (all, item ) -> {all.addAll(item); return all;});
-        System.out.println(result);
-
     }
 
     @Test//该收集器将输入元素累积到给定的收集器中，然后执行其他完成功能
@@ -101,6 +93,19 @@ public class Java8Collectors {
 
         double square = nums.stream().collect(Collectors.collectingAndThen(Collectors.averagingInt(num -> num), num -> num * num));
         System.out.println(square);
+
+        List<Fruit> fruits = Lists.newArrayList(new Fruit("a", "apple"),new Fruit("a", "apple"),new Fruit("b", "apple"));
+        List<Fruit> uniqueByName = fruits.stream().collect(
+                Collectors.collectingAndThen(
+                        Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(Fruit::getName))), ArrayList::new)
+        );
+        System.out.println(uniqueByName);
+
+        List<Fruit> uniqueByNameAndAlia = fruits.stream().collect(
+                Collectors. collectingAndThen(
+                        Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(o -> o.getName() + ";" + o.getAlias()))), ArrayList::new)
+        );
+        System.out.println(uniqueByNameAndAlia);
     }
 
     @Test
@@ -127,6 +132,10 @@ public class Java8Collectors {
         //计数
         Map<String, Long> map = fruits.stream().collect(Collectors.groupingBy(Fruit::getAlias, Collectors.counting()));
         System.out.println(map);
+        //List<String>统计各字符串出现的次数
+        List<String> items = Arrays.asList("apple", "apple", "orange", "orange", "orange", "blueberry", "peach", "peach", "peach", "peach");
+        Map<String, Long> result = items.stream().collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+        System.out.println(result);
 
         //上述代码根据name将list分组，如果name是唯一的，那么上述代码就会显得啰嗦。我们需要知道，Guava补JDK之不足，现在改Guava一显身手了
         List<Fruit> ulist = Lists.newArrayList(new Fruit("a", "apple"),new Fruit("b", "banana"),new Fruit("c", "cherry"));
@@ -135,21 +144,16 @@ public class Java8Collectors {
     }
 
     @Test
-    public void counting(){
-        List<String> fruits = Lists.newArrayList("apple","banana","apple","watermelon","orange");
-        System.out.println(fruits.stream().collect(Collectors.counting()));
-    }
-
-    @Test
     public void comparing(){
         Map<String, String> fruits = ImmutableMap.of("b", "banana", "a", "apple", "c", "cherry");
-        List<String> list = fruits.entrySet().stream().sorted(Comparator.comparing(e -> e.getKey())).map(e -> e.getValue()).collect(Collectors.toList());
+        //map转list
+        List<String> list = fruits.entrySet().stream().sorted(Comparator.comparing(Map.Entry::getKey)).map(Map.Entry::getValue).collect(Collectors.toList());
         System.out.println(list);
-        List<String> list2 = fruits.entrySet().stream().sorted(Comparator.comparing(Map.Entry::getKey)).map(e -> e.getValue()).collect(Collectors.toList());
+        List<String> list2 = fruits.entrySet().stream().sorted(Map.Entry.comparingByKey()).map(Map.Entry::getValue).collect(Collectors.toList());
         System.out.println(list2);
-        List<String> list3 = fruits.entrySet().stream().sorted(Map.Entry.comparingByKey()).map(e -> e.getValue()).collect(Collectors.toList());
+        List<String> list3 = fruits.entrySet().stream().sorted(Map.Entry.comparingByKey()).map(Map.Entry::getValue).collect(Collectors.toList());
         System.out.println(list3);
-        List<String> list4 = fruits.entrySet().stream().sorted(Map.Entry.<String, String>comparingByValue().reversed()).map(e -> e.getValue()).collect(Collectors.toList());
+        List<String> list4 = fruits.entrySet().stream().sorted(Map.Entry.<String, String>comparingByValue().reversed()).map(Map.Entry::getValue).collect(Collectors.toList());
         System.out.println(list4);
 
         //map排序值里面的对象的属性,再输出map
@@ -161,7 +165,9 @@ public class Java8Collectors {
     @Test
     public void toMap(){
         List<Fruit> fruits = Lists.newArrayList(new Fruit("a", "apple"),new Fruit("b", "banana"),new Fruit("c", "cherry"));
-        Map<String, String> map = fruits.stream().collect(Collectors.toMap(Fruit::getAlias, Fruit::getName));
+        Map<String, String> map = fruits.stream().peek(v -> {
+            System.out.println(v.getAlias());
+        }).collect(Collectors.toMap(Fruit::getAlias, Fruit::getName));
         System.out.println("①list转map" + map);
 
         System.out.println( "①map转map" + map.entrySet().stream().collect(Collectors.toMap(e->e.getKey()+"@", e->e.getValue())) );
@@ -187,11 +193,6 @@ public class Java8Collectors {
         Map<String, Fruit> map8 = fruits.stream().collect(Collectors.toMap(Fruit::getAlias, v -> v, (existing, replacement) -> existing));
         System.out.println("⑧" + map8);
 
-
-        //数组转map
-        String[] array = {"apple","banana","cherry","watermelon","orange"};
-
-        Stream.iterate(0, i -> i).limit(array.length).collect(Collectors.toMap(Function.identity(),i -> array[i]));
     }
 
     @Test
@@ -252,14 +253,18 @@ public class Java8Collectors {
     public void mapping(){
         List<String> fruits = Lists.newArrayList("apple","banana","apple","watermelon","orange");
 
-        System.out.println(fruits.stream().collect(Collectors.mapping(String::toUpperCase, Collectors.toList())));
+        System.out.println(fruits.stream().map(String::toUpperCase).collect(Collectors.toList()));
 
-        System.out.println(fruits.stream().collect(Collectors.mapping(String::toUpperCase, Collectors.joining(","))));
+        System.out.println(fruits.stream().map(String::toUpperCase).collect(Collectors.joining(",")));
 
         List<Fruit> fruitss = Lists.newArrayList(new Fruit("a", "apple"),new Fruit("b", "banana"),new Fruit("a", "abc"));
 
-        System.out.println(fruitss.stream().collect(Collectors.groupingBy(Fruit::getAlias, Collectors.mapping(Fruit::getName, Collectors.joining(",")))));
+        Map<String, String> map = fruitss.stream().collect(Collectors.groupingBy(Fruit::getAlias, Collectors.mapping(Fruit::getName, Collectors.joining(","))));
 
-        System.out.println(fruitss.stream().collect(Collectors.groupingBy(Fruit::getAlias, Collectors.mapping(Fruit::getName, Collectors.toList()))));
+        System.out.println(map);
+
+        Map<String, List<String>> map3 = fruitss.stream().collect(Collectors.groupingBy(Fruit::getAlias, Collectors.mapping(Fruit::getName, Collectors.toList())));
+
+        System.out.println(map3);
     }
 }

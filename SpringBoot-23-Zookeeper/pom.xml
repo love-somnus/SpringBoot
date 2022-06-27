@@ -4,20 +4,16 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <artifactId>SpringBoot-14-Redis</artifactId>
     <groupId>com.somnus</groupId>
+    <artifactId>SpringBoot</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
 
-  <artifactId>SpringBoot-14-Redis-Stand-Alone</artifactId>
-
+  <artifactId>SpringBoot-23-Zookeeper</artifactId>
   <packaging>jar</packaging>
 
-  <build>
-    <finalName>SpringBoot-14-Redis-Stand-Alone</finalName>
-  </build>
-
   <dependencies>
+
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-integration</artifactId>
@@ -25,9 +21,11 @@
 
     <dependency>
       <groupId>org.springframework.integration</groupId>
-      <artifactId>spring-integration-redis</artifactId>
+      <artifactId>spring-integration-zookeeper</artifactId>
     </dependency>
-
   </dependencies>
 
+  <build>
+    <finalName>SpringBoot-23-Zookeeper</finalName>
+  </build>
 </project>

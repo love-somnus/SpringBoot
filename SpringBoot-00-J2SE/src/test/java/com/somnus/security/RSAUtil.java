@@ -49,8 +49,7 @@ public class RSAUtil {
      *  
      * @param data 
      *            加密数据 
-     * @param privateKey 
-     *            私钥 
+     *            私钥
      * @return 
      * @throws Exception 
      */  
@@ -75,8 +74,7 @@ public class RSAUtil {
      *  
      * @param data 
      *            加密数据 
-     * @param publicKey 
-     *            公钥 
+     *            公钥
      * @param sign 
      *            数字签名 
      *  
@@ -154,8 +152,7 @@ public class RSAUtil {
      *  
      * @param data 
      * @return 
-     * @throws Exception 
-     */  
+     */
     public static String encryptByPublicKey(String data)throws Exception {  
         // 对公钥解密  
         byte[] keyBytes = Base64.decodeBase64(getPublicKey());
@@ -178,12 +175,7 @@ public class RSAUtil {
      *  
      * @param data 
      * @return 
-     * @throws IOException 
-     * @throws InvalidKeySpecException 
-     * @throws NoSuchAlgorithmException 
-     * @throws NoSuchPaddingException 
-     * @throws Exception 
-     */  
+     */
     public static String encryptByPrivateKey(String data) throws Exception{  
         // 对密钥解密  
         byte[] keyBytes = Base64.decodeBase64(getPrivateKey()); 
@@ -203,27 +195,25 @@ public class RSAUtil {
     /** 
      * 取得私钥 
      *  
-     * @param keyMap 
-     * @return 
+     * @return
      * @throws IOException 
      * @throws InvalidKeySpecException 
      * @throws NoSuchAlgorithmException 
      * @throws Exception 
      */  
     public static String getPrivateKey() throws Exception{  
-        Key key = (Key)initKey().get(PRIVATE_KEY); 
+        Key key = (Key)initKey2().get(PRIVATE_KEY);
         return Base64.encodeBase64String(key.getEncoded());
     }  
   
     /** 
      * 取得公钥 
      *  
-     * @param keyMap 
-     * @return 
+     * @return
      * @throws Exception 
      */  
     public static String getPublicKey()throws Exception {  
-        Key key = (Key) initKey().get(PUBLIC_KEY);
+        Key key = (Key) initKey2().get(PUBLIC_KEY);
         return Base64.encodeBase64String(key.getEncoded());
     }  
   
@@ -283,10 +273,10 @@ public class RSAUtil {
     }  
     
     public static void main(String[] args) throws Exception {
-        String publicKey = getPublicKey();  
+        /*String publicKey = getPublicKey();
         String privateKey = getPrivateKey();  
         System.out.println("公钥:\r" + publicKey);  
-        System.out.println("私钥:\r" + privateKey); 
+        System.out.println("私钥:\r" + privateKey); */
         
         System.out.println("公钥加密————————————————————私钥解密");  
         BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));

@@ -11,7 +11,7 @@ import java.util.*;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
@@ -32,9 +32,6 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 
 /**
  * @Description: TODO
@@ -61,11 +58,7 @@ public class JacksonJsonTestCase {
 
     static {
         objectMapper = new ObjectMapper();
-        objectMapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
-        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        objectMapper.disable(SerializationFeature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS);
-        objectMapper.enable(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS);
-        objectMapper.enable(DeserializationFeature.READ_DATE_TIMESTAMPS_AS_NANOSECONDS);
+        objectMapper.configure(MapperFeature.DEFAULT_VIEW_INCLUSION, false);
 
         // java8日期日期处理
         JavaTimeModule javaTimeModule = new JavaTimeModule();
@@ -150,23 +143,19 @@ public class JacksonJsonTestCase {
 
         String jsonStr = "{\"user\":{\"username\":\"owen\",\"password\":\"passw0rd\", \"age\":24}}";
         Map<String, User> map = objectMapper.readValue(jsonStr, new TypeReference<Map<String, User>>(){});
-        System.out.println(map.get("user")+"\n");
+        map.entrySet().forEach(System.out::println);
 
         String jsonStr2 = "{\"user\":[{\"username\":\"owen\", \"age\":24}, {\"username\":\"jack\", \"age\":18}]}";
         Map<String, List<User>> users = objectMapper.readValue(jsonStr2, new TypeReference<Map<String, List<User>>>(){});
-        for (User user : users.get("user")) {
-            System.out.println(user);
-            System.out.println("------------------");
-        }
+        users.entrySet().forEach(System.out::println);
 
-        System.out.println("\n");
+        String jsonStr22 = "{\"user1\":{\"username\":\"owen\", \"price\":24.2}, \"user2\":{\"username\":\"jack\", \"price\":18.2}}";
+        Map<String, User> users2 = objectMapper.readValue(jsonStr22, new TypeReference<Map<String, User>>(){});
+        users2.entrySet().forEach(System.out::println);
 
         String jsonStr3 = "[{\"username\":\"owen\", \"age\":24}, {\"username\":\"jack\", \"age\":18}]";
         List<User> list = objectMapper.readValue(jsonStr3, new TypeReference<List<User>>(){});
-        for (User user : list) {
-            System.out.println(user);
-            System.out.println("------------------");
-        }
+        list.forEach(System.out::println);
     }
 
     @Data

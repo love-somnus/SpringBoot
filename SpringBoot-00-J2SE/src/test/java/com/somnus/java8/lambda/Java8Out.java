@@ -20,7 +20,7 @@ public class Java8Out {
     public void forEach(){
         List<String> fruits = Lists.newArrayList("apple","banana","cherry","watermelon","orange");
 
-        fruits.forEach(item -> System.out.println(item));
+        fruits.forEach(System.out::println);
 
         fruits.stream().forEach(System.out::println);
     }

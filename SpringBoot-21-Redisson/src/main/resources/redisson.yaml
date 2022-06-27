@@ -1,35 +1,43 @@
-clusterServersConfig:
+singleServerConfig:
+  # 连接空闲超时，单位：毫秒
   idleConnectionTimeout: 10000
+  pingTimeout: 1000
+  # 连接超时，单位：毫秒
   connectTimeout: 10000
+  # 命令等待超时，单位：毫秒
   timeout: 3000
+  # 命令失败重试次数,如果尝试达到 retryAttempts（命令失败重试次数） 仍然不能将命令发送至某个指定的节点时，将抛出错误。
+  # 如果尝试在此限制之内发送成功，则开始启用 timeout（命令等待超时） 计时。
   retryAttempts: 3
+  # 命令重试发送时间间隔，单位：毫秒
   retryInterval: 1500
-  failedSlaveReconnectionInterval: 3000
-  failedSlaveCheckInterval: 60000
-  password: null
+  reconnectionTimeout: 3000
+  failedAttempts: 3
+  # 密码
+  password: passw0rd
+  # 单个连接最大订阅数量
   subscriptionsPerConnection: 5
+  # 客户端名称
   clientName: null
-  loadBalancer: !<org.redisson.connection.balancer.RoundRobinLoadBalancer> {}
+  # 节点地址
+  address: "redis://192.168.95.13:6379"
+  # 发布和订阅连接的最小空闲连接数
   subscriptionConnectionMinimumIdleSize: 1
+  # 发布和订阅连接池大小
   subscriptionConnectionPoolSize: 50
-  slaveConnectionMinimumIdleSize: 24
-  slaveConnectionPoolSize: 64
-  masterConnectionMinimumIdleSize: 24
-  masterConnectionPoolSize: 64
-  readMode: "SLAVE"
-  subscriptionMode: "SLAVE"
-  nodeAddresses:
-    - "redis://192.168.95.31:6379"
-    - "redis://192.168.95.32:6379"
-    - "redis://192.168.95.33:6379"
-    - "redis://192.168.95.36:6379"
-    - "redis://192.168.95.37:6379"
-    - "redis://192.168.95.38:6379"
-  scanInterval: 1000
-  pingConnectionInterval: 0
-  keepAlive: false
-  tcpNoDelay: false
+  # 最小空闲连接数
+  connectionMinimumIdleSize: 32
+  # 连接池大小
+  connectionPoolSize: 64
+  # 数据库编号
+  database: 0
+  # DNS监测时间间隔，单位：毫秒
+  dnsMonitoringInterval: 5000
+# 线程池数量,默认值: 当前处理核数量 * 2
 threads: 16
+# Netty线程池数量,默认值: 当前处理核数量 * 2
 nettyThreads: 32
-##codec: !<org.redisson.codec.MarshallingCodec> {}
+# 编码
+codec: !<org.redisson.codec.JsonJacksonCodec> {}
+# 传输模式
 transportMode: "NIO"
