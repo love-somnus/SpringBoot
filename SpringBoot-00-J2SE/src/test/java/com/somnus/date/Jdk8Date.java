@@ -39,15 +39,15 @@ public class Jdk8Date {
         System.out.println(LocalDate.now().toString());
         System.out.println(LocalDate.of(2008, 8, 8));
         System.out.println(LocalDate.parse("2008-08-08"));
-        System.out.println("Year:" + LocalDate.now().getYear());
-        System.out.println("MonthValue:" + LocalDate.now().getMonthValue());
-        System.out.println("DayOfMonth:" + LocalDate.now().getDayOfMonth());
-        System.out.println("DayOfYear:" + LocalDate.now().getDayOfYear());
-        System.out.println("DayOfWeek:" + LocalDate.now().getDayOfWeek().getValue());
+        System.out.println("年份:" + LocalDate.now().getYear());
+        System.out.println("本年第几月:" + LocalDate.now().getMonthValue());
+        System.out.println("本月第几天:" + LocalDate.now().getDayOfMonth());
+        System.out.println("本年第几天:" + LocalDate.now().getDayOfYear());
+        System.out.println("本周第几天:" + LocalDate.now().getDayOfWeek().getValue());
 
-        System.out.println("WeekOfYear:" + LocalDate.now().get(WeekFields.ISO.weekOfYear()));
-        System.out.println("WeekOfMonth:" + LocalDate.now().get(WeekFields.ISO.weekOfMonth()));
-        System.out.println("DayOfWeek:" + LocalDate.now().get(WeekFields.ISO.dayOfWeek()));
+        System.out.println("本年第几周:" + LocalDate.now().get(WeekFields.ISO.weekOfYear()));
+        System.out.println("本月第几周:" + LocalDate.now().get(WeekFields.ISO.weekOfMonth()));
+        System.out.println("本周第几天:" + LocalDate.now().get(WeekFields.ISO.dayOfWeek()));
 
         System.out.println(LocalDate.now().plus(1, ChronoUnit.YEARS));
         System.out.println(LocalDate.now().minus(1, ChronoUnit.YEARS));
@@ -56,7 +56,7 @@ public class Jdk8Date {
         System.out.println(LocalDate.now().plusMonths(1));
 
         System.out.println("2014年第100天的日期:" + LocalDate.ofYearDay(2014, 100));
-        System.out.println("取下一周第一天:" + LocalDate.now().with(TemporalAdjusters.firstDayOfNextMonth()));
+        System.out.println("取下一月第一天:" + LocalDate.now().with(TemporalAdjusters.firstDayOfNextMonth()));
         System.out.println("取下一年第一天:" + LocalDate.now().with(TemporalAdjusters.firstDayOfNextYear()));
         System.out.println("取本月第一天:" + LocalDate.now().with(TemporalAdjusters.firstDayOfMonth()));
         System.out.println("取当年第一天:" + LocalDate.now().with(TemporalAdjusters.firstDayOfYear()));
@@ -81,6 +81,11 @@ public class Jdk8Date {
         System.out.println("相隔周数:" + LocalDate.now().until(LocalDate.parse("2020-08-08"), ChronoUnit.WEEKS));
         System.out.println("相隔月数:" + LocalDate.now().until(LocalDate.parse("2020-08-08"), ChronoUnit.MONTHS));
         System.out.println("相隔天数:" + LocalDate.now().until(LocalDate.parse("2020-08-08"), ChronoUnit.DAYS));
+
+        LocalDate monday = LocalDate.now().with(WeekFields.of(Locale.CHINA).dayOfWeek(), 6);
+        System.out.println(monday.toString() + "   " +LocalDate.now().equals(monday));
+
+        System.out.println();
 
     }
 

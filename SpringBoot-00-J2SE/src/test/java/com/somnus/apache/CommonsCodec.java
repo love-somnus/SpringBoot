@@ -30,10 +30,12 @@ public class CommonsCodec {
     @Test
     @SneakyThrows
     public void Base64JDK8() {
-        String encode = java.util.Base64.getEncoder().encodeToString("https://new.qq.com/rain/a/20200817A04IXC00".getBytes(/*"UTF-8"*/));
+        String abc = "grantCode=ac02c00e332c11r&appAbbr=CloudFlower&device={\"clientIp\":\"172.0.1.1\", \"channel\":\"0\", \"deviceId\":\"0\", \"deviceType\":\"0\", \"appVer\":\"0\", \"os\":\"0\", \"osVer\":\"0\", \"brand\":\"0\", \"model\":\"0\"}";
+        String encode = java.util.Base64.getEncoder().encodeToString(abc.getBytes(/*"UTF-8"*/));
         System.out.println("Base64 编码后：" + encode);
+        System.out.println(java.util.Base64.getEncoder().encodeToString("appAbbr=cms&code=186e95667e7b49aebf3ee1f0d31047f5".getBytes(/*"UTF-8"*/)));
 
-        byte[] decode = java.util.Base64.getDecoder().decode("aHR0cHM6Ly9uZXcucXEuY29tL3JhaW4vYS8yMDIwMDgxN0EwNElYQzAw");
+        byte[] decode = java.util.Base64.getDecoder().decode("Z3JhbnRDb2RlPTEyMzQ1NiZhcHBBYmJyPUNsb3VkRmxvd2VyJmRldmljZT17ImNsaWVudElwIjoiMTcyLjAuMS4xIiwgImNoYW5uZWwiOiIwIn0=");
         String decodestr = new String(decode);
         System.out.println("Base64 解码后：" + decodestr);
 

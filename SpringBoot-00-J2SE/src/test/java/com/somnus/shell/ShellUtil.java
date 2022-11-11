@@ -17,7 +17,7 @@ public class ShellUtil {
      * 数据加密处理 
      *  
      * @param data 要加密的数据 
-     * @param commonKey 加密口令文件名 
+     * @param key 加密口令文件名
      * @return　加密数据 
      * @throws IOException 
      */  

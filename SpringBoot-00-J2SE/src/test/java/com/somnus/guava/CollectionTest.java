@@ -13,8 +13,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 /**
- * @ClassName: IterablesTest
- * @Description: TODO(这里用一句话描述这个类的作用)
  * @author Somnus
  * @date 2018年9月27日
  */
@@ -140,7 +138,7 @@ public class CollectionTest {
 
     @Test
     public void Table(){
-        Table<String,String,Integer> table= HashBasedTable.create();
+        Table<String,String,Integer> table = HashBasedTable.create();
         //存放元素
         table.put("Hydra", "Jan", 20);
         table.put("Hydra", "Feb", 28);

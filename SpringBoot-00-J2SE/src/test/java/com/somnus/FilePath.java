@@ -98,8 +98,7 @@ public class FilePath {
 
     @Test
     public void prin() throws IOException {
-        InputStream is = getClass().getClassLoader().getResourceAsStream("user.xml");
-        try {
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream("user.xml")) {
             byte[] buf = new byte[128];
             int len = 0;
             while ((len = is.read(buf)) != -1) {
@@ -109,8 +108,6 @@ public class FilePath {
             }
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            is.close();
         }
     }
 }

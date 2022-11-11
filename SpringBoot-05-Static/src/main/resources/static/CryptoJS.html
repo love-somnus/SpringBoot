@@ -4,6 +4,7 @@
     <title>Hello WebSocket</title>
     <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <script type="text/javascript" src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
     <!-- 引入 CDN Crypto.js 开始 AES加密 注意引入顺序 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/core.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/enc-base64.min.js"></script>
@@ -22,14 +23,28 @@
     <!-- 引入 CDN Crypto.js 结束 -->
 </head>
 <body>
+<div id="div1"><h2>使用 jQuery AJAX 修改文本内容</h2></div>
+<button>获取其他内容</button>
 </body>
 </html>
 <script>
-var secert = CryptoJS.enc.Base64.parse("DEsSyV+rxMOqtsgdm80xf99QD0AWf/1zokLd9ne5kJQS5xAb5v3gGD4/qMKgmy7gnGJ2LgrEZhWpX4Jl5EpfeeeiTrjUTfMBLG28ire8VgYqN/s5/JthUoPnd/BrB9sT2KxRK8j4i+LMKiN56x00GyBQeVnkjw4X73cok3o6OF4=");
+    $(document).ready(function(){
+        $("button").click(function(){
+            $.ajax({
+                url:"https://apitest2.baochuangames.com/flower/profile/v1",
+                headers:{
+                    'Access-Control-Allow-Origin': '*'
+                },
+                success:function(result){
+                    $("#div1").html(result);
+                }});
+        });
+    });
+/*var secert = CryptoJS.enc.Base64.parse("DEsSyV+rxMOqtsgdm80xf99QD0AWf/1zokLd9ne5kJQS5xAb5v3gGD4/qMKgmy7gnGJ2LgrEZhWpX4Jl5EpfeeeiTrjUTfMBLG28ire8VgYqN/s5/JthUoPnd/BrB9sT2KxRK8j4i+LMKiN56x00GyBQeVnkjw4X73cok3o6OF4=");
 alert(secert);
 var words = "{\"sku\":\"ProdTest1\",\"bnetMembershipId\":\"1826390\",\"transactionId\":\"Andy Jin\"}";
 var hmac = CryptoJS.HmacSHA512(words, secert);
 alert(hmac);
 var base64 = hmac.toString(CryptoJS.enc.Base64);
-alert(base64);
+alert(base64);*/
 </script>

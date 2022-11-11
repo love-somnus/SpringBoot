@@ -50,8 +50,8 @@ public class BigDecimalTest {
 
     @Test
     public void divide() {
-        BigDecimal a = new BigDecimal("1.00");
-        BigDecimal b = new BigDecimal("3.00");
+        BigDecimal a = new BigDecimal("3");
+        BigDecimal b = new BigDecimal("60");
         System.out.println(a.divide(b, 3, RoundingMode.UP));// 直接进位处理
         System.out.println(a.divide(b, 3, RoundingMode.DOWN));// 直接删除多余的小数位
         System.out.println(a.divide(b, 3, RoundingMode.HALF_UP));// 四舍五入 如果是5则向上舍

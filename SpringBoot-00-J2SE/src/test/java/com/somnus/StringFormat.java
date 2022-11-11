@@ -155,6 +155,7 @@ public class StringFormat {
     @Test
     public void test() {
         System.out.println(MessageFormat.format("报文中，{0}元素个数超过限制，最多{1}个！", 1, 2));
+        System.out.println(MessageFormat.format("报文中，→{0}←元素个数超过限制，最多{1}个！", 1, 2));
         System.out.println(format("报文中，{0}元素个数超过限制，最多{1}个！", 1, 2));
         System.out.println(format2("报文中，{}元素个数超过限制，最多{}个！", 1, 2));
     }

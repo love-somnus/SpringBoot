@@ -5,10 +5,34 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.HashMap;
+import java.util.Map;
 
+import lombok.SneakyThrows;
 import org.junit.Test;
+import org.springframework.util.ObjectUtils;
 
 public class ReflectClient {
+
+    @Test
+    @SneakyThrows
+    public void objToMap() {
+        Person person = new Person();
+        Class<?> clazz = person.getClass(); // 得到类对象
+        Field[] fields = clazz.getDeclaredFields(); // 得到所有属性
+        Map<String, Object> map = new HashMap<>();
+        for (Field field : fields) {
+            field.setAccessible(true);
+            Object fieldValue;
+            // 得到属性类型
+            String fieldName = field.getName(); // 得到属性名
+            fieldValue = field.get(person); // 得到属性值
+            map.put(fieldName, fieldValue);
+        }
+        System.out.println(map);
+    }
+
+
     /**
      * 通过一个对象获得完整的包名和类名
      */

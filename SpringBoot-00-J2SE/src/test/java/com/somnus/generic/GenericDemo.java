@@ -10,6 +10,14 @@ import java.util.List;
  */
 public class GenericDemo {
 
+    public static void main(String[] args) {
+        Class<Animal> clazz = Animal.class;
+        Object o = new Animal();
+        System.out.println(clazz.cast(o));
+        Object md = null;
+        System.out.println((String)md);
+    }
+
     private List<?> result;
 
     private List<? extends Animal> list;

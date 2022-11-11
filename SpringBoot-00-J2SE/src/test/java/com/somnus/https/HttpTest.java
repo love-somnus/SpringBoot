@@ -2,7 +2,9 @@ package com.somnus.https;
 
 import java.io.*;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +17,9 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
+import org.apache.http.StatusLine;
 import org.apache.http.client.fluent.Form;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.client.utils.URIBuilder;
@@ -69,6 +73,17 @@ public class HttpTest {
     public void doPathParamGet() {
         String url = "https://httpbin.org/html";
         System.out.println("body:" + HttpClientUtil.doGet(url));
+    }
+
+    @Test
+    @SneakyThrows
+    public void doPathParamOptionByFluent() {
+        URL url = new URL("http://m801.music.126.net/20220906175024/0d1d898c463838a8f25ce84e87f6c081/jdymusic/obj/wo3DlMOGwrbDjj7DisKw/14122129619/8420/27c0/42c4/ebdd98f7b5236349aecf4293fa57f2cb.mp3");
+        URI uri = new URI(url.getProtocol(), url.getHost(), url.getPath(), url.getQuery(), null);
+        HttpResponse response= Request.Get(new URIBuilder(uri).build()).execute().returnResponse();
+        StatusLine statusLine = response.getStatusLine();
+        int code = statusLine.getStatusCode();
+        System.out.println(code);
     }
 
     @Test
@@ -143,9 +158,13 @@ public class HttpTest {
     @Test
     @SneakyThrows
     public void doFormParamPostByFluent() {
-        String url = "https://httpbin.org/post";
+        String url = "https://api.baochuangames.com/uac/vote/wybc/survey";
         String response = Request.Post(url).bodyForm(Form.form()
-                .add("custname", "admin")
+                .add("gameAbbr", "wybc")
+                        .add("title", "妖帝简中字体测试")
+                        .add("ext2", "8岁以下")
+                        .add("ext1", "男")
+                        .add("favorite", "0")
                 .build()
         )
                 .execute().returnContent().asString();
@@ -192,6 +211,19 @@ public class HttpTest {
         } finally {
             IOUtils.closeQuietly(os);
         }
+    }
+
+    @Test
+    @SneakyThrows
+    public void uriBuilder()  {
+
+        URL url = new URL("https://httpbin.org/image/jpeg?keyword=1");
+
+        URI uri = new URI(url.getProtocol(), url.getHost(), url.getPath(), url.getQuery(), null);
+
+        byte[] buff = Request.Get(new URIBuilder(uri).build()).execute().returnContent().asBytes();
+
+        log.info("Protocol:{} >> Host:{} >> Path:{} >> Query:{} ",url.getProtocol(), url.getHost(), url.getPath(),url.getQuery());
     }
 
     @SneakyThrows

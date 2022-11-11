@@ -27,3 +27,25 @@ public class RequiredArgsConstructorExample {
         System.out.println();
     }
 }
+
+/**
+ * public class RequiredArgsConstructorExample {
+ *     private String username;
+ *     private final String password;
+ *     @NonNull
+ *     private String sex;
+ *
+ *     public static void main(String[] args) {
+ *         System.out.println();
+ *     }
+ *
+ *     public RequiredArgsConstructorExample(final String password, @NonNull final String sex) {
+ *         if (sex == null) {
+ *             throw new NullPointerException("sex is marked non-null but is null");
+ *         } else {
+ *             this.password = password;
+ *             this.sex = sex;
+ *         }
+ *     }
+ * }
+ */

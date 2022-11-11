@@ -17,9 +17,9 @@
             <div class="col-md-12">
                 <div class="form-group">
                     <label>WebSocket 连接：</label>
-                    <label>userId：</label>
+                    <label>Authorization：</label>
                     <div class="form-group">
-                        <input type="text" id="userId" class="form-control" placeholder="userId">
+                        <input type="text" id="Authorization" class="form-control" placeholder="Authorization">
                     </div>
                     <button class="btn btn-success" type="button" value="connect" onclick="connect();">进行连接</button>
                     <button class="btn btn-danger disabled" type="button" value="disconnect" onclick="disconnect();">断开连接</button>
@@ -31,7 +31,7 @@
     <div class="row">
         <div class="form-group">
             <label>接收人(userId)：</label>
-            <input type="text" id="receiver" class="form-control" placeholder="userId" value="2">
+            <input type="text" id="receiver" class="form-control" placeholder="userId" value="6350265846">
             <label for="content">发送的消息内容：</label>
             <input type="text" id="content" class="form-control" placeholder="消息的内容">
         </div>
@@ -40,7 +40,7 @@
     </br>
     <div class="row">
         <div class="col-md-12">
-            <h5 class="page-header" style="font-weight:bold">聊天内容：</h5>
+            <h5 class="page-header" style="font-weight:bold">交互内容：</h5>
             <table class="table table-striped">
                 <tbody id="information"></tbody>
             </table>

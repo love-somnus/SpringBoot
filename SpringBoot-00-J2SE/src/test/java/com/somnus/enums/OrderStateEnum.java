@@ -64,4 +64,5 @@ public enum OrderStateEnum {
     };
 
     public abstract String getName();
+
 }

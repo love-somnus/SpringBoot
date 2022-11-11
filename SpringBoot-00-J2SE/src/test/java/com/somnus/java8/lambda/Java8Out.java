@@ -17,6 +17,23 @@ import java.util.Set;
 public class Java8Out {
 
     @Test
+    public void testPeekAndforeach() {
+        List<String> sentences = List.of("hello world","Jia Gou Wu Dao");
+        // 演示点1： 仅peek操作，最终不会执行
+        System.out.println("----before peek----");
+        sentences.stream().peek(System.out::println);
+        System.out.println("----after peek----");
+        // 演示点2： 仅foreach操作，最终会执行
+        System.out.println("----before foreach----");
+        sentences.stream().forEach(System.out::println);
+        System.out.println("----after foreach----");
+        // 演示点3：peek 独自调用时并没有被执行、但 peek 后面加上终止操作之后便可以被执行，而 foreach 可以直接被执行
+        System.out.println("----before peek and count----");
+        sentences.stream().peek(System.out::println).findAny().get();
+        System.out.println("----after peek and count----");
+    }
+
+    @Test
     public void forEach(){
         List<String> fruits = Lists.newArrayList("apple","banana","cherry","watermelon","orange");
 

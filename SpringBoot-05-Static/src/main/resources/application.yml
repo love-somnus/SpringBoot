@@ -23,7 +23,7 @@ person:
       port: 11
       active: 8
   flowers:
-    - color: red
+    - color-see: red
       name: rose
-    - color: blue
+    - color-see: blue
       name: clove

@@ -1,5 +1,6 @@
 package com.somnus.springboot;
 
+import cn.hutool.extra.spring.SpringUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,17 @@ public class ConditionalTest {
         Map<String, ApplicationHome> applicationHomes = applicationConnect.getBeansOfType(ApplicationHome.class);
         Map<String, ApplicationTemp> applicationTemps = applicationConnect.getBeansOfType(ApplicationTemp.class);
         Map<String, ApplicationPid>  applicationPids  = applicationConnect.getBeansOfType(ApplicationPid.class);
+
+        System.out.println(applicationHomes);
+        System.out.println(applicationTemps);
+        System.out.println(applicationPids);
+    }
+
+    @Test
+    public void conditionalOnBean2(){
+        Map<String, ApplicationHome> applicationHomes = SpringUtil.getBeansOfType(ApplicationHome.class);
+        Map<String, ApplicationTemp> applicationTemps = SpringUtil.getBeansOfType(ApplicationTemp.class);
+        Map<String, ApplicationPid>  applicationPids  = SpringUtil.getBeansOfType(ApplicationPid.class);
 
         System.out.println(applicationHomes);
         System.out.println(applicationTemps);

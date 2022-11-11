@@ -36,5 +36,5 @@ public class Person {
 class Flower{
     private String name;
 
-    private String color;
+    private String colorSee;
 }

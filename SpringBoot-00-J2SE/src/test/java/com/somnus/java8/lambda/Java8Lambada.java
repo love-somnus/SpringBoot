@@ -1,10 +1,7 @@
 package com.somnus.java8.lambda;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
-import com.google.common.primitives.Ints;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -33,13 +30,15 @@ public class Java8Lambada {
     @Test
     public void parallel() {
 
-        List<String> fruits = Lists.newArrayList("apple","banana","apple","watermelon","orange");
+        List<String> fruits = List.of("apple","banana","apple","watermelon","orange");
 
         fruits.forEach(item -> System.out.println(Thread.currentThread().getName()+ ">>"+ item));
 
         System.out.println("-----------------------------------------------------------------");
 
         fruits.parallelStream().forEach(item -> System.out.println(Thread.currentThread().getName()+ ">>"+ item));
+        System.out.println(fruits.stream().map(v -> v.concat("@")).collect(Collectors.toList()));
+        System.out.println(fruits.parallelStream().map(v -> v.concat("@")).collect(Collectors.toList()));
 
         System.out.println("-----------------------------------------------------------------");
 
@@ -73,43 +72,35 @@ public class Java8Lambada {
     @Test
     public void map(){
 
-        List<String> fruits = Lists.newArrayList("apple","banana","apple","watermelon","orange");
+        List<String> fruits = List.of("apple","banana","apple","watermelon","orange");
 
         fruits.stream().map(String :: toUpperCase).forEach(System.out::println);
 
         fruits.stream().map(String :: length).forEach(System.out::println);
 
-        List<String> numbers = Lists.newArrayList("1","3","5","7","9");
+        List<String> numbers = List.of("1","3","5","7","9");
         List<Integer> nums = numbers.stream().map(Integer :: valueOf).collect(Collectors.toList());
         System.out.println(nums);
-
-        Multimap<String, Integer> params = ImmutableMultimap.of("a", 1, "b", 2, "c", 3, "a", 2);
-        String str = params.entries().stream().map(p -> p.getKey() + "=" + p.getValue()).reduce((p1, p2) -> p1 + "&" + p2).map(s -> "?" + s).orElse("");
-        System.out.println(str);
-
-        Map<String, Integer> params2 = ImmutableMap.of("a", 1, "b", 2, "c", 3);
-        String str2 = params2.entrySet().stream().map(p -> p.getKey() + "=" + p.getValue()).reduce((p1, p2) -> p1 + "&" + p2).map(s -> "?" + s).orElse("");
-        System.out.println(str2);
     }
 
     @Test
     public void limit(){
-        List<String> fruits = Lists.newArrayList("apple","banana","apple","watermelon","orange");
+        List<String> fruits = List.of("apple","banana","apple","watermelon","orange");
         fruits.stream().limit(2).forEach(System.out::println);
     }
 
     @Test
     public void skip(){
-        List<String> fruits = Lists.newArrayList("apple","banana","apple","watermelon","orange");
+        List<String> fruits = List.of("apple","banana","apple","watermelon","orange");
         fruits.stream().skip(2).forEach(System.out::println);
     }
 
     @Test
     public void distinct(){
-        List<String> fruits = Lists.newArrayList("apple","banana","apple","watermelon","orange");
+        List<String> fruits = List.of("apple","banana","apple","watermelon","orange");
         fruits.stream().distinct().forEach(System.out::println);
 
-        List<Fruit> fruitss = Lists.newArrayList(new Fruit("a", "apple"),new Fruit("b", "banana"),new Fruit("a", "apple"),new Fruit("a", "almond"));
+        List<Fruit> fruitss = List.of(new Fruit("a", "apple"),new Fruit("b", "banana"),new Fruit("a", "apple"),new Fruit("a", "almond"));
         fruitss.stream().distinct().forEach(System.out::println);
 
         ArrayList<Fruit> collect1 = fruitss.stream().collect(Collectors.collectingAndThen(
@@ -120,34 +111,36 @@ public class Java8Lambada {
 
     @Test
     public void sorted(){
-        List<Integer> nums = Ints.asList(3, 3, 2, 6, 3, 4, 3, 7, 8, 9, 2);
+        List<Integer> nums = List.of(3, 3, 2, 6, 3, 4, 3, 7, 8, 9, 2);
         System.out.println(nums.stream().sorted(Comparator.naturalOrder()).collect(Collectors.toList()));
         System.out.println(nums.stream().sorted(Comparator.reverseOrder()).collect(Collectors.toList()));
         System.out.println(nums.stream().sorted(Comparator.comparingInt(num -> num)).collect(Collectors.toList()));
 
-        List<Fruit> fruits = Lists.newArrayList(new Fruit("apple", 5),new Fruit("banana", 5),new Fruit("apricot", 7));
+        List<Fruit> fruits = List.of(new Fruit("apple", 5),new Fruit("banana", 5),new Fruit("apricot", 7));
         System.out.println(fruits.stream().sorted(Comparator.comparing(Fruit::getName).reversed()).collect(Collectors.toList()));
         System.out.println(fruits.stream().sorted(Comparator.comparingInt(Fruit::getNum).reversed()).collect(Collectors.toList()));
         System.out.println(fruits.stream().sorted(Comparator.comparingInt(Fruit::getNum).thenComparing(Fruit::getName)).collect(Collectors.toList()));
 
-        List<String> fruitss = Lists.newArrayList("apple","banana","apple","watermelon","orange");
+        List<String> fruitss = List.of("apple","banana","apple","watermelon","orange");
         System.out.println(fruitss.stream().sorted(String::compareToIgnoreCase).collect(Collectors.toList()));
     }
 
     @Test
     public void find(){
-        List<String> fruits = Lists.newArrayList("apple","banana","cherry","watermelon","orange");
+        List<String> fruits = List.of("apple","banana","cherry","watermelon","orange");
         //findAny返回的是最快处理完的那个线程的数据
         System.out.println(fruits.parallelStream().findAny().get());
         System.out.println(fruits.stream().findFirst().get());
+        Integer value =0;
+        System.out.println(BigDecimal.ZERO.intValue() == value);
     }
 
     @Test
     public void filter(){
-        List<String> fruits = Lists.newArrayList("apple","banana","cherry","watermelon","orange", "app");
+        List<String> fruits = List.of("apple","banana","cherry","watermelon","orange", "app");
         System.out.println(fruits.stream().filter(fruit -> fruit.startsWith("a")).collect(Collectors.toList()));
 
-        List<Fruit> fruitss = Lists.newArrayList(new Fruit(), new Fruit("b", "banana"));
+        List<Fruit> fruitss = List.of(new Fruit(), new Fruit("b", "banana"));
         System.out.println(fruitss.stream().map(Fruit::getName).filter(Objects::nonNull).collect(Collectors.toList()));
 
         System.out.println(fruits.stream().filter(s -> s.startsWith("a")).mapToInt(String::length).max().orElse(0));;
@@ -155,7 +148,7 @@ public class Java8Lambada {
 
     @Test
     public void reduce(){
-        List<Integer> nums = Ints.asList(1, 2, 3);
+        List<Integer> nums = List.of(1, 2, 3);
         //有起始值
         System.out.println("有起始值总和: " + nums.stream().reduce(0, (a,b) -> a + b));
         System.out.println("有起始值总和: " + nums.stream().reduce(0, Integer::sum));
@@ -168,7 +161,7 @@ public class Java8Lambada {
         System.out.println("无起始值最大值: " + nums.stream().reduce(Integer::max).get());
         System.out.println("无起始值最小值: " + nums.stream().reduce(Integer::min).get());
 
-        List<BigDecimal> nums2 = Lists.newArrayList(BigDecimal.ONE, BigDecimal.ONE, BigDecimal.ONE);
+        List<BigDecimal> nums2 = List.of(BigDecimal.ONE, BigDecimal.ONE, BigDecimal.ONE);
         System.out.println("BigDecimal有起始值总和: " + nums2.stream().reduce(BigDecimal.ZERO, (a,b) -> a.add(b)));
         System.out.println("BigDecimal有起始值总和: " + nums2.stream().reduce(BigDecimal.ZERO, BigDecimal::add));
 
@@ -176,7 +169,7 @@ public class Java8Lambada {
         System.out.println("BigDecimal无起始值总和: " + nums2.stream().reduce(BigDecimal::add).get());
 
         //字符串处理
-        List<String> fruits = Lists.newArrayList("apple","banana","cherry","watermelon","orange");
+        List<String> fruits = List.of("apple","banana","cherry","watermelon","orange");
         System.out.println("最长的单词-->" + fruits.stream().reduce((s1, s2) -> s1.length()>=s2.length() ? s1 : s2).get());
         System.out.println("单词的长度之和-->" + fruits.stream().reduce(0, (sum, str) -> sum + str.length(), (a, b) -> a+b));
         System.out.println("字符串连接-->" + fruits.stream().reduce("", String::concat));
@@ -187,120 +180,27 @@ public class Java8Lambada {
     @Test
     public void match(){
         System.out.println(Boolean.valueOf("true"));
-        List<Integer> nums = Ints.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+        List<Integer> nums = List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
         System.out.println("全部大于2，才会返回true --> " + nums.stream().allMatch(num -> num > 2));
         System.out.println("任意一个小于2，就返回true --> " + nums.stream().anyMatch(num -> num > 2));
         System.out.println("没有一个大于2，才会返回true --> " + nums.stream().noneMatch(num -> num > 2));
 
         System.out.println("任意一个大于20，就返回true --> " + nums.stream().map(num -> num > 20).reduce(false, (a, b) -> a || b));
+
+        List<Integer> exclude = List.of(1, 2);
+        List<Integer> result = nums.stream().filter(v -> exclude.stream().noneMatch(r -> r.equals(v))).collect(Collectors.toList());
+        System.out.println(result);
     }
 
     @Test
     public void max(){
-        List<Integer> nums = Ints.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+        List<Integer> nums = List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
         System.out.println("最大值: " + nums.stream().max(Comparator.comparing(num -> num)).get());
         System.out.println("最小值: " + nums.stream().min(Comparator.naturalOrder()).get());
 
-        List<Fruit> fruits = Lists.newArrayList(new Fruit("apple", 5),new Fruit("banana", 6),new Fruit("apricot", 7));
+        List<Fruit> fruits = List.of(new Fruit("apple", 5),new Fruit("banana", 6),new Fruit("apricot", 7));
         System.out.println(fruits.stream().max(Comparator.comparing(Fruit::getName)).get());
         System.out.println(fruits.stream().min(Comparator.comparingInt(Fruit::getNum)).get());
-    }
-
-    @Test
-    public void flatMap(){
-
-        String[] a = {"a", "b", "c"};
-        String[] b = {"1", "2", "3"};
-        //两个字符串数组合并为一个新的数组
-        String[] c = Stream.of(a, b).flatMap(Stream::of).toArray(String[]::new);
-        System.out.println(c);
-        //两个String数组转List<String>
-        List<String> strList = Stream.of(a, b).flatMap(Stream::of).collect(Collectors.toList());
-        System.out.println(strList);
-
-        int[] ai = new int[]{1,3};
-        int[] bi = new int[]{2,4};
-        //两个 int 型数组合并为一个新的 int 型数组
-        int[] ci =  IntStream.concat(Arrays.stream(ai), Arrays.stream(bi)).toArray();
-        System.out.println(ci);
-        //两个int数组转List<Integer>
-        List<Integer> integerList = Stream.of(IntStream.of(ai).boxed(), IntStream.of(bi).boxed()).flatMap(s -> s).collect(Collectors.toList());
-        System.out.println(integerList);
-
-        List<String> fruits = Lists.newArrayList("apple","banana","cherry","watermelon","orange");
-        System.out.println(fruits.stream().map(fruit -> fruit.split("")).flatMap(Arrays::stream).collect(Collectors.toList()));
-        System.out.println(fruits.stream().flatMap(fruit -> Stream.of(fruit.split(""))).collect(Collectors.toList()));
-
-
-        List<Map<String,Integer>> list = Lists.newArrayList(ImmutableMap.of("a", 1, "b", 2), ImmutableMap.of("c", 1, "d", 2), ImmutableMap.of("a", 3, "d", 4));
-        // 覆盖key相同的值，
-        Map<String,Object> map = list.stream().map(Map::entrySet).flatMap(Set::stream)
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (existing, replacement) -> replacement));
-        System.out.println(map);
-
-        // 覆盖key相同的值，
-        Map<String,Object> map2 = list.stream().flatMap(m -> m.entrySet().stream())
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (existing, replacement) -> replacement));
-        System.out.println(map2);
-
-        // 覆盖key相同的值，
-        Map<String,Object> map3 = list.stream().map(Map::entrySet).flatMap(Collection::stream)
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (existing, replacement) -> replacement));
-        System.out.println(map3);
-
-        List<Integer> l1 = Ints.asList(3, 2);
-        List<Integer> l2 = Ints.asList(4, 5, 3);
-        //两个List合并为一个新的List
-        List<Integer> result2 = Stream.of(l1, l2).flatMap(Collection::stream).collect(Collectors.toList());
-        System.out.println(result2);
-        //交集
-        List<Integer> beMixed = l1.stream().filter(l2::contains).collect(Collectors.toList());
-        System.out.println("交集:" + beMixed);//[3]
-        //差集
-        List<Integer> subtraction = l1.stream().filter(v -> !l2.contains(v)).collect(Collectors.toList());
-        System.out.println("差集:" + subtraction);//[2]
-
-        List<List<Integer>> numss = Arrays.asList(l1, l2);
-        List<Integer> result = numss.stream().filter(Objects::nonNull).reduce(new ArrayList<>(), (all, item ) -> {all.addAll(item); return all;});
-        System.out.println(result);
-
-        List<Integer> result3 = numss.stream().filter(Objects::nonNull).flatMap(Collection::stream)/*.distinct()*/
-                .collect(Collectors.toList());
-        System.out.println(result3);
-
-        Integer[] result4 = numss.stream().filter(Objects::nonNull).flatMap(Collection::stream)/*.distinct()*/
-                .toArray(Integer[]::new);
-        System.out.println(Arrays.toString(result4));
-
-        List<String[]> arrayList = Lists.newArrayList(new String[]{"10111011001", "10119910001"},  new String[]{"11111017501", "10119910001"});
-        System.out.println(arrayList.stream().filter(Objects::nonNull).flatMap(Arrays::stream)/*.distinct()*/
-                .collect(Collectors.toList()));
-        System.out.println(Arrays.toString(
-                arrayList.stream().filter(Objects::nonNull).flatMap(Arrays::stream)/*.distinct()*/
-                        .toArray(String[]::new)
-        ));
-
-        List<String> arrayList2 = Lists.newArrayList("aa|111", "bb|222", "cc|333");
-        System.out.println(arrayList2.stream()
-                .filter(Objects::nonNull)
-                .flatMap(v -> Arrays.stream(v.split("[|]")))
-                .distinct()
-                .collect(Collectors.toList()));
-
-        //"-分割后获取字母，转为新数组
-        String[] strArray = arrayList2.stream().map(v -> v.split("")[0]).toArray(String[]::new);
-        //"-分割后获取字母，转List
-        List<String> lists = arrayList2.stream().map(v -> v.split("")[0]).collect(Collectors.toList());
-        //"-分割后获取字母，用逗号拼接为字符串
-        String str = arrayList2.stream().map(v -> v.split("")[0]).collect(Collectors.joining(","));
-
-        System.out.println(Arrays.toString(strArray));//[a, b, c]
-        System.out.println(lists);//[a, b, c]
-        System.out.println(str);//a,b,c
-
-        String params = "apple=1111&banana=2222&pear=3333&grape=44444";
-        List<String> list2 = Arrays.stream(params.split("&")).map(v -> v.split("=")).flatMap(Stream::of).collect(Collectors.toList());
-        System.out.println(list2);
     }
 
 }

@@ -65,7 +65,7 @@ public class RedisTemplateTest {
 
         //批量获取记录,如果指定的key不存在返回List的对应位置将是null
         System.out.println(stringRedisTemplate.opsForValue().multiGet(
-                Arrays.asList(new String[]{"key1","key2","key3","key4"})));
+                Arrays.asList("key1","key2","key3","key4")));
     }
 
     @Test
@@ -75,7 +75,7 @@ public class RedisTemplateTest {
 
         //批量获取记录,如果指定的key不存在返回List的对应位置将是null
         System.out.println(stringRedisTemplate.opsForValue().multiGet(
-                Arrays.asList(new String[]{"key1","key2","key3","key5"})));
+                Arrays.asList("key1","key2","key3","key5")));
     }
 
     @Test

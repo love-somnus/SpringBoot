@@ -49,7 +49,7 @@ public class CompletableFutureTest {
         // 第一个任务:
         CompletableFuture<String> cfQuery = CompletableFuture.supplyAsync(() -> queryCode("中国石油"));
         // cfQuery成功后继续执行下一个任务:
-        CompletableFuture<Double> cfFetch = cfQuery.thenApplyAsync((code) -> fetchPrice(code));
+        CompletableFuture<Double> cfFetch = cfQuery.thenApplyAsync(CompletableFutureTest::fetchPrice);
         // cfFetch成功后打印结果:
         cfFetch.thenAccept((result) -> System.out.println("price: " + result));
         // 主线程不要立刻结束，否则CompletableFuture默认使用的线程池会立刻关闭:

@@ -59,6 +59,7 @@ public class JacksonJsonTestCase {
     static {
         objectMapper = new ObjectMapper();
         objectMapper.configure(MapperFeature.DEFAULT_VIEW_INCLUSION, false);
+        objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 
         // java8日期日期处理
         JavaTimeModule javaTimeModule = new JavaTimeModule();
@@ -169,8 +170,6 @@ public class JacksonJsonTestCase {
         @JsonInclude(Include.NON_EMPTY)
         private String password;
 
-        @JsonInclude(Include.NON_DEFAULT)
-        private int age;
 
         @JsonInclude(Include.NON_DEFAULT)
         private BigDecimal price;
