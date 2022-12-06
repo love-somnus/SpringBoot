@@ -33,7 +33,7 @@
     <commons.io.version>2.5</commons.io.version>
     <commons.beanutils.version>1.9.3</commons.beanutils.version>
     <commons.codec.version>1.10</commons.codec.version>
-    <commons.net.version>3.5</commons.net.version>
+    <commons.net.version>3.9.0</commons.net.version>
     <!-- apache tools -->
     <apache.commons.collections.version>4.1</apache.commons.collections.version>
     <apache.commons.lang3.version>3.5</apache.commons.lang3.version>
